@@ -32,7 +32,7 @@
                    (conj path current-state)))))
 
 (defn -main
-  "I don't do a whole lot ... yet."
+  "Search for a hard-coded target state."
   [& args]
   (let [start-state (s/->State [[0 1 3] [4 2 5] [7 8 6]] [0 0])
         goal-state (s/->State [[0 1 2] [3 4 5] [6 7 8]] [0 0])

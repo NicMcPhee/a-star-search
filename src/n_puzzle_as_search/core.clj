@@ -12,16 +12,16 @@
             (empty? frontier)
             (= (peek frontier) goal-state))
       came-from
-      (when-not (empty? frontier)
-        (let [current (peek frontier)
-              children (set (s/children current))
-              unvisited-children (clojure.set/difference children visited)
-              new-frontier (reduce conj (pop frontier) unvisited-children)
-              new-visited (clojure.set/union children visited)]
-          (recur (- max-states (count unvisited-children))
-                 new-frontier
-                 new-visited
-                 (reduce #(assoc %1 %2 current) came-from unvisited-children)))))))
+      (let [current (peek frontier)
+            children (set (s/children current))
+            unvisited-children (clojure.set/difference children visited)
+            new-frontier (reduce conj (pop frontier) unvisited-children)
+            new-visited (clojure.set/union children visited)
+            new-came-from (reduce #(assoc %1 %2 current) came-from unvisited-children)]
+        (recur (- max-states (count unvisited-children))
+               new-frontier
+               new-visited
+               new-came-from)))))
 
 (defn extract-path [came-from start-state goal-state]
   (loop [current-state goal-state

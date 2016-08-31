@@ -9,7 +9,8 @@
          visited #{}
          came-from {}]
     (if (or (neg? max-states)
-            (empty? frontier))
+            (empty? frontier)
+            (= (peek frontier) goal-state))
       came-from
       (when-not (empty? frontier)
         (let [current (peek frontier)

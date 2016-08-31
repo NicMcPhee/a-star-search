@@ -36,7 +36,7 @@
   [& args]
   (let [start-state (s/->State [[0 1 3] [4 2 5] [7 8 6]] [0 0])
         goal-state (s/->State [[0 1 2] [3 4 5] [6 7 8]] [0 0])
-        max-states 100000
+        max-states 1000000
         result (breadth-first-search max-states start-state goal-state)]
     (println (str "We explored " (count result) " states."))
     (println "The path to the solution is:")

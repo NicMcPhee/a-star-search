@@ -1,4 +1,4 @@
-(ns a-star-search.state)
+(ns a-star-search.n-puzzle-state)
 
 (defrecord State [board blank-position])
 

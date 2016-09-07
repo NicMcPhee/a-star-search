@@ -17,9 +17,9 @@
   )
 
 (facts
-  (range 3) => (has every? legal?)
-  (range -5 0) => (has not-any? legal?)
-  (range 4 10) => (has not-any? legal?)
+  (range 3) => (has every? (partial legal? 3))
+  (range -5 0) => (has not-any? (partial legal? 3))
+  (range 4 10) => (has not-any? (partial legal? 3))
   )
 
 (facts
@@ -49,3 +49,8 @@
                (->State [[5 0 6] [2 4 3] [1 7 8]] [0 1])
                (->State [[5 4 6] [2 7 3] [1 0 8]] [2 1])})
   )
+
+(facts
+  (children (->State [[0 1 2 3] [4 5 6 7] [8 9 10 11] [12 13 14 15]] [0 0]))
+    => (just #{(->State [[1 0 2 3] [4 5 6 7] [8 9 10 11] [12 13 14 15]] [0 1])
+               (->State [[4 1 2 3] [0 5 6 7] [8 9 10 11] [12 13 14 15]] [1 0])}))

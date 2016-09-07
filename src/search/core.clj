@@ -1,6 +1,6 @@
-(ns a-star-search.core
+(ns search.core
   (:require clojure.set
-            [a-star-search.n-puzzle-state :as s]
+            [search.n-puzzle-state :as s]
             [clojure.data.priority-map :as pm])
   (:gen-class))
 

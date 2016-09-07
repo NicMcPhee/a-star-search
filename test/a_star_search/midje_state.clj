@@ -1,6 +1,6 @@
-(ns n_puzzle_as_search.midje-state
+(ns a-star-search.midje-state
   (:use [midje.sweet])
-  (:require [n-puzzle-as-search.state :refer :all]))
+  (:require [a-star-search.state :refer :all]))
 
 (facts
   (:board (->State [[0 1 2] [3 4 5] [6 7 8]] [0 0]))

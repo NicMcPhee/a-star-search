@@ -1,6 +1,6 @@
-(ns n-puzzle-as-search.core-test
+(ns a-star-search.core-test
   (:require [clojure.test :refer :all]
-            [n-puzzle-as-search.core :refer :all]))
+            [a-star-search.core :refer :all]))
 
 (deftest a-test
   (testing "FIXME, I fail."

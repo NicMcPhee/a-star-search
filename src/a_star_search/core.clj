@@ -1,6 +1,6 @@
-(ns n-puzzle-as-search.core
+(ns a-star-search.core
   (:require clojure.set
-            [n-puzzle-as-search.state :as s]
+            [a-star-search.state :as s]
             [clojure.data.priority-map :as pm])
   (:gen-class))
 
@@ -80,3 +80,5 @@
     (when costs
       (println "The path has" (count path) "steps and its cost is" (costs goal-state)))
     ))
+
+; (time (-main))

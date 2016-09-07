@@ -1,4 +1,4 @@
-(ns search.n-puzzle-state)
+(ns problems.n-puzzle)
 
 (defrecord State [board blank-position])
 

@@ -1,6 +1,6 @@
 (ns search.core
   (:require clojure.set
-            [search.n-puzzle-state :as s]
+            [problems.n-puzzle :as np]
             [clojure.data.priority-map :as pm])
   (:gen-class))
 
@@ -14,7 +14,7 @@
             (= (peek frontier) goal-state))
       came-from
       (let [current (peek frontier)
-            children (set (s/children current))
+            children (set (np/children current))
             unvisited-children (clojure.set/difference children visited)
             new-frontier (reduce conj (pop frontier) unvisited-children)
             new-visited (clojure.set/union children visited)
@@ -35,7 +35,7 @@
       [came-from cost-so-far]
       (let [current (first (peek frontier))
             current-cost (cost-so-far current)
-            children (set (s/children current))
+            children (set (np/children current))
             children-costs (reduce #(assoc %1 %2 (+ current-cost (cost-fn current %2))) {} children)
             children-to-add (filter #(or (not (contains? cost-so-far %))
                                          (< (children-costs %) (cost-so-far %))) children)
@@ -64,8 +64,8 @@
 (defn -main
   "Search for a hard-coded target state."
   [& args]
-  (let [start-state (s/->State [[0 1 3] [4 2 5] [7 8 6]] [0 0])
-        goal-state (s/->State [[0 1 2] [3 4 5] [6 7 8]] [0 0])
+  (let [start-state (np/->State [[0 1 3] [4 2 5] [7 8 6]] [0 0])
+        goal-state (np/->State [[0 1 2] [3 4 5] [6 7 8]] [0 0])
         max-states 1000000
         costs nil
         ; result (breadth-first-search max-states start-state goal-state)

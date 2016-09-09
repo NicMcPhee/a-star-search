@@ -3,6 +3,13 @@
             [problems.n-puzzle :as np])
   (:gen-class))
 
+(defn print-results [result path costs goal-state]
+  (println (str "We explored " (count result) " states."))
+  (println "The path to the solution is:")
+  (doseq [b (map :board path)]
+    (println b))
+  (when costs
+    (println "The path has" (count path) "steps and its cost is" (costs goal-state))))
 
 (defn -main
   "Search for a hard-coded N-puzzle target state."
@@ -16,13 +23,7 @@
         ; [result costs] (alg/shortest-path np/children max-states start-state goal-state prefer-horizontal-cost)
         path (alg/extract-path result start-state goal-state)
         ]
-    (println (str "We explored " (count result) " states."))
-    (println "The path to the solution is:")
-    (doseq [b (map :board path)]
-      (println b))
-    (when costs
-      (println "The path has" (count path) "steps and its cost is" (costs goal-state)))
-    ))
+    (print-results came-from path costs goal-state)))
 
 ; (time (-main))
 ; or

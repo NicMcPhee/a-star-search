@@ -23,7 +23,7 @@
                new-visited
                new-came-from)))))
 
-(defn shortest-path [children-fn max-states start-state goal-state cost-fn]
+(defn shortest-path [children-fn cost-fn max-states start-state goal-state]
   (loop [max-states max-states
          frontier (pm/priority-map start-state 0)
          came-from {}

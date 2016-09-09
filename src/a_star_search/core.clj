@@ -18,13 +18,15 @@
         goal-state (np/->State [[0 1 2] [3 4 5] [6 7 8]] [0 0])
         max-states 1000000
         costs nil
-        result (alg/breadth-first-search np/children max-states start-state goal-state)
-        ; [result costs] (alg/shortest-path np/children max-states start-state goal-state (constantly 1))
-        ; [result costs] (alg/shortest-path np/children max-states start-state goal-state prefer-horizontal-cost)
-        path (alg/extract-path result start-state goal-state)
-        ]
+        came-from (alg/breadth-first-search np/children max-states start-state goal-state)
+        ; [came-from costs] (alg/shortest-path np/children (constantly 1)
+        ;                                      max-states start-state goal-state )
+        ; [came-from costs] (alg/shortest-path np/children np/prefer-horizontal-cost
+        ;                                      max-states start-state goal-state)
+        path (alg/extract-path came-from start-state goal-state)]
     (print-results came-from path costs goal-state)))
 
+; Run (with timing) with
 ; (time (-main))
 ; or
-; lein run
+; time lein run

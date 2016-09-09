@@ -3,14 +3,16 @@
             [clojure.data.priority-map :as pm])
   (:gen-class))
 
-(defn breadth-first-search [children-fn max-states start-state goal-state]
+
+
+(defn breadth-first-search [children-fn max-states start-state is-true]
   (loop [max-states max-states
          frontier (conj (clojure.lang.PersistentQueue/EMPTY) start-state)
          visited #{}
          came-from {}]
     (if (or (neg? max-states)
             (empty? frontier)
-            (= (peek frontier) goal-state))
+            (is-true (peek frontier)))
       came-from
       (let [current (peek frontier)
             children (set (children-fn current))
@@ -23,14 +25,14 @@
                new-visited
                new-came-from)))))
 
-(defn shortest-path [children-fn cost-fn max-states start-state goal-state]
+(defn shortest-path [children-fn cost-fn max-states start-state is-true]
   (loop [max-states max-states
          frontier (pm/priority-map start-state 0)
          came-from {}
          cost-so-far {start-state 0}]
     (if (or (neg? max-states)
             (empty? frontier)
-            (= (first (peek frontier)) goal-state))
+            (is-true (first (peek frontier))))
       [came-from cost-so-far]
       (let [current (first (peek frontier))
             current-cost (cost-so-far current)

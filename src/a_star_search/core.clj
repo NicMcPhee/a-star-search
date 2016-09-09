@@ -1,8 +1,6 @@
 (ns a-star-search.core
-  (:require clojure.set
-            [search.algorithms :as alg]
-            [problems.n-puzzle :as np]
-            [clojure.data.priority-map :as pm])
+  (:require [search.algorithms :as alg]
+            [problems.n-puzzle :as np])
   (:gen-class))
 
 

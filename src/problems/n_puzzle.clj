@@ -22,3 +22,8 @@
         :when (legal? board-size new-y)]
     (->State (swap (:board state) [x y] [new-x new-y])
              [new-x new-y]))))
+
+(defn prefer-horizontal-cost [s t]
+  (let [s-x (first (:blank-position s))
+        t-x (first (:blank-position t))]
+    (inc (Math/abs (- s-x t-x)))))

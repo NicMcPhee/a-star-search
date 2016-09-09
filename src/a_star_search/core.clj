@@ -5,10 +5,6 @@
             [clojure.data.priority-map :as pm])
   (:gen-class))
 
-(defn prefer-horizontal-cost [s t]
-  (let [s-x (first (:blank-position s))
-        t-x (first (:blank-position t))]
-    (inc (Math/abs (- s-x t-x)))))
 
 (defn -main
   "Search for a hard-coded N-puzzle target state."

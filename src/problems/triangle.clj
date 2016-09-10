@@ -25,7 +25,7 @@
 
 
 (defn my-get [row col board]
-  (nth (nth board row) col)))
+  (nth (nth board row) col))
 
 
 

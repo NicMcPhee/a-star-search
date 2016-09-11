@@ -23,6 +23,17 @@
               (map #(conj [index] %) (range (inc index))))
             (range (count state)))))
 
+(defn get-adj-coords [[row column]]
+  "Takes a row and column and returns a vector of positions that you
+   can jump to paired with the position that you will jump over.
+   This function assumes that your grid is infinite so you will have
+   to filter the points returned"
+  [{:over [row (+ column 1)] :end [row (+ column 2)]}
+   {:over [row (- column 1)] :end [row (- column 2)]}
+   {:over [(+ row 1) column] :end [(+ row 2) column]}
+   {:over [(+ row 1) (+ column 1)] :end [(+ row 2) (+ column 2)]}
+   {:over [(- row 1) column] :end [(- row 2) column]}
+   {:over [(- row 1) (- column 1)] :end [(- row 2) (- column 2)]}])
 
 (defn my-get [row col board]
   (nth (nth board row) col))

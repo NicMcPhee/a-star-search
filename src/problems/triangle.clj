@@ -35,6 +35,23 @@
    {:over [(- row 1) column] :end [(- row 2) column]}
    {:over [(- row 1) (- column 1)] :end [(- row 2) (- column 2)]}])
 
+(defn end-point-on-board? [last-row-index start {[row col] :end}]
+  "Takes the index of the last row in the board and a jump pair
+    and returns true iff the end point is on the board."
+  (not  (or
+         ;; check for running off the left end of the row
+         ;; (> 0 (second end))
+         (> 0 col)
+
+         ;; check for running off the right end of the row
+         (> col row)
+
+         ;; check for going down too far
+         (< last-row-index row)
+
+         ;; check for going up too far
+         (> 0 row)
+         )))
 (defn my-get [row col board]
   (nth (nth board row) col))
 

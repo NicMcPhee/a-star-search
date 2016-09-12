@@ -3,6 +3,14 @@
 ; Solve the triangle puzzlie with search.
 
 (defrecord State [board])
+
+(defn get-all-coords [state]
+   (apply concat
+          (map
+            (fn [index]
+              (map #(conj [index] %) (range (inc index))))
+            (range (count state)))))
+
 (def coords (get-all-coords [[][][][][]])) ;; Shhh, it's fine!
 
 
@@ -16,12 +24,6 @@
 
 
 
-(defn get-all-coords [state]
-   (apply concat
-          (map
-            (fn [index]
-              (map #(conj [index] %) (range (inc index))))
-            (range (count state)))))
 
 (defn get-adj-coords [[row column]]
   "Takes a row and column and returns a vector of positions that you

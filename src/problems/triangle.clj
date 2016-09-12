@@ -15,8 +15,22 @@
 
 
 
-(defn generate-valid-states [coord state]
-  ())
+(defn generate-valid-states [[row col] state]
+  (if (= (my-get row col state) 0)
+    []
+    (filter
+      #(and (end-point-on-board? (dec (count state)) %)
+            (= (my-get
+                 (first (:end %))
+                 (second (:end %)
+                  state))
+               0)
+            (= (my-get
+                 (first (:over %))
+                 (second (:over %)
+                  state))
+               1))
+      (get-adj-coords [row col]))))
 
 
 (defn children [state]

@@ -1,6 +1,6 @@
 (ns a-star-search.core
   (:require [search.algorithms :as alg]
-            [problems.chinese_ring_puzzle :as np])
+            [problems.chinese-ring-puzzle :as np])
   (:gen-class))
 
 (defn print-results [result path costs goal-state]

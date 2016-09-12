@@ -27,3 +27,9 @@
   (let [s-x (first (:blank-position s))
         t-x (first (:blank-position t))]
     (inc (Math/abs (- s-x t-x)))))
+
+(defn num-wrong [goal-state current-state]
+  (count (filter identity
+                 (map not=
+                      (flatten (:board goal-state))
+                      (flatten (:board current-state))))))

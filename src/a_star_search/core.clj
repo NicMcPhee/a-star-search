@@ -1,6 +1,6 @@
 (ns a-star-search.core
   (:require [search.algorithms :as alg]
-            [problems.chinese-ring-puzzle :as np])
+            [problems.chinese-ring-puzzle :as crp])
   (:gen-class))
 
 (defn print-results [result path costs goal-state]
@@ -14,11 +14,11 @@
 (defn -main
   "Search for a hard-coded N-puzzle target state."
   [& args]
-  (let [start-state (np/->State [0 [1 1 1 1]])
-        goal-state (np/->State [-1 [0 0 0 0]])
+  (let [start-state (crp/->State [0 [1 1 1 1]])
+        goal-state (crp/->State [-1 [0 0 0 0]])
         max-states 1000000
         costs nil
-        came-from (alg/breadth-first-search np/children max-states start-state goal-state)
+        came-from (alg/breadth-first-search crp/children max-states start-state goal-state)
         ; [came-from costs] (alg/shortest-path np/children (constantly 1)
         ;                                      max-states start-state goal-state )
         ; [came-from costs] (alg/shortest-path np/children np/prefer-horizontal-cost

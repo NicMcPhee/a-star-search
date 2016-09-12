@@ -32,6 +32,10 @@
                1))
       (get-adj-coords [row col]))))
 
+(defn do-jump [state start jump]
+  (assoc-in state stat
+  )
+
 
 (defn children [state]
   (apply concat (map #(generate-valid-states % state) coords)))
@@ -74,10 +78,17 @@
 (defn my-get [row col board]
   (nth (nth board row) col))
 
+(defn filled?
+  "Takes a row, column, and board and returns
+   true if the board has a peg (1) there."
+  [row col board]
+  )
 
 
 
 (def x [[1] [1 1] [1 1 1] [1 1 1 1] [1 1 1 1 0]])
+
+(assoc-in x [2 1] 7)
 ; (my-get 4 3 x)
 ; (into [3] [2])
 ; (conj [1] 3)

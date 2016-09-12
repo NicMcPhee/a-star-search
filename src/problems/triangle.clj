@@ -39,11 +39,13 @@
 
 
 
-(defn get-adj-coords [[row column]]
+
+(defn get-adj-coords
   "Takes a row and column and returns a vector of positions that you
    can jump to paired with the position that you will jump over.
    This function assumes that your grid is infinite so you will have
-   to filter the points returned"
+   to filter the points returned."
+  [[row column]]
   [{:over [row (+ column 1)] :end [row (+ column 2)]}
    {:over [row (- column 1)] :end [row (- column 2)]}
    {:over [(+ row 1) column] :end [(+ row 2) column]}
@@ -51,9 +53,10 @@
    {:over [(- row 1) column] :end [(- row 2) column]}
    {:over [(- row 1) (- column 1)] :end [(- row 2) (- column 2)]}])
 
-(defn end-point-on-board? [last-row-index start {[row col] :end}]
+(defn end-point-on-board?
   "Takes the index of the last row in the board and a jump pair
     and returns true iff the end point is on the board."
+  [last-row-index {[row col] :end}]
   (not  (or
          ;; check for running off the left end of the row
          ;; (> 0 (second end))

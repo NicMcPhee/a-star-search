@@ -16,7 +16,7 @@
   [& args]
   (let [start-state (crp/->State [0 (int-array [1 1 1 1])])
         goal-state (crp/->State [-1 (int-array [0 0 0 0])])
-        max-states 1000000
+        max-states 10000
         costs nil
         came-from (alg/breadth-first-search crp/children max-states start-state goal-state)
         ; [came-from costs] (alg/shortest-path np/children (constantly 1)

@@ -14,8 +14,8 @@
 (defn -main
   "Search for a hard-coded N-puzzle target state."
   [& args]
-  (let [start-state (crp/->State [0 (int-array [1 1 1 1])])
-        goal-state (crp/->State [-1 (int-array [0 0 0 0])])
+  (let [start-state (crp/->State 0 ["on" "on" "on" "on"])
+        goal-state (crp/->State -1 ["off" "off" "off" "off"])
         max-states 10000
         costs nil
         came-from (alg/breadth-first-search crp/children max-states start-state goal-state)
@@ -30,4 +30,6 @@
 ; (time (-main))
 ; or
 ; time lein run
+
+(-main)
 

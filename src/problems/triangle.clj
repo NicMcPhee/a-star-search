@@ -54,11 +54,15 @@
     []
     (filter
       #(and (end-point-on-board? (dec (count state)) %)
+
+            ;; check that the end point is empty
             (= (my-get
                  (first (:end %))
                  (second (:end %))
                   state)
                0)
+
+            ;; check the the one we jump over is filled
             (= (my-get
                  (first (:over %))
                  (second (:over %))

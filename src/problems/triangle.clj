@@ -49,6 +49,13 @@
    {:over [(- row 1) column] :end [(- row 2) column]}
    {:over [(- row 1) (- column 1)] :end [(- row 2) (- column 2)]}])
 
+(defn do-jump [state start jump]
+  (->
+   state
+   (assoc-in start 0)
+   (assoc-in (:over jump) 0)
+   (assoc-in (:end jump) 1)))
+
 (defn generate-valid-states [[row col] state]
   (if (= (my-get row col state) 0)
     []
@@ -70,9 +77,6 @@
                1))
       (get-adj-coords [row col]))))
 
-(defn do-jump [state start jump]
-  (assoc-in state stat
-  )
 
 
 (defn children [state]

@@ -2,8 +2,8 @@
 
 (defrecord State [tower-start tower-mid tower-finish]);;rename before Wednesday @ 2200!
 
-(defn legal? [[tower1] [tower2]]
-  (and (< (peek [tower1]) (peek[tower2]))))
+(defn legal? [tower1 tower2]
+  (and (< tower1 tower2)))
 
 
 (defn swap [tower-start tower-mid tower-finish]
@@ -17,22 +17,47 @@
 
 
 (defn children [state]
+  ;;tower 1
   (let [disk (peek (:tower-start state))]
     ;;code works to here
-  (for [[T1 T2 T3] [tower-start tower-mid tower-finish]
+  (for [disk [[one two] [one three]]
         :let [new-T1 [tower-start]
-              new-T2 [tower-mid]
-              new-T3 [tower-finish]]
-        :when (legal? new-T1 new-T2)
-        :when (legal? new-T1 new-T3)
-        :when (legal? new-T2 new-T3)
-        :when (legal? new-T2 new-T1)
-        :when (legal? new-T3 new-T1)
-        :when (legal? new-T3 new-T2)]
+              new-T2 [tower-mid]]]
+        :when (legal? (peek (:State tower-start)) (peek (:State tower-mid)))
+        :when (legal? (peek (:State tower-start)) (peek (:State tower-finish)))
     (-> State (swap (:tower state) [T1 T2 T3] [new-T1 new-T2 new-T3])
-              [new-T1 new-T2 new-T3]))))
+              [new-T1 new-T2 new-T3]))
+;;   ;;tower 2
+;;   (let [disk (peek (:tower-mid state))]
+;;     ;;code works to here
+;;   (for [disk [[two one] [two three]]
+;;         :let [new-T1 [tower-start]
+;;               new-T2 [tower-mid]]
+;;         :when (legal? new-T1 new-T2)
+;;         :when (legal? new-T1 new-T3)]
+;;     (-> State (swap (:tower state) [T1 T2 T3] [new-T1 new-T2 new-T3])
+;;               [new-T1 new-T2 new-T3])))
+;;   ;;tower 3
+;;   (let [disk (peek (:tower-finish state))]
+;;     ;;code works to here
+;;   (for [disk [[three one] [three two]]
+;;         :let [new-T1 [tower-start]
+;;               new-T2 [tower-mid]]
+;;         :when (legal? new-T1 new-T2)
+;;         :when (legal? new-T1 new-T3)]
+;;     (-> State (swap (:tower state) [T1 T2 T3] [new-T1 new-T2 new-T3])
+;;               [new-T1 new-T2 new-T3])))
+))
+
+
+
 
 (peek [])
 (peek (:tower-start State))
 (let [disk (peek (:tower-start State))]
 (println disk))
+(legal? 1 2)
+(defrecord boardtest [T1 T2 T3])
+(cons 1 (:boardtest T1))
+
+

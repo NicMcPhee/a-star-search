@@ -56,13 +56,13 @@
       #(and (end-point-on-board? (dec (count state)) %)
             (= (my-get
                  (first (:end %))
-                 (second (:end %)
-                  state))
+                 (second (:end %))
+                  state)
                0)
             (= (my-get
                  (first (:over %))
-                 (second (:over %)
-                  state))
+                 (second (:over %))
+                  state)
                1))
       (get-adj-coords [row col]))))
 

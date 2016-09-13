@@ -1,6 +1,7 @@
 (ns a-star-search.core
   (:require [search.algorithms :as alg]
-            [problems.n-puzzle :as np])
+            [problems.n-puzzle :as np]
+            [problems.sudoku :as s])
   (:gen-class))
 
 (defn print-results [result path costs goal-state]

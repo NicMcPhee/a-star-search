@@ -59,7 +59,9 @@
 (defn generate-valid-states [[row col] state]
   (if (= (my-get row col state) 0)
     []
-    (filter
+    (map
+     #(do-jump state [row col] %)
+     (filter
       #(and (end-point-on-board? (dec (count state)) %)
 
             ;; check that the end point is empty
@@ -75,7 +77,8 @@
                  (second (:over %))
                   state)
                1))
-      (get-adj-coords [row col]))))
+      (get-adj-coords [row col])))))
+
 
 
 

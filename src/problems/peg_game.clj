@@ -1,5 +1,20 @@
 (ns problems.peg-game)
 
+;go into file in terminal type "lein run"
+
+;;                   0
+;;                 /   \
+;;               1 ----- 2
+;;             /   \   /   \
+;;            3----- 4 ---- 5
+;;          /  \   /   \  /   \
+;;         6---- 7 ---- 8 ---- 9
+;;       /  \  /  \   /  \   /   \
+;;     10 -- 11 -- 12 --- 13 --- 14
+
+
+
+
 (def board-state [1 1 1 1 1 1 1 1 1 1 1 1 1 1 0])
 
 (def moves (hash-map 0 [[3 1] [5 2]]
@@ -27,22 +42,22 @@
          moves (get moves index)
          board-state board-state
          i 0 ]
-    (println "got into make-children")
     (if (not= i (count moves))
-      (if (and (= 1 (get board-state moves[0])) (= 1 (get board-state moves[1])))
-        (recur (conj children (assoc board-state moves[0] 0 moves[1] 0 index 1)) moves board-state (inc i))
+      (if (and (= 1 (get board-state (get (get moves i) 0))) (= 1 (get board-state (get (get moves i) 1))))
+        (recur (conj children (assoc board-state (get (get moves i) 0) 0 (get (get moves i) 1) 0 index 1)) moves board-state (inc i))
         (recur children moves board-state (inc i)))
       children)))
+
+
 
 
 (defn children [board-state]
   (loop [board-state board-state
          index 0
          children []]
-    (println "got into children")
     (if (not= index 15)
       (if (= 0 (get board-state index))
-        (recur board-state (inc index) (conj children (make-children board-state index)))
+        (recur board-state (inc index) (concat children (make-children board-state index)))
         (recur board-state (inc index) children))
       children)))
 

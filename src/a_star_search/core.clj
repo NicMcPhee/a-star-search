@@ -4,18 +4,39 @@
             [problems.peg-game :as pg])
   (:gen-class))
 
-;; (defn print-results [result path costs goal-state]
-;;   (println (str "We explored " (count result) " states."))
-;;   (println "The path to the solution is:")
-;;   (doseq [b (map :board path)]
-;;     (println b))
-;;   (when costs
-;;     (println "The path has" (count path) "steps and its cost is" (costs goal-state))))
+;;                   0
+;;                 /   \
+;;               1 ----- 2
+;;             /   \   /   \
+;;            3----- 4 ---- 5
+;;          /  \   /   \  /   \
+;;         6---- 7 ---- 8 ---- 9
+;;       /  \  /  \   /  \   /   \
+;;     10 -- 11 -- 12 --- 13 --- 14
 
-(defn print-results [result costs goal-state]
+
+(defn print-tree [board-state]
+  (println "                  " (get board-state 0))
+  (println "                 /   \\")
+  (println "              "(get board-state 1)"-----"(get board-state 2))
+  (println "             /   \\   /   \\")
+  (println "           "(get board-state 3)"----"(get board-state 4)"----"(get board-state 5))
+  (println "          /  \\   /   \\  /  \\")
+  (println "        "(get board-state 6)"---"(get board-state 7)"----"(get board-state 8)"---"(get board-state 9))
+  (println "       /  \\  /  \\   /  \\  /  \\")
+  (println "     "(get board-state 10)"---"(get board-state 11)"---"(get board-state 12)"---"(get board-state 13)"---"(get board-state 14)))
+
+
+(defn print-results [result path costs goal-state]
   (println (str "We explored " (count result) " states."))
   (println "The path to the solution is:")
-  )
+  (doseq [b path]
+    (print-tree b))
+  (when costs
+    (println "The path has" (count path) "steps and its cost is" (costs goal-state))))
+
+
+
 
 ;; (defn -main
 ;;   "Search for a hard-coded N-puzzle target state."
@@ -32,7 +53,7 @@
 ;;         path (alg/extract-path came-from start-state goal-state)]
 ;;     (print-results came-from path costs goal-state)))
 
-(def board-state [1 1 1 1 1 1 1 1 1 1 1 1 1 1 0])
+(def board-state [1 0 1 1 1 1 1 1 1 1 1 1 1 1 1])
 
 (defn is-true [board-state]
   (= (reduce + board-state) 1))
@@ -44,8 +65,9 @@
         goal-state is-true
         max-states 1000000
         costs nil
-        came-from (alg/breadth-first-search pg/children max-states start-state goal-state)]
-    (print-results came-from costs goal-state)))
+        [came-from final-state] (alg/breadth-first-search pg/children max-states start-state goal-state)
+        path (alg/extract-path came-from start-state final-state)]
+    (print-results came-from path costs final-state)))
 
 
 ; Run (with timing) with

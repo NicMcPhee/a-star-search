@@ -13,7 +13,7 @@
     (if (or (neg? max-states)
             (empty? frontier)
             (is-true (peek frontier)))
-      came-from
+      [came-from (peek frontier)]
       (let [current (peek frontier)
             children (set (children-fn current))
             unvisited-children (clojure.set/difference children visited)

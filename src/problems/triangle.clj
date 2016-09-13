@@ -54,7 +54,8 @@
    state
    (assoc-in start 0)
    (assoc-in (:over jump) 0)
-   (assoc-in (:end jump) 1)))
+   (assoc-in (:end jump) 1)
+   (->State)))
 
 (defn generate-valid-states [[row col] state]
   (if (= (my-get row col state) 0)

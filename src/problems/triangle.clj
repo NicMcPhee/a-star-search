@@ -83,8 +83,7 @@
 
 
 (defn children [state]
-  (apply concat (map #(generate-valid-states % state) coords)))
-
+  (apply concat (map #(generate-valid-states % (:board state)) coords)))
 
 
 

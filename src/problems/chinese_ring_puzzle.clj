@@ -16,10 +16,10 @@
     (let [children (if (= R1 "on")
         (let [Rings1 ["off" R2 R3 R4]
               leadRing1 (.indexOf Rings1 "on")]
-              (->State leadRing1 Rings1))
+              [(->State leadRing1 Rings1)])
         (let [Rings1 ["on" R2 R3 R4]
               leadRing1 (.indexOf Rings1 "on")]
-              (->State leadRing1 Rings1)))]
+              [(->State leadRing1 Rings1)]))]
 
 
     (if (<= nextRing (- len 1))
@@ -28,12 +28,4 @@
                   (conj children (->State leadRing2 Rings2)))
             (let [Rings2 (assoc Rings nextRing "on"), leadRing2 (.indexOf Rings2 "on")]
                   (conj children (->State leadRing2 Rings2))))
-            [children]))))
-
-
-; (let [x child1]
- ;  (if (<= nextRing (- len 1))
- ;    (conj [x] child2)
- ;    [x]))
-
-
+            children))))

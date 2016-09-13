@@ -27,9 +27,11 @@
          moves (get moves index)
          board-state board-state
          i 0 ]
+    (println "got into make-children")
     (if (not= i (count moves))
       (if (and (= 1 (get board-state moves[0])) (= 1 (get board-state moves[1])))
-        (recur (conj children (assoc board-state moves[0] 0 moves[1] 0 index 1)) moves board-state (+ 1 i)))
+        (recur (conj children (assoc board-state moves[0] 0 moves[1] 0 index 1)) moves board-state (inc i))
+        (recur children moves board-state (inc i)))
       children)))
 
 
@@ -37,9 +39,12 @@
   (loop [board-state board-state
          index 0
          children []]
+    (println "got into children")
     (if (not= index 15)
       (if (= 0 (get board-state index))
-        (conj children (make-children board-state index)))
+        (recur board-state (inc index) (conj children (make-children board-state index)))
+        (recur board-state (inc index) children))
       children)))
+
 
 

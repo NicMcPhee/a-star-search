@@ -30,3 +30,5 @@
 ; (time (-main))
 ; or
 ; time lein run
+; this is a test for committing to github
+

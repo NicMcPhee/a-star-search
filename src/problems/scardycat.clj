@@ -17,9 +17,9 @@
 
 
 (defn children [state]
-  ;; Not to sure how to call up the disk command
-  (let [disk (peek state)]
-  (for [[T1 T2 T3] [[tower-start] [tower-mid] [tower-finish]]
+  (let [disk (peek (:tower-start state))]
+    ;;code works to here
+  (for [[T1 T2 T3] [tower-start tower-mid tower-finish]
         :let [new-T1 [tower-start]
               new-T2 [tower-mid]
               new-T3 [tower-finish]]
@@ -33,4 +33,6 @@
               [new-T1 new-T2 new-T3]))))
 
 (peek [])
-(peek tower-mid)
+(peek (:tower-start State))
+(let [disk (peek (:tower-start State))]
+(println disk))

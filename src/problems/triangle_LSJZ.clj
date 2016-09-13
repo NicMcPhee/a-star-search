@@ -1,6 +1,11 @@
-(ns problems.triangle)
+(ns problems.triangle-LSJZ)
 
 ; Solve the triangle puzzlie with search.
+
+
+;; Example of creating states
+;; start-state (tri/->State [[1] [1 1] [1 1 1] [1 1 1 1] [1 1 1 1 0]])
+;; goal-state (tri/->State [[0] [0 0] [1 0 0] [0 0 0 0] [0 0 0 0 0]])
 
 (defrecord State [board])
 
@@ -85,23 +90,3 @@
 
 (defn children [state]
   (apply concat (map #(generate-valid-states % (:board state)) coords)))
-
-
-
-(defn filled?
-  "Takes a row, column, and board and returns
-   true if the board has a peg (1) there."
-  [row col board]
-  )
-
-
-
-(def x [[1] [1 1] [1 1 1] [1 1 1 1] [1 1 1 1 0]])
-
-(assoc-in x [2 1] 7)
-; (my-get 4 3 x)
-; (into [3] [2])
-; (conj [1] 3)
-; (apply concat (children x))
-
-coords

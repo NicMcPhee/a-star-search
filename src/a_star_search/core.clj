@@ -1,6 +1,6 @@
 (ns a-star-search.core
   (:require [search.algorithms :as alg]
-            [problems.triangle :as tri])
+            [problems.triangle-LSJZ :as tri])
   (:gen-class))
 
 (defn print-results [result path costs goal-state]
@@ -18,15 +18,15 @@
         goal-state (tri/->State [[0] [0 0] [1 0 0] [0 0 0 0] [0 0 0 0 0]])
         max-states 1000000
         costs nil
-        came-from (alg/breadth-first-search tri/children max-states start-state goal-state)
-        ; [came-from costs] (alg/shortest-path tri/children (constantly 1)
-        ;                                      max-states start-state goal-state )
+        ;came-from (alg/breath-first-search tri/children max-states start-state goal-state)
+        [came-from costs] (alg/shortest-path tri/children (constantly 1)
+                                              max-states start-state goal-state )
         ; [came-from costs] (alg/shortest-path tri/children tri/prefer-horizontal-cost
         ;                                      max-states start-state goal-state)
         path (alg/extract-path came-from start-state goal-state)]
     (print-results came-from path costs goal-state)))
 
 ; Run (with timing) with
-; (time (-main))
+; (-main)
 ; or
 ; time lein run

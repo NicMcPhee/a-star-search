@@ -1,6 +1,7 @@
 (ns a-star-search.core
   (:require [search.algorithms :as alg]
-            [problems.n-puzzle :as np])
+            [problems.n-puzzle :as np]
+            [problems.sudoku :as su])
   (:gen-class))
 
 (defn print-results [result path costs goal-state]
@@ -31,4 +32,3 @@
 ; or
 ; time lein run
 ; this is a test for committing to github
-

@@ -27,3 +27,16 @@
 (defn checkCol [board row col new-value] (if (= (getByRowCol board row col) new-value) false (if (< row 8) (checkCol board (+ row 1) col new-value) true)))
 
 (defn legal? [board row col new-value] (and (checkBox board (+ (* 3 (int (/ row 3))) (int (/ col 3))) new-value) (checkRow board row 0 new-value) (checkCol board 0 col new-value)))
+
+(defn iterator [board row col] (if (= (getByRowCol board row col) 0)
+                                 [row col]
+                                 (if (< col 8)
+                                   (iterator board row (+ col 1))
+                                   (if (< row 8)
+                                     (iterator board (+ row 1) 0))
+                                 )))
+
+
+
+; gets row and col of element to be changed (the first zero)
+(defn getToChange [board] (iterator board 0 0))

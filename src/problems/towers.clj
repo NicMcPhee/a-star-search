@@ -37,3 +37,9 @@
   (filter #(and (not (= % nil))
                 (legal? %))
           (children-helper state)))
+
+(defn cool-print-runnings [state]
+  (println "The first peh is:" (:peh1 state))
+  (println "The second peh is:" (:peh2 state))
+  (println "The third peh is:" (:peh3 state))
+  (println))

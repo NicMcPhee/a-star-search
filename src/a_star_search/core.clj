@@ -8,7 +8,7 @@
   (println (str "We explored " (count result) " states."))
   (println "The path to the solution is:")
   (doseq [b path]
-    (println b))
+    (towers/cool-print-runnings b))
   (when costs
     (println "The path has" (count path) "steps and its cost is" (costs goal-state))))
 

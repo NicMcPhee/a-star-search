@@ -24,8 +24,8 @@
   (for [[dx dy] [[-1, 0] [1, 0], [0, -1], [0, 1]]
         :let [new-x (+ x dx)
               new-y (+ y dy)]
-        :when (legal? board-size new-x)
-        :when (legal? board-size new-y)]
+        :when (legalBoard? board-size new-x)
+        :when (legalBoard? board-size new-y)]
     (->State (swap (:board state) [x y] [new-x new-y])
              [new-x new-y]))))
 
@@ -50,7 +50,17 @@
   (map endRowIndex (range 1 (+ 1 n))))
 
 (defn rowOfIndex [index n]
-  (filter (endRowIndexList n)))
+  (for [x [index]
+     y (endRowIndexList n)]
+      (compare x y))
+  (let [j (for [x [index]
+     y (endRowIndexList n)]
+      (compare x y))]
+  (+ (if (> (.indexOf j 0) -1) (.indexOf j 0) (.indexOf j -1)) 1)))
 
 (endRowIndexList 5)
+
+(rowOfIndex 0 5)
+(rowOfIndex 9 5)
+
 (beginRowIndexList 5)

@@ -40,3 +40,10 @@
 
 ; gets row and col of element to be changed (the first zero)
 (defn getToChange [board] (iterator board 0 0))
+
+(defn changeValue-helper [board box boxRow boxCol new-value] (assoc board (int (/ box 3))
+                                                               (assoc (getSection board box) (rem box 3)
+                                                                 (assoc (getBox board box) boxRow
+                                                                   (assoc (getBoxRow board box boxRow) boxCol new-value)))))
+
+(defn changeValue [board row col new-value] (changeValue-helper board (+ (* 3 (int (/ row 3))) (int (/ col 3))) (rem row 3) (rem col 3) new-value))

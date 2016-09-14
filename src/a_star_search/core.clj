@@ -40,7 +40,7 @@
 
                                   [5 1 9 3 2 6 8 7 4]
                                   [2 4 8 9 5 7 1 3 6]
-                                  [7 6 3 4 1 8 2 5 9]] [0, 0] ])
+                                  [7 6 3 4 1 8 2 5 9]] [8, 8] ])
 
 
 
@@ -58,6 +58,6 @@
 
 
 ; Run (with timing) with
-;(time (-main))
+; (time (-main))
 ; or
-;time lein run
+; time lein run

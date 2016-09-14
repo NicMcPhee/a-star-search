@@ -4,7 +4,7 @@
 (defrecord State [board curr-position])
 
 
-(def rows [:y0 :y1 :y2 :y3 :y4 :y5 :y6 :y7 :y8])
+(def rows [y0 y1 y2 y3 y4 y5 y6 y7 y8])
 
 (def cols [:x0 :x1 :x2 :x3 :x4 :x5 :x6 :x7 :x8])
 
@@ -24,6 +24,8 @@
 (defn legal? [coll]
   (and (not (duplicates? coll)) (= false (in? coll 0))))
 
+(defn legal? [coll]
+  (and (not (duplicates? coll)) (= false (in? coll 0))))
 
 ;test sequences
 
@@ -74,3 +76,18 @@
       [0 1 2] [0 0 0] [0 0 0]
       [3 4 5] [0 0 0] [0 0 0]
       [6 7 8] [0 0 0] [0 0 0]] [0 0] 4 numBank)
+
+
+
+
+(defn children [state]
+  (let [x (first (:curr-position state))
+        y (second (:curr-position state))
+        board-size (count (:board state))]
+  (for [[dx dy] [[-1, 0] [1, 0], [0, -1], [0, 1]]
+        :let [new-x (+ x dx)
+              new-y (+ y dy)]
+        :when (legal? board-size new-x)
+        :when (legal? board-size new-y)]
+    (->State (swap (:board state) [x y] [new-x new-y])
+             [new-x new-y]))))

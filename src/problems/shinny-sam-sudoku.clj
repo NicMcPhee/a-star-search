@@ -17,6 +17,41 @@
   (and (not (duplicates? coll)) (= false (in? coll 0))))
 
 
+;the range of number(1-9) to put into the board
+(def numBank (range 1 10))
+
+;put numbers into the current position of the board
+(defn add [board position number numBank]
+  (let [num (nth numBank (- number 1))]
+    (assoc-in board position num)))
+
+
+;update the current position of the board (don't know if I can call the function and return a new position somewhere else)
+(defn updatePos [state]
+  (let [x (first (:curr-position state))
+        y (second (:curr-position state))]
+
+    (if (= second 8)
+        [(+ x 1) (- y 8)])
+      [(+ x 0) (+ y 1)]))
+
+(updatePos start-state)
+
+
+;go through the number 1-9 to put in the current position and produce different childrens of States of the board(haven't implement the legal function yet)
+(for [num [1 2 3 4 5 6 7 8 9]]
+      (->State (add (:board  start-state)
+     (:curr-position  start-state) num numBank) [0 0]))
+
+
+
+
+
+
+
+
+;###################example########################
+
 ;test sequences
 
 (def rows2 [0 0 3 3 5 6 7 8 9])
@@ -30,7 +65,7 @@
 
 (not (duplicates? rows3))
 
-(not (duplicates? rows3))
+(not (duplicates? rows3))(updatePos start-state)
 
 
 (in? rows2 0)
@@ -65,6 +100,7 @@
 
 
 
+<<<<<<< HEAD
 ;the range of number(1-9) to put into the board
 (def numBank (range 1 10))
 
@@ -76,6 +112,8 @@
 
 ;###################example########################
 
+=======
+>>>>>>> b70d6c967208758d3d397c83abed9047f77b45bf
 (add [[0 1 2 0 0 0 0 0 0]
       [3 4 5 0 0 0 0 0 0]
       [6 7 8 0 0 0 0 0 0]
@@ -131,6 +169,7 @@
 
 
 
+<<<<<<< HEAD
 ;update the current position of the board (don't know if I can call the function and return a new position somewhere else)
 (defn updatePos [state]
   (let [x (first (:curr-position state))
@@ -161,6 +200,8 @@
         ; :when (legal? 3x3)]
 
 
+=======
+>>>>>>> b70d6c967208758d3d397c83abed9047f77b45bf
 
 
 

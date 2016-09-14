@@ -1,3 +1,6 @@
+; we used the two rules of chinese ring puzzle:
+; 1) the first ring, which is hooked in the very front of the loop, can be taken off or put back on the loop any time;
+; 2) the only other ring that can be taken off from or put back on the loop is the ring next to the first ring.
 (ns problems.chinese-ring-puzzle)
 
 (defrecord State [leadRing Rings])
@@ -34,3 +37,6 @@
             (let [Rings2 (assoc Rings nextRing "on"), leadRing2 (.indexOf Rings2 "on")]
                   (conj children (->State leadRing2 Rings2))))
             children))))
+
+
+

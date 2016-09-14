@@ -53,7 +53,7 @@
 
 
 (defn children
-
+  "looks through the entire board-state and finds empty spaces. It hands those spaces to make-children which generates all possible moves."
   [board-state]
   (loop [board-state board-state
          index 0

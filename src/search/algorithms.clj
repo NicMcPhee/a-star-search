@@ -33,7 +33,7 @@
     (if (or (neg? max-states)
             (empty? frontier)
             (is-true (first (peek frontier))))
-      [came-from cost-so-far]
+      [came-from cost-so-far (first (peek frontier))]
       (let [current (first (peek frontier))
             current-cost (cost-so-far current)
             children (set (children-fn current))

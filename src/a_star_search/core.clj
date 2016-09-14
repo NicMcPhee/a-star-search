@@ -54,7 +54,7 @@
 ;;         path (alg/extract-path came-from start-state goal-state)]
 ;;     (print-results came-from path costs goal-state)))
 
-(def board-state [1 1 1 1 1 1 1 1 0 1 1 1 1 1 1])
+(def board-state [1 1 1 1 1 1 1 1 1 1 1 1 1 1 0])
 
 (def full-board [1 1 1 1 1 1 1 1 1 1 1 1 1 1 1])
 
@@ -75,7 +75,8 @@
         goal-state is-true
         max-states 1000000
         costs nil
-        [came-from final-state] (alg/breadth-first-search pg/children max-states start-state goal-state)
+        ;[came-from final-state] (alg/breadth-first-search pg/children max-states start-state goal-state)
+        [came-from costs final-state] (alg/shortest-path pg/children (constantly 1) max-states start-state goal-state)
         path (alg/extract-path came-from start-state final-state)]
     (print-results came-from path costs final-state)))
 

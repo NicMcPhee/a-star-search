@@ -14,10 +14,12 @@
 (defn -main
   "Search for a hard-coded N-puzzle target state."
   [& args]
+  ;; Need to change np/ -> State that will work with our code
   (let [start-state (np/->State [[0 1 3] [4 2 5] [7 8 6]] [0 0])
         goal-state (np/->State [[0 1 2] [3 4 5] [6 7 8]] [0 0])
         max-states 1000000
         costs nil
+        ;; here too, at np/children, to work for with our code.
         came-from (alg/breadth-first-search np/children max-states start-state goal-state)
         ; [came-from costs] (alg/shortest-path np/children (constantly 1)
         ;                                      max-states start-state goal-state )

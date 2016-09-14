@@ -1,6 +1,6 @@
 (ns hanoi)
 
-(defrecord State [tower-start tower-mid tower-finish]);;rename before Wednesday @ 2200!
+(defrecord State [tower-start tower-mid tower-finish disk]);;rename before Wednesday @ 2200!
 
 (defn legal? [tower1 tower2]
 ;;   (and (< tower1 tower2)))
@@ -99,6 +99,18 @@
 ;; ;;     (-> State (swap (:tower state) [T1 T2 T3] [new-T1 new-T2 new-T3])
 ;; ;;               [new-T1 new-T2 new-T3])))
 ;; ))
+
+
+
+
+(defn children [state]
+  (let [T1 (:tower-start state)
+        T2 (:tower-mid state)
+        T3 (:tower-finish state)
+        disk (count (:disk state))]
+    (for [[PT1 PT2 PT3] [
+      ))
+
 
 
 

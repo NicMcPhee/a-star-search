@@ -121,6 +121,10 @@
 ;(defn col-seq [board y x]
 ;  ())
 
+;add  sequence of the values in the column
+;(defn 3x3 [board y x]
+;  ())
+
 
 ;update the board's current-position
 
@@ -132,27 +136,55 @@
 ;         (let [new-x (+ x 0) new-y (+ y 1)]))))
 
 
-;children function
+;children function (in progress)
 
 
-;(defn children [state]
-;  (let [x (first (:curr-position state))
-;        y (second (:curr-position state))
-;        ]
-;
-;  (for  [num [1 2 3]
-;        :let [new-x (+ x dx)
-;              new-y (+ y dy)]
-;        :when (legal? board-size new-x)
-;
-;    (->State (swap (:board state) [x y] [new-x new-y])
-;             [new-x new-y])
-;
-;    (->State (add (:board state)
-;
-;     (:curr-position  start-state) num numBank) [0 0])
-;
-;         )))
+ (defn children [state]
+  (let [y (first (:curr-position state))
+        x (second (:curr-position state))]
+
+        ;"if" statements aren't compiling, need to fix format
+
+        ;check if at end of board, if so new x and new y won't matter
+
+          (if (and (= y 8) (= x 8))
+           "Done!"
+
+          (let [new-x 0 new-y 0]))
+
+        ;else if
+        ;check if at end of row, if so move down to next one
+
+          (if (= x 8)
+          "end of line"
+
+          (let [new-x (0)
+                new-y (+ y 1)]))
+
+        ;else
+        ;otherwise continue through the sequence horizontally
+
+        (let [new-x (+ x 1)
+              new-y (y)]))
+
+
+  ;check for legal inputs to the space
+
+  (for  [num [1 2 3 4 5 6 7 8 9]]
+
+        ;still need these helper functions
+
+        ; :let [row (row-seq (:board state x y))
+        ;       col (col-seq (:board state x y))
+        ;       3x3 (3x3-seq (:board state x y))]
+
+        ; :when (legal? row)
+        ; :when (legal? col)
+        ; :when (legal? 3x3)]
+
+  (->State (add (:board state) (:curr-position  start-state) num numBank) [new-x new-y])))
+
+
 
 
 

@@ -169,7 +169,6 @@
 
 
 
-<<<<<<< HEAD
 ;update the current position of the board (don't know if I can call the function and return a new position somewhere else)
 (defn updatePos [state]
   (let [x (first (:curr-position state))
@@ -200,8 +199,7 @@
         ; :when (legal? 3x3)]
 
 
-=======
->>>>>>> b70d6c967208758d3d397c83abed9047f77b45bf
+
 
 
 

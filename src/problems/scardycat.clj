@@ -117,7 +117,9 @@
 (pop (:placeholder foo))
 
 (let [x (peek (:placeholder foo))
-      y (pop (:placeholder foo))]
+      y (pop (:placeholder foo))
+      current (peek target)]
+  :when (legal? current x)
   (println x)
   (println pop (:placeholder foo))
   (println (->tester y x [] [])))

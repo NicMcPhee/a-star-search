@@ -47,3 +47,12 @@
                                                                    (assoc (getBoxRow board box boxRow) boxCol new-value)))))
 
 (defn changeValue [board row col new-value] (changeValue-helper board (+ (* 3 (int (/ row 3))) (int (/ col 3))) (rem row 3) (rem col 3) new-value))
+
+(defn children [state]
+(let [board (:board state)
+      row (first (getToChange (:board state)))
+      col (second (getToChange (:board state)))]
+  (for [incr (range 1 10)
+        :let [new-value incr]
+        :when (legal? board row col new-value)]
+    (->State (changeValue board row col new-value)))))

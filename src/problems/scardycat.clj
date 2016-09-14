@@ -34,7 +34,7 @@
   (conj y x))
 
 
- ;; (swap1 3 50)
+;; (swap1 3 50)
 
 ;; (defn children [state]
 ;;   (let [disk (peek [:tower-start State])]

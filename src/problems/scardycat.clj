@@ -101,39 +101,26 @@
 ;; ))
 
 
-
-
 (defn children [state]
   (let [T1 (:tower-start state)
         T2 (:tower-mid state)
         T3 (:tower-finish state)
         disk (count (:disk state))]
-    (for [[PT1 PT2 PT3] [
-      ))
+    (for [[PT1 PT2 PT3]])))
 
 
 
+(defrecord tester [placeholder T1 T2 T3])
+(def foo (->tester [5 4 3 2 1] [] [] []))
+(println foo)
+(peek (:placeholder foo))
+(pop (:placeholder foo))
+
+(let [x (peek (:placeholder foo))
+      y (pop (:placeholder foo))]
+  (println x)
+  (println pop (:placeholder foo))
+  (println (->tester y x [] [])))
 
 
-;; (peek [])
-;; (peek (:tower-start State))
-;; (let [disk (peek (:tower-start State))]
-;; (println disk))
-;; (legal? 1 2)
 
-
-;; (def foo (->State  [1 2 3] [4] [5]))
-;; (println foo)
-;; (println (pop (:tower-start foo)))
-
-;; (let [disk (peek (:tower-start State))]
-;;   (println disk))
-
-;; (println (- 18 17))
-;; (println (+ 5 (- 3)))
-;; (println "Go!")
-;; (defrecord boardtest [T1 T2 T3])
-;; (def foo (->boardtest [1] [0] [0]))
-;; (println foo)
-;; (conj (pop (:T1 boardtest)) (:T3 boardtest))
-;; (println foo)

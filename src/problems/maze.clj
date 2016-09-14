@@ -18,3 +18,10 @@
        (>= (:y current-pos) 0)
        (< (:x current-pos) board-width)
        (< (:y current-pos) board-height)))
+
+;Bits and pieces for sanity's sake
+
+(:x (->Coord 1 2))
+(:y (->Coord 1 2))
+
+(:x (:current-pos (->State [[1 2] [1 2]] (->Coord 1 2))))

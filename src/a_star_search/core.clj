@@ -1,6 +1,6 @@
 (ns a-star-search.core
   (:require [search.algorithms :as alg]
-            [problems.n-puzzle :as np]
+            ;[problems.n-puzzle :as np]
             [problems.shinny-sam-sudoku :as s])
   (:gen-class))
 
@@ -40,13 +40,13 @@
 
                                   [5 1 9 3 2 6 8 7 4]
                                   [2 4 8 9 5 7 1 3 6]
-                                  [7 6 3 4 1 8 2 5 9]] [8, 8] ])
+                                  [7 6 3 4 1 8 2 5 9]] [9, 0] ])
 
 
 
         max-states 1000000
         costs nil
-        came-from (alg/breadth-first-search np/children max-states start-state goal-state)
+        came-from (alg/breadth-first-search s/children max-states start-state goal-state)
         ; [came-from costs] (alg/shortest-path np/children (constantly 1)
         ;                                      max-states start-state goal-state )
         ; [came-from costs] (alg/shortest-path np/children np/prefer-horizontal-cost
@@ -58,6 +58,6 @@
 
 
 ; Run (with timing) with
-; (time (-main))
+(time (-main))
 ; or
 ; time lein run

@@ -31,7 +31,8 @@
   (println (str "We explored " (count result) " states."))
   (println "The path to the solution is:")
   (doseq [b path]
-    (print-tree b))
+    (print-tree b)
+    (println))
   (when costs
     (println "The path has" (count path) "steps and its cost is" (costs goal-state))))
 
@@ -53,15 +54,24 @@
 ;;         path (alg/extract-path came-from start-state goal-state)]
 ;;     (print-results came-from path costs goal-state)))
 
-(def board-state [1 0 1 1 1 1 1 1 1 1 1 1 1 1 1])
+(def board-state [1 1 1 1 1 1 1 1 0 1 1 1 1 1 1])
+
+(def full-board [1 1 1 1 1 1 1 1 1 1 1 1 1 1 1])
+
+(defn rand-board [full-board]
+  (assoc full-board (rand-int 15) 0))
 
 (defn is-true [board-state]
   (= (reduce + board-state) 1))
 
+;currently generates a board with a random index at 0
+;if you want a specific board change board-state to your specific board and replace the first variable in the let with
+;(let [start-state board-state
+
 (defn -main
   "Search for a hard-coded N-puzzle target state."
   [& args]
-  (let [start-state board-state
+  (let [start-state (rand-board full-board)
         goal-state is-true
         max-states 1000000
         costs nil

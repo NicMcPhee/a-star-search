@@ -104,36 +104,38 @@
 
 
 ;go through the number 1-9 to put in the current position and produce different childrens of States of the board(haven't implement the legal function yet)
+
 (for [num [1 2 3 4 5 6 7 8 9]]
       (->State (add (:board  start-state)
      (:curr-position  start-state) num numBank) [0 0]))
-
 
 
 ;--------------in progress code/functions-------------------------------
 
 
 ;return sequence of the values in the row
-;(defn row-seq [board y x]
-;  ())
 
-;add  sequence of the values in the column
-;(defn col-seq [board y x]
-;  ())
+(defn row-seq [board y]
+  (nth board y))
 
-;add  sequence of the values in the column
+;test function
+
+(row-seq (:board start-state) 3)
+
+
+;return sequence of the values in the column, maybe convert to a vector to match other function
+
+(defn col-seq [board x y]
+  (for [y board]
+ (last(take x y))))
+
+
+;test function
+(col-seq (:board start-state) 2 2)
+
+;add  sequence of the values in the column, in progress
 ;(defn 3x3 [board y x]
 ;  ())
-
-
-;update the board's current-position
-
-;(defn updatePos [state]
-;  (let [x (first (:curr-position state))
-;        y (second (:curr-position state))]
-;  (if (= second 8)
-;         (if (= first 8) "Done!" (let [new-x (+ x 1) new-y (- y 8)]))
-;         (let [new-x (+ x 0) new-y (+ y 1)]))))
 
 
 ;children function (in progress)
@@ -164,7 +166,7 @@
         ;else
         ;otherwise continue through the sequence horizontally
 
-        (let [new-x (+ x 1)
+         (let [new-x (+ x 1)
               new-y (y)]))
 
 
@@ -174,7 +176,7 @@
 
         ;still need these helper functions
 
-        ; :let [row (row-seq (:board state x y))
+         :let [row (row-seq (:board state x y))]
         ;       col (col-seq (:board state x y))
         ;       3x3 (3x3-seq (:board state x y))]
 

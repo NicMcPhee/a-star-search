@@ -9,10 +9,9 @@
 (defn swap [tower-start tower-mid tower-finish]
   (let [old-value (pop [tower-start])
         new-value (cons [tower-mid])]
-    ;;dont know what to put for stru yet.
     (assoc-in State [tower-start] (get-in [tower-start]))
-    ;; over writing the current stru, and adding the old-value to the current tower, dont know if it works
-    ;; getting late, see ya
+    ;; over writing the current stru, and adding the old-value to the current tower,
+    ;;dont know if it works
     (assoc-in State [tower-mid] (cons old-value [tower-mid]))))
 
 
@@ -25,7 +24,9 @@
               new-T2 [tower-mid]]]
         :when (legal? (peek (:State tower-start)) (peek (:State tower-mid)))
         :when (legal? (peek (:State tower-start)) (peek (:State tower-finish)))
-    (-> State (swap (:tower state) [T1 T2 T3] [new-T1 new-T2 new-T3])
+    ;;-> stands for pushing something into the vector. ie
+    ;; (->State [] [] []) will puch into the 3 vectors that were created.
+    (->State (swap (:tower state) [T1 T2 T3] [new-T1 new-T2 new-T3])
               [new-T1 new-T2 new-T3]))
 ;;   ;;tower 2
 ;;   (let [disk (peek (:tower-mid state))]
@@ -57,7 +58,8 @@
 (let [disk (peek (:tower-start State))]
 (println disk))
 (legal? 1 2)
-(defrecord boardtest [T1 T2 T3])
-(cons 1 (:boardtest T1))
 
+(defrecord boardtest [T1 T2 T3])
+(def foo (->boardtest [1] [0] [0]))
+(println foo)
 

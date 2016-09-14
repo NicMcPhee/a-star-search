@@ -75,6 +75,7 @@
 
 
 ;###################example########################
+
 (add [[0 1 2 0 0 0 0 0 0]
       [3 4 5 0 0 0 0 0 0]
       [6 7 8 0 0 0 0 0 0]
@@ -104,6 +105,29 @@
 ;###################example########################
 
 
+;return sequence of the values in the row
+
+(defn row-seq [board y]
+  (nth board y))
+
+;test function
+
+(row-seq (:board start-state) 3)
+
+
+;return sequence of the values in the column, maybe convert to a vector to match other function
+
+(defn col-seq [board x y]
+  (for [y board]
+ (last(take x y))))
+
+
+;test function
+(col-seq (:board start-state) 2 2)
+
+;add  sequence of the values in the column, in progress
+;(defn 3x3-sec [board y x]
+;  ())
 
 
 
@@ -123,6 +147,19 @@
 (for [num [1 2 3 4 5 6 7 8 9]]
       (->State (add (:board  start-state)
      (:curr-position  start-state) num numBank) [0 0]))
+
+;(for  [num [1 2 3 4 5 6 7 8 9]]
+
+        ;still need these helper functions
+
+        ; :let [row (row-seq (:board state x y))]
+        ;       col (col-seq (:board state x y))
+        ;       3x3 (3x3-seq (:board state x y))]
+
+        ; :when (legal? row)
+        ; :when (legal? col)
+        ; :when (legal? 3x3)]
+
 
 
 

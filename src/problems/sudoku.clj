@@ -1,4 +1,12 @@
 (ns problems.sudoku)
+;;OH BOY KIDS HERE WE GO
+(defn distinct?
+  "Returns true if no two of the arguments are ="
+  [& more]
+  (let [old (count more)
+        set (into #{} more)
+        new (count set)]
+    (= new old)))
 
 ;;## validation top level ##
 (defn every-element-in-vec-distinct?
@@ -27,12 +35,12 @@
   9 elements that represents a single block (3x3) in sudoku."
   (map #(hop-block chunk %) [0 1 2])) ;; the 'numbers' of the three blocks
 
-(defn check-squares [state]
+(defn check-squares? [state]
   "Checks that every 3x3 sudoku block has contains distinct elements or nil."
   (every-vector-valid? (mapcat get-blocks (partition 27 state))))
 
 ;;validate horizontal
-(defn check-horizontal
+(defn check-horizontal?
  "Check that each row contains distinct elements"
  [state]
  (every-vector-valid? (partition 9 state)))
@@ -42,10 +50,42 @@
   [state]
  state)
 
+;;validate vertical
+(defn do-vertical-valid [coll state]
+  (take-nth 9 (drop coll state)))
+
+(defn check-vertical? [state]
+  (every-vector-valid? (map #(do-vertical-valid % state) (range 9))))
+
+;;all together now
+(defn valid-state?
+  "does the validation"
+  [state] (and (check-squares? state)
+               (check-horizontal? state)
+               (check-vertical? state)))
+
+;;blank space stuff
+(defn b "makes a unique string." [] (str (gensym)))
+
+(defn make-next-states
+  "returns a list of states"
+  [state] (let [front (take-while number? state)
+                back (drop (+ 1 (count front)) state)]
+            (map #(concat front [%] back) (range 1 10))))
+
+
+;; children
+(defn do-children
+  "makes children states"
+  [state] (filter valid-state? (make-next-states state)))
+
+
+
+
 (def children (memoize do-children))
 
-(defn valid-state? [state]
-  state)
+
+
 
 (def test-vec
   [nil nil nil nil nil nil nil 4 nil

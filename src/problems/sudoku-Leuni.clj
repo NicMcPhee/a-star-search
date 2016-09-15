@@ -36,7 +36,7 @@
 ; Description: Given a state [board current-pos] this
 ;              function will determine if there are any duplicate values
 ;              in the current-pos ([row, col]) square.
-;
+;(legal? start-state)
 ; Returns    : true  - if no duplicates (all elements are distinct)
 ;              false - if duplicates (all elements are not distinct)
 (defn check-square[state]
@@ -44,7 +44,7 @@
         cur-row (first (:current-pos state))
         cur-col (second (:current-pos state))]
 
-      ; Determine the appropriate 'square column'
+      ; Determine the appropriate 'square column(legal? start-state)'
       ; by using which column is the current column
       (def col-square (if (<= cur-col 2) 0
                         (if (>= cur-col 6) 2
@@ -83,15 +83,9 @@
 
       ; Determine if the square has no non-zero duplicates
       (apply distinct? (filter #(> % 0) square))
-      (legal? start-state)
 
-(defn legal? [state]
 
-  (and (check-square state) (check-row state) (check-column state))
-
-  )
-        ))
-
+  ))
 
 
 ; Function   : check-row
@@ -122,12 +116,6 @@
 ; Function   : check-column
 ;
 ; Description: Given a state [board(legal? start-state)
-
-(defn legal? [state]
-
-  (and (check-square state) (check-row state) (check-column state))
-
-  ) current-pos] this
 ;              function will determine if there are any duplicate values
 ;              in the current-pos ([row, col]) column value.
 ;

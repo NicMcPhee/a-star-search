@@ -33,11 +33,11 @@
                                  [9 3 8 4 2 5 6 1 7]
                                  [4 6 1 3 7 9 5 8 2]
                                  [7 5 2 6 1 8 3 9 4]] [8 8])
-        max-states 1000000000
+        max-states 1000
         costs nil
-        came-from (alg/breadth-first-search np/children max-states start-state goal-state)
-        ; [came-from costs] (alg/shortest-path np/children (constantly 1)
-        ;                                      max-states start-state goal-state )
+        ;came-from (alg/breadth-first-search np/children max-states start-state goal-state)
+         [came-from costs] (alg/shortest-path np/children (constantly 1)
+                                              max-states start-state goal-state )
         ; [came-from costs] (alg/shortest-path np/children np/prefer-horizontal-cost
         ;                                      max-states start-state goal-state)
         path (alg/extract-path came-from start-state goal-state)]

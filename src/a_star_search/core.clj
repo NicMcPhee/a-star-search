@@ -1,3 +1,4 @@
+;Skye Antinozzi and Mitch Finzel
 (ns a-star-search.core
   (:require [search.algorithms :as alg]
             [problems.sudoku-Leuni :as np])
@@ -12,7 +13,7 @@
     (println "The path has" (count path) "steps and its cost is" (costs goal-state))))
 
 (defn -main
-  "Search for a hard-coded N-puzzle target state."
+  "Search for a hard-coded Sudoku Puzzle target state."
   [& args]
   (let [start-state (np/->State [[0 7 5 0 9 0 0 0 6]
                                  [0 2 3 0 8 0 0 4 0]

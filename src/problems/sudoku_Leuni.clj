@@ -1,3 +1,5 @@
+;Skye Antinozzi and Mitch Finzel
+
 (ns problems.sudoku-Leuni)
 
 
@@ -17,12 +19,37 @@
                            [8 7]))
 
 
+
+; Function   : all-pos (All Possible)
+;
+; Description: Given a state [board current-pos] this
+;              function will check the current position.
+;              If it is non-zero it returns a child with an
+;              increment to its current-pos and no board changes.
+;              If it is zero it will return children with the zero
+;              replaced by a number 1 through 9 with incremented current-pos.
+;
+; Returns    : 9 children with incremented current-pos if the current-pos is non zero
+;            : 9 children with the numbers 1-9 in current-pos. Also increments current-pos
 (defn all-pos [state]
-  (for [x (range 9)] (if (> (get (get (:board state) (first (:current-pos state))) (second (:current-pos state))) 0)
-                       (State. (:board state) (if (= (first (:current-pos state)) 8) [0 (+ 1 (second (:current-pos state)))] [(+ 1 (first (:current-pos state))) (second (:current-pos state))] ))
-                       (State. (assoc (:board state) (first (:current-pos state)) (assoc (get (:board state) (first (:current-pos state)))  (second (:current-pos state) ) (+ 1 x)))
-                             (if (and (= (first (:current-pos state)) 8) (= (second (:current-pos state)) 8)) [8 8]
-                               (if (= (first (:current-pos state)) 8) [0 (+ 1 (second (:current-pos state)))] [(+ 1 (first (:current-pos state))) (second (:current-pos state))]))))))
+  ;Temporarily stores the board and row, column information
+  (let [board (:board state)
+        x-pos (first(:current-pos state))
+        y-pos (second(:current-pos state))]
+
+    ;For numbers 1 through 9, x, create a new state with the number at current-pos changed to the new number x + 1
+    ;If current-pos is non-zero create children that have the same board and incremented current-pos
+    (for [x (range 9)] (if (> (get (get board x-pos) y-pos) 0)
+                         (State. board (if (= x-pos 8) [0 (+ 1 y-pos)] [(+ 1 x-pos) y-pos] ))
+
+                         ;Else change the number at curret-pos to x+1
+                         (State. (assoc board x-pos (assoc (get board x-pos)  y-pos (+ 1 x)))
+
+                                 ;If current-pos is [8 8] don't increment, return the same current-pos with the new board
+                                 (if (and (= x-pos 8) (= y-pos 8)) [8 8]
+
+                                   ;Else if current-pos x-pos is 8 set current-pos to [0 (y-pos + 1)
+                                   (if (= x-pos 8) [0 (+ 1 y-pos)] [(+ 1 x-pos) y-pos])))))))
 
 
 ; Function   : check-square
@@ -30,7 +57,7 @@
 ; Description: Given a state [board current-pos] this
 ;              function will determine if there are any duplicate values
 ;              in the current-pos ([row, col]) square.
-;(legal? start-state)
+;
 ; Returns    : true  - if no duplicates (all elements are distinct)
 ;              false - if duplicates (all elements are not distinct)
 (defn check-square[state pos]
@@ -107,7 +134,7 @@
 
 ; Function   : check-column
 ;
-; Description: Given a state [board(legal? start-state)
+; Description: Given a state [board current-pos]
 ;              function will determine if there are any duplicate values
 ;              in the current-pos ([row, col]) column value.
 ;
@@ -127,9 +154,24 @@
 
   ))
 
+; Function   : isLegal?
+;
+; Description: Given a state [board current-pos] and old-pos
+;              tests the logical And of the three tests
+;              check-row, check-column and check-square.
+;
+; Returns    : true  - if no duplicates (all elements are distinct in rows,columns and squares)
+;              false - if duplicates (all elements are not distinct within rows columns and squares)
 (defn isLegal? [state old-pos]
   (and (check-row state old-pos) (check-column state old-pos) (check-square state old-pos)))
 
+; Function   : children
+;
+; Description: Given a state [board current-pos]
+;              creates all possible children and
+;              then filters them based on their legality
+;
+; Returns    : All legal children
 (defn children [state]
   (let [old-pos (:current-pos state)]
     (filter #(isLegal? % old-pos) (all-pos state))

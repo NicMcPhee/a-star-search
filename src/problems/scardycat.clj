@@ -1,5 +1,5 @@
 (ns hanoi)
-
+;;scardycat.clj was a practice file; hanoi.clj is our final submission
 (defrecord State [tower-start tower-mid tower-finish disk]);;rename before Wednesday @ 2200!
 
 (defn legal? [tower1 tower2]

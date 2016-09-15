@@ -54,3 +54,12 @@
 
 (defn hop [adjusted-n k chunk]
   (take-nth 9 (drop (+ adjusted-n k) chunk)))
+
+
+(defn vertical-valid? [state]
+  (every-vector-valid? (map #(do-vertical-valid? % state) (range 9)))
+)
+
+(defn do-vertical-valid? [coll state]
+  (every-unique? (take-nth 9 (drop coll state)))
+  )

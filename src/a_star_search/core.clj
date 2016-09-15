@@ -21,10 +21,10 @@
         costs nil
         ;; here too, at np/children, to work for with our code.
         came-from (alg/breadth-first-search np/children max-states start-state goal-state)
-        ; [came-from costs] (alg/shortest-path np/children (constantly 1)
-        ;                                      max-states start-state goal-state )
-        ; [came-from costs] (alg/shortest-path np/children np/prefer-horizontal-cost
-        ;                                      max-states start-state goal-state)
+        [came-from costs] (alg/shortest-path np/children (constantly 1)
+                                          max-states start-state goal-state )
+        [came-from costs] (alg/shortest-path np/children np/prefer-horizontal-cost
+                                             max-states start-state goal-state)
         path (alg/extract-path came-from start-state goal-state)]
     (print-results came-from path costs goal-state)))
 

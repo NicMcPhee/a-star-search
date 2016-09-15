@@ -26,3 +26,10 @@
         :when (legal? (:towers state)  old new)]
     (->State (swap (:towers state) old new))))
 
+;;prefer-horizontal-cost is not working; we couldn't figure out how to get it to work since
+;;state is only one array of three arrays
+
+(defn prefer-horizontal-cost [s t]
+  (let [s-x (if (empty? s) 1 (first s))
+        t-x  (if (empty? t) 1 (first t))]
+    (inc (Math/abs (- s-x t-x)))))

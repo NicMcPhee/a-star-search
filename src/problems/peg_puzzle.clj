@@ -1,15 +1,28 @@
 (ns problems.peg-puzzle)
 
+;board is the array of peg board values
+;zeros is a list of indeces of the zeros in the array
+;QUESTION: should we include n in the state?
+;QUESTION: do we need zeros really?
 (defrecord State [board zeros])
 
-(defn legalBoard? [board-size n]
-  (and (<= 3 n) (< n board-size)))
-
-(defn legalR? [index n]
-  (and (<= 0 index) ()))
-
-(defn sum [board] ;sums up array
+;sums up array
+(defn sum [board]
   (reduce + board))
+
+;n is number of rows
+(defn legalBoard? [proposed-n]
+  (<= 3 proposed-n))
+
+;NOTE: board might not be "board" here, it should be the current state of the board
+(defn legalR? [board index n]
+  (let [row (rowOfIndex index n)]
+    (and
+      (< 2 index)
+      (>= (- (endRowIndex row) index) 2)
+      (= 0 (nth board index))
+      (= 1 (nth board (+ index 1)))
+      (= 1 (nth board (+ index 2))))))
 
 (defn swap [board old-pos new-pos mid-pos]
   (let [old-value (get-in board old-pos)
@@ -42,7 +55,8 @@
 (defn beginRowIndexList [n]
   (map beginRowIndex (range 1 (+ 1 n))))
 
-(defn endRowIndex [row] ;returns index at end of row
+;returns index at end of row
+(defn endRowIndex [row]
   (let [x row]
     (reduce + (take (- x 1) (iterate (fn [n](- n 1)) x)))))
 
@@ -58,9 +72,15 @@
       (compare x y))]
   (+ (if (> (.indexOf j 0) -1) (.indexOf j 0) (.indexOf j -1)) 1)))
 
+(endRowIndex 4)
+
 (endRowIndexList 5)
+(nth (endRowIndexList 5) 2)
 
 (rowOfIndex 0 5)
 (rowOfIndex 9 5)
 
-(beginRowIndexList 5)
+(let [x (int-array [0, 1, 1, 0, 1,
+            1, 1, 1, 1, 1,
+            1, 1, 1, 1, 1])]
+  (legalR? x 3 5))

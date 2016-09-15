@@ -36,7 +36,7 @@
 
                                   [8 2 6 1 9 5 3 4 7]
                                   [3 7 4 6 8 2 9 1 5]
-                                  [0 5 0 7 4 3 6 2 8]
+                                  [9 5 1 7 4 3 6 2 8]
 
                                   [5 1 9 3 2 6 8 7 4]
                                   [2 4 8 9 5 7 1 3 6]
@@ -52,7 +52,10 @@
         ; [came-from costs] (alg/shortest-path s/children np/prefer-horizontal-cost
         ;                                      max-states start-state goal-state)
         path (alg/extract-path came-from start-state goal-state)]
-    (print-results came-from path costs goal-state)))
+    (print-results came-from path costs goal-state)
+    ;(for [s came-from]
+    ;  print (:board s))
+    ))
 
 
 

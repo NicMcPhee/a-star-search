@@ -46,8 +46,8 @@
       [(+ x 0) (+ y 1)])))
 
 
-(def start-state (->State [       [4 3 5 2 6 9 7 8 1]
-                                  [6 8 2 5 7 1 4 9 3]
+(def start-state (->State [       [0 3 5 2 6 9 7 8 1]
+                                  [0 8 2 5 7 1 4 9 3]
                                   [1 9 7 8 3 4 5 6 2]
 
                                   [8 2 6 1 9 5 3 4 7]
@@ -56,7 +56,7 @@
 
                                   [5 1 9 3 2 6 8 7 4]
                                   [2 4 8 9 5 7 1 3 6]
-                                  [7 6 3 4 1 8 2 5 9]] [0, 0]))
+                                  [7 6 3 4 1 8 2 5 9]] [0, 8]))
 
 
 
@@ -104,10 +104,10 @@
   (for [x[6 7 8] y[6 7 8]]
     (get (get board x) y)))
 
-(defn board-legal? [state]
+(defn board-legal? [state x y]
 
-  (let [row (row-seq (:board state) 4)
-             col (col-seq (:board state) 4)]
+  (let       [row (row-seq (:board state) x)
+             col (col-seq (:board state) y)]
           (and (legal? row) (legal? col)) (legal? (grid-1(:board state))) (legal? (grid-2(:board state))) (legal? (grid-3(:board state)))
                                          (legal? (grid-4(:board state))) (legal? (grid-5(:board state))) (legal? (grid-6(:board state)))
                                          (legal? (grid-7(:board state))) (legal? (grid-8(:board state))) (legal? (grid-9(:board state))))
@@ -117,19 +117,14 @@
 (defn children [state]
   (let [x (first (:curr-position state))
         y (second (:curr-position state))]
-
+    (if (not= 0 (get (get (:board start-state) x) y)) (->State (:board state) (updatePos state))
     (for [num [1 2 3 4 5 6 7 8 9]
-
-          :let [row (row-seq (:board state) x)
-                col (col-seq (:board state) y)]
-          :when (board-legal? state)
+          :when (board-legal? state x y)
           ]
       (->State (add (:board  state)
-                    (:curr-position  state) num numBank) (updatePos state)))))
+                    (:curr-position  state) num numBank) (updatePos state))))))
 
-
-
-
+(children (children start-state))
 
 
 ;visual representation of a current sudoku board example's axis (currently operates in [y x])

@@ -14,7 +14,7 @@
        (>= (second new-pos) 0)
        (< (first new-pos) board-rows)
        (< (second new-pos) board-cols)
-       (= (get-in board new-pos) "x"))))
+       (not (= (get-in board new-pos) "x")))))
 
 ;Bits and pieces for sanity's sake
 
@@ -26,12 +26,13 @@
             new-col (+ col dc)]
       :when (legal? [new-row new-col] (:board state))]
       (->State (:board state) [new-row new-col]))))
+     ; (->State (assoc-in (:board state) [row col] "_") [new-row new-col]))))
 
 
-(def test-board [[0 0 0 0]
-                 [x x x 0]
-                 [0 x x 0]
-                 [0 0 0 x]
-                 [0 x 0 0]])
+(def test-board [[0 0 0 0 0 x 0 0]
+                 [x x x x 0 x x x]
+                 [0 x x x 0 x 0 0]
+                 [0 0 0 x 0 x 0 x]
+                 [0 x 0 x 0 0 0 x]])
 
-(children (->State test-board [1 0]))
+(children (->State test-board [0 0]))

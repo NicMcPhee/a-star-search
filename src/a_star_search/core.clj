@@ -58,6 +58,6 @@
 
 
 ; Run (with timing) with
-;(time (-main))
+(time (-main))
 ; or
 ; time lein run

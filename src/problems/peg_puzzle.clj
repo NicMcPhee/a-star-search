@@ -161,16 +161,23 @@
             1, 1, 1, 1, 1])]
   (legalR? x 3 5))
 
-
-(defn rowOfIndex [index n]
-  (let [j (for [x [index]
-     y (endRowIndexList n)]
-      (compare x y))]
-  (+ (if (> (.indexOf j 0) -1) (.indexOf j 0) (.indexOf j -1)) 1)))
-
-
-  (for [x (int-array [1, 1, 1, 0, 1,
+;;IMPORTANT!!!!!!! DAMNIT THIS IS IMPORTANT DON'T DELETE
+(for [i (range 15)
+      :when (= 1 (nth [1, 1, 1, 0, 1,
             1, 1, 1, 1, 1,
-            1, 1, 1, 1, 1])
-        y (range 14)]
-  (if (= x 0) y "no"))
+            1, 1, 1, 1, 1] i))]
+  i)
+
+;;# is an annonymous function (build your own function inside of another function)
+;;% is the argument for that function (%1 is arg 1, %2 is arg 2
+(filter #(= 0 (nth [1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1] %))
+        (range 15))
+
+(filter (fn [index] (= 0 (nth [1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1] index)))
+        (range 15))
+
+(map #(+ %1 %2) [5 8 9] [6 3 2])
+
+(map + [5 8 9] [6 3 2])
+
+(map #(/ (+ %1 %2) 2) [5 8 9] [2 3 6])

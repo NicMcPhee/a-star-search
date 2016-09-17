@@ -6,12 +6,6 @@
 (defn duplicates? [coll]
   (not (apply distinct? (filter #(> % 0) coll))))
 
-;example to test all the other functions
-
-
-;check if a value/element is in a collection
-(defn in? [coll value]
-  (= true (some #(= value %) coll)))
 
 ;return a row
 (defn row-seq [board y]
@@ -20,20 +14,19 @@
 ;return a column
 (defn col-seq [board x]
   (for [y board]
+;---------------This works, but you could also use map, which might be more "Clojure"-y?-----------------------
     (last(take (+ x 1) y))))
+;------------------You want to use nth here instead of combining last and take.------------------------
+
 
 ;check if a row, column or 3x3 is legal
 (defn legal? [coll]
   (and (not (duplicates? coll))))
 
 
-;the range of number(1-9) to put into the board
-(def numBank (range 1 10))
-
 ;put numbers into the current position of the board
-(defn add [board position number numBank]
-  (let [num (nth numBank (- number 1))]
-    (assoc-in board position num)))
+(defn add [board position number]
+    (assoc-in board position number))
 
 
 ;update the current position of the board (don't know if I can call the function and return a new position somewhere else)
@@ -43,75 +36,42 @@
 
     (if (= y 8)
       [(+ x 1) (- y 8)]
-      [(+ x 0) (+ y 1)])))
+      [x (+ y 1)])))
 
 
-(def start-state (->State [       [4 0 5 2 6 9 7 8 1]
-                                  [6 8 2 5 7 1 4 9 3]
-                                  [1 9 7 8 3 4 5 6 2]
+(def start-state (->State [       [0 0 0 2 6 0 7 0 1]
+                                  [6 8 0 0 7 0 0 9 0]
+                                  [1 9 0 0 0 4 5 0 0]
 
-                                  [8 2 6 1 9 5 3 4 7]
-                                  [3 7 4 6 8 2 9 1 5]
-                                  [0 5 0 7 4 3 6 2 8]
+                                  [8 2 0 1 0 0 0 4 0]
+                                  [0 0 4 6 0 2 9 0 0]
+                                  [0 5 0 0 0 3 0 2 8]
 
-                                  [5 1 9 3 2 6 8 7 4]
-                                  [2 4 8 9 5 7 1 3 6]
-                                  [7 6 3 4 1 8 2 5 9]] [0, 0]))
-
-
+                                  [0 0 9 3 0 0 0 7 4]
+                                  [0 4 0 0 5 0 0 3 6]
+                                  [7 0 3 0 1 8 0 0 0]] [0, 0]))
 
 
-;go through the number 1-9 to put in the current position and produce different childrens of States of the board(haven't implement the legal function yet)
-(for [num [1 2 3 4 5 6 7 8 9]]
-  (->State (add (:board  start-state)
-                (:curr-position  start-state) num numBank) (updatePos start-state)))
 
 
 ;divide into 3*3 and return a coll
-(defn grid-1 [board]
+(defn grid [board hpos vpos]
+  (for [x[(* hpos 3) (+ (* hpos 3) 1) (+ (* hpos 3) 2)] y[(* vpos 3) (+ (* vpos 3) 1) (+ (* vpos 3) 2)]]
+    (get-in board [x y])))
+
+;verify if it is legal and return a coll of true or false
+(defn grid-legal? [state]
   (for [x[0 1 2] y[0 1 2]]
-    (get (get board x) y)))
+    (legal? (grid (:board start-state) x y))))
 
-(defn grid-2 [board]
-  (for [x[0 1 2] y[3 4 5]]
-    (get (get board x) y)))
+(grid-legal? start-state)
 
-(defn grid-3 [board]
-  (for [x[0 1 2] y[6 7 8]]
-    (get (get board x) y)))
+(defn board-legal? [state]
 
-(defn grid-4 [board]
-  (for [x[3 4 5] y[0 1 2]]
-    (get (get board x) y)))
-
-(defn grid-5 [board]
-  (for [x[3 4 5] y[3 4 5]]
-    (get (get board x) y)))
-
-(defn grid-6 [board]
-  (for [x[3 4 5] y[6 7 8]]
-    (get (get board x) y)))
-
-(defn grid-7 [board]
-  (for [x[6 7 8] y[0 1 2]]
-    (get (get board x) y)))
-
-(defn grid-8 [board]
-  (for [x[6 7 8] y[3 4 5]]
-    (get (get board x) y)))
-
-(defn grid-9 [board]
-  (for [x[6 7 8] y[6 7 8]]
-    (get (get board x) y)))
-
-(defn board-legal? [state x y]
-
-  (let       [row (row-seq (:board state) x)
-             col (col-seq (:board state) y)]
-          (and (legal? row) (legal? col) (legal? (grid-1(:board state))) (legal? (grid-2(:board state))) (legal? (grid-3(:board state)))
-                                         (legal? (grid-4(:board state))) (legal? (grid-5(:board state))) (legal? (grid-6(:board state)))
-                                         (legal? (grid-7(:board state))) (legal? (grid-8(:board state))) (legal? (grid-9(:board state)))))
-          )
+  (let       [row (row-seq (:board state) (first (:curr-position state)))
+             col (col-seq (:board state) (second (:curr-position state)))]
+          (and (legal? row) (legal? col) (every? true? (grid-legal? state)))
+    ))
 
 
 ;children function
@@ -120,12 +80,16 @@
         y (second (:curr-position state))]
     (if (not= 0 (get (get (:board start-state) x) y)) (->State (:board state) (updatePos state))
     (for [num [1 2 3 4 5 6 7 8 9]
-          :when (board-legal? (->State (add (:board  state) (:curr-position  state) num numBank) (updatePos state)) x y)
+          :when (board-legal? (->State (add (:board  state) (:curr-position  state) num) [x y]))
           ]
-      (->State (add (:board  state)
-                    (:curr-position  state) num numBank) (updatePos state))))))
+      (->State (add (:board state)
+                    (:curr-position state) num) (updatePos state))))))
 
 
+(add (:board  start-state) (:curr-position  start-state) 8)
+
+
+(children start-state)
 ;visual representation of a current sudoku board example's axis (currently operates in [y x])
 
 ;    x0 x1 x2 x3 x4 x5 x6 x7 x8

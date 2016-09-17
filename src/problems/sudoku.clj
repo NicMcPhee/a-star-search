@@ -1,9 +1,12 @@
-(ns problems.sudoku)
-;;OH BOY KIDS HERE WE GO
-(defn distinct?
-  "Returns true if no two of the arguments are ="
+(ns problems.sudoku
+  (:require [clojure.tools.namespace.repl :refer [refresh]]))
+
+
+(defn is-distinct?
+  "Returns true if no two of the non-zero arguments are ="
   [& more]
-  (let [old (count more)
+  (let [more (filter #(not= 0 %) more)
+        old (count more)
         set (into #{} more)
         new (count set)]
     (= new old)))
@@ -13,11 +16,18 @@
  "Returns True if every element in every vector is unique or nil.
   Returns False otherwise."
   [vecs]
- (every? identity (map #(apply distinct? %) vecs)))
+ (every? identity (map #(apply is-distinct? %) vecs)))
 
 (def every-vector-valid? (memoize every-element-in-vec-distinct?))
 
 ;;## validating 3x3 blocks ##
+;;the basic idea here is that you can calculate the indexes of a 3x3 sudoku
+;;given the identifier of the block you want to get. Selecting offsets for the
+;;that turned out to be hard given the conception of state as a single vector.
+;;We were able to handle rows of 3x3 blocks, but jumping rows introduced a large
+;;number of edge cases. To avoid this, we simply treated the state as
+;;3 disconnected rows.
+
 (defn hop [adjusted-n k chunk]
   "Given the first number in the block (n), and the offset (k), returns the 3
   numbers that make up a column in a sudoku block."
@@ -35,90 +45,60 @@
   9 elements that represents a single block (3x3) in sudoku."
   (map #(hop-block chunk %) [0 1 2])) ;; the 'numbers' of the three blocks
 
-(defn check-squares? [state]
+(defn blocks-valid? [state]
   "Checks that every 3x3 sudoku block has contains distinct elements or nil."
   (every-vector-valid? (mapcat get-blocks (partition 27 state))))
 
 ;;validate horizontal
-(defn check-horizontal?
+(defn horizontal-valid?
  "Check that each row contains distinct elements"
  [state]
  (every-vector-valid? (partition 9 state)))
 
-(defn do-children
-  "Given a sudoku state, a vector of ints, returns all valid child states as a vector of ints"
-  [state]
- state)
-
 ;;validate vertical
-(defn do-vertical-valid [coll state]
-  (take-nth 9 (drop coll state)))
+(defn do-vertical-valid [i state]
+  (take-nth 9 (drop i state)))
 
-(defn check-vertical? [state]
+(defn vertical-valid? [state]
   (every-vector-valid? (map #(do-vertical-valid % state) (range 9))))
 
 ;;all together now
 (defn valid-state?
   "does the validation"
-  [state] (and (check-squares? state)
-               (check-horizontal? state)
-               (check-vertical? state)))
+  [state] (and (blocks-valid? state)
+               (horizontal-valid? state)
+               (vertical-valid? state)))
 
-;;blank space stuff
-(defn b "makes a unique string." [] (str (gensym)))
 
 (defn make-next-states
   "returns a list of states"
-  [state] (let [front (take-while number? state)
+  [state] (let [front (take-while #(< 0 %) state)
                 back (drop (+ 1 (count front)) state)]
             (map #(concat front [%] back) (range 1 10))))
 
-
 ;; children
-(defn do-children
+(defn children
   "makes children states"
   [state] (filter valid-state? (make-next-states state)))
 
 
-
-
-(def children (memoize do-children))
-
-
-
-
-(def test-vec
-  [nil nil nil nil nil nil nil 4 nil
-   nil nil nil nil nil nil nil 4 nil])
-
-(def test-vec-2
-  [nil nil nil nil nil nil nil nil nil
-   nil nil nil nil nil nil 4   4   nil])
-
-(def test-vec-3 [1 2 3 4 5 6 7 8 9
-                 1 2 3 4 5 6 7 8 9
-                 1 2 3 4 5 6 7 8 9])
+(defn print-state [state]
+  (loop [lst (partition 9 state)]
+    (if (empty? lst)
+      (println "-=======-")
+      (do (println (first lst))
+          (recur (rest lst))))
+    ))
+(def good-state [5 3 0 0 7 0 0 0 0
+                  6 0 0 1 9 5 0 0 0
+                  0 9 8 0 0 0 0 6 0
+                  8 0 0 0 6 0 0 0 3
+                  4 0 0 8 0 3 0 0 1
+                  7 0 0 0 2 0 0 0 6
+                  0 6 0 0 0 0 2 8 0
+                  0 0 0 4 1 9 0 0 5
+                  0 0 0 0 8 0 0 7 9])
 
 (def test-chunk [ 0  1  2  3  4  5  6  7  8
-                  9 10 11 12 13 14 15 16 17
+                 9 10 11 12 13 14 15 16 17
                  18 19 20 21 22 23 24 25 26])
-
-(def test-block [ 0  1  2  3  4  5  6  7  8
-                  9 10 11 12 13 14 15 16 17
-                 18 19 20 21 22 23 24 25 26
-                 27 28 29 30 31 32 33 34 35
-                 36 37 38 39 40 41 42 43 44
-                 45 46 47 48 49 50 51 52 53
-                 54 55 56 57 58 59 60 61 62
-                 63 64 65 66 67 68 69 70 71
-                 72 73 74 75 76 77 78 79 80])
-
-(def test-bad   [ 0  1  2  3  4  5  6  7  8
-                  0  1  2 12 13 14 15 16 17
-                  0  1  2 21 22 23 24 25 26
-                 27 28 29 30 31 32 33 34 35
-                 36 37 38 39 40 41 42 43 44
-                 45 46 47 48 49 50 51 52 53
-                 54 55 56 57 58 59 60 61 62
-                 63 64 65 66 67 68 69 70 71
-                 72 73 74 75 76 77 78 79 80])

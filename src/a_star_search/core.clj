@@ -44,12 +44,12 @@
 
 
 
-        max-states 1000000
+        max-states 100000
         costs nil
         came-from (alg/breadth-first-search s/children max-states start-state goal-state)
-        ; [came-from costs] (alg/shortest-path s/children (constantly 1)
+        ;[came-from costs] (alg/shortest-path s/children (constantly 1)
         ;                                      max-states start-state goal-state )
-        ; [came-from costs] (alg/shortest-path s/children np/prefer-horizontal-cost
+        ;[came-from costs] (alg/shortest-path s/children s/prefer-horizontal-cost
         ;                                      max-states start-state goal-state)
         path (alg/extract-path came-from start-state goal-state)]
     (print-results came-from path costs goal-state)

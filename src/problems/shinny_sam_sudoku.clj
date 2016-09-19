@@ -13,10 +13,23 @@
 
 ;return a column
 (defn col-seq [board x]
-  (for [y board]
-;---------------This works, but you could also use map, which might be more "Clojure"-y?-----------------------
-    (last(take (+ x 1) y))))
-;------------------You want to use nth here instead of combining last and take.------------------------
+  (nth (apply map vector  board) x))
+
+
+
+;------------------------test----------------------------
+(def start-state (->State [       [0 0 0 2 6 0 7 0 1]
+                                  [6 8 0 0 7 0 0 9 0]
+                                  [1 9 0 0 0 4 5 0 0]
+
+                                  [8 2 0 1 0 0 0 4 0]
+                                  [0 0 4 6 0 2 9 0 0]
+                                  [0 5 0 0 0 3 0 2 8]
+
+                                  [0 0 9 3 0 0 0 7 4]
+                                  [0 4 0 0 5 0 0 3 6]
+                                  [7 0 3 0 1 8 0 0 0]] [3, 4]))
+;------------------------test----------------------------
 
 
 ;check if a row, column or 3x3 is legal
@@ -37,23 +50,6 @@
     (if (= y 8)
       [(+ x 1) (- y 8)]
       [x (+ y 1)])))
-
-
-
-;------------------------test----------------------------
-(def start-state (->State [       [0 0 0 2 6 0 7 0 1]
-                                  [6 8 0 0 7 0 0 9 0]
-                                  [1 9 0 0 0 4 5 0 0]
-
-                                  [8 2 0 1 0 0 0 4 0]
-                                  [0 0 4 6 0 2 9 0 0]
-                                  [0 5 0 0 0 3 0 2 8]
-
-                                  [0 0 9 3 0 0 0 7 4]
-                                  [0 4 0 0 5 0 0 3 6]
-                                  [7 0 3 0 1 8 0 0 0]] [3, 4]))
-;------------------------test----------------------------
-
 
 
 
@@ -100,10 +96,11 @@
   (let [x (first (:curr-position state))
         y (second (:curr-position state))]
     (for [num [1 2 3 4 5 6 7 8 9]
-          :when (board-legal? (->State (add (:board state) (:curr-position state) num) [x y]))
+          :let [new-state (add (:board state) (:curr-position state) num)]
+          :when (board-legal? (->State new-state [x y]))
           ]
       (if (not= 0 (get-in (:board start-state) [x y])) (->State (:board state) (updatePos state))
-      (->State (add (:board state) (:curr-position state) num) (updatePos state))))))
+      (->State new-state (updatePos state))))))
 
 
 

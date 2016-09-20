@@ -4,17 +4,17 @@
 ;zeros is a list of indeces of the zeros in the array
 ;QUESTION: should we include n in the state?
 ;QUESTION: do we need zeros really?
-(defrecord State [board])
+(defrecord State [board n])
 
 ;sums up array
 (defn sum [board]
   (reduce + board))
 
 
-(defn swap [board old-pos new-pos mid-pos]
-  (let [old-value (get-in board old-pos)
-        new-value (get-in board new-pos)]
-    (assoc-in (assoc-in (assoc-in board old-pos new-value) mid-pos 0)
+(defn swap [board old-pos mid-pos new-pos]
+  (let [old-value (get board old-pos)
+        new-value (get board new-pos)]
+    (assoc (assoc (assoc board old-pos new-value) mid-pos 0)
               new-pos old-value)))
 
 
@@ -131,15 +131,49 @@
       (= 1 (nth board (+ index row)))
       (= 1 (nth board (+ (+ index (* 2 row)) 1))))))
 
+(defn zeros [board]
+  (filter #(= 0 (nth board %))
+        (range (count board))))
 
+(defn jumpR [board index n]
+  (if (legalR? board index n) (swap board index (+ index 1) (+ index 2))))
 
-;; (defn children [state]
-;;   (let
-;;  (for [let [x (range (- (count :board state) 1)
-;;     (if (legalL? :board state x )
+(defn jumpL [board index n]
+ (if (legalL? board index n) (swap board index (- index 1) (- index 2))))
 
+(defn jumpUL [board index n]
+  (let [row (rowOfIndex index n)]
+   (if (legalUL? board index n) (swap board index (- index row) (+ (- index (* 2 row)) 1)))))
 
+(defn jumpUR [board index n]
+  (let [row (rowOfIndex index n)]
+   (if (legalUR? board index n) (swap board index (+ (- index row) 1) (+ (- index (* 2 row)) 3)))))
 
+(defn jumpLL [board index n]
+  (let [row (rowOfIndex index n)]
+   (if (legalLL? board index n) (swap board index (+ index row) (+ (+ index (* 2 row)) 1)))))
+
+(defn jumpLR [board index n]
+  (let [row (rowOfIndex index n)]
+   (if (legalLR? board index n) (swap board index (+ (+ index row) 1) (+ (+ index (* 2 row)) 3)))))
+
+;start with boardList empty
+;add all jumps to boardList
+;then child runs the entire boardList into states(just have to call child at end)
+(defn children[state]
+  (let [b (:board state)
+        n (:n state)
+        z (zeros b)
+        boardList (map #(jumpR b % n) z)
+        child (map #(->State % n) boardList)]
+
+    (map #(conj boardList %) leftList)
+
+boardList))
+
+;;     into boardList (map #(jumpL b % n) z))
+
+;;  (map #(->State (% n) boardList)
 
 (defn prefer-horizontal-cost [s t]
   (let [s-x (first (:zeros s))
@@ -154,12 +188,11 @@
 
 (rowOfIndex 0 5)
 (rowOfIndex 9 5)
+(let [x (->State [1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1] 5)]
+  (children x))
 
 
-(let [x (int-array [1, 1, 1, 0, 1,
-            1, 1, 1, 1, 1,
-            1, 1, 1, 1, 1])]
-  (legalR? x 3 5))
+(jumpLR [1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1] 3 5)
 
 ;;IMPORTANT!!!!!!! DAMNIT THIS IS IMPORTANT DON'T DELETE
 (for [i (range 15)

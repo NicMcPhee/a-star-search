@@ -1,9 +1,6 @@
 (ns problems.peg-puzzle)
 
 ;board is the array of peg board values
-;zeros is a list of indeces of the zeros in the array
-;QUESTION: should we include n in the state?
-;QUESTION: do we need zeros really?
 (defrecord State [board n])
 
 ;sums up array
@@ -59,8 +56,8 @@
 
 
 ;n is number of rows
-(defn legalBoard? [proposed-n]
-  (<= 3 proposed-n))
+(defn legalBoard? [proposed-board proposed-n]
+  (and (<= 3 proposed-n) (= (count proposed-board) (reduce + (range (+ 1 proposed-n))))))
 
 
 
@@ -161,56 +158,23 @@
 ;add all jumps to boardList
 ;then child runs the entire boardList into states(just have to call child at end)
 (defn children[state]
-  (let [b (:board state)
+  (if (legalBoard? (:board state) (:n state))
+    (let [b (:board state)
         n (:n state)
         z (zeros b)
-        boardList (map #(jumpR b % n) z)
-        child (map #(->State % n) boardList)]
+        rightList (map #(jumpR b % n) z)
+        leftList (map #(jumpL b % n) z)
+        upperRightList (map #(jumpUR b % n) z)
+        upperLeftList (map #(jumpUL b % n) z)
+        lowerRightList (map #(jumpLR b % n) z)
+        lowerLeftList (map #(jumpLL b % n) z)
+        listList (concat rightList leftList upperRightList upperLeftList lowerRightList lowerLeftList)
+        finalList (remove nil? listList)
+        ]
 
-    (map #(conj boardList %) leftList)
-
-boardList))
-
-;;     into boardList (map #(jumpL b % n) z))
-
-;;  (map #(->State (% n) boardList)
-
-(defn prefer-horizontal-cost [s t]
-  (let [s-x (first (:zeros s))
-        t-x (first (:zeros t))]
-    (inc (Math/abs (- s-x t-x)))))
+(map #(->State % n) finalList))))
 
 
-(endRowIndex 4)
-
-(endRowIndexList 5)
-(nth (endRowIndexList 5) 2)
-
-(rowOfIndex 0 5)
-(rowOfIndex 9 5)
-(let [x (->State [1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1] 5)]
+(let [x (->State [0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] 5)]
   (children x))
 
-
-(jumpLR [1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1] 3 5)
-
-;;IMPORTANT!!!!!!! DAMNIT THIS IS IMPORTANT DON'T DELETE
-(for [i (range 15)
-      :when (= 1 (nth [1, 1, 1, 0, 1,
-            1, 1, 1, 1, 1,
-            1, 1, 1, 1, 1] i))]
-  i)
-
-;;# is an annonymous function (build your own function inside of another function)
-;;% is the argument for that function (%1 is arg 1, %2 is arg 2
-(filter #(= 0 (nth [1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1] %))
-        (range 15))
-
-(filter (fn [index] (= 0 (nth [1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1] index)))
-        (range 15))
-
-(map #(+ %1 %2) [5 8 9] [6 3 2])
-
-(map + [5 8 9] [6 3 2])
-
-(map #(/ (+ %1 %2) 2) [5 8 9] [2 3 6])

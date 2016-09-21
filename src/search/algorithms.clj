@@ -10,7 +10,7 @@
          came-from {}]
     (if (or (neg? max-states)
             (empty? frontier)
-            (= (peek frontier) goal-state))
+            (goal-state (peek frontier)))
       came-from
       (let [current (peek frontier)
             children (set (children-fn current))
@@ -30,7 +30,7 @@
          cost-so-far {start-state 0}]
     (if (or (neg? max-states)
             (empty? frontier)
-            (= (first (peek frontier)) goal-state))
+            (goal-state (peek frontier)))
       [came-from cost-so-far]
       (let [current (first (peek frontier))
             current-cost (cost-so-far current)
@@ -46,11 +46,16 @@
                new-came-from
                new-cost-so-far)))))
 
-(defn extract-path [came-from start-state goal-state]
-  (loop [current-state goal-state
+(defn extract-path [came-from start-state goal-state?]
+  (loop [current-state (first
+                         (first
+                           (filter #(goal-state? (first %))
+                                   came-from)))
          path []]
     (cond
       (nil? current-state) nil
       (= current-state start-state) (reverse (conj path start-state))
       :else (recur (came-from current-state)
                    (conj path current-state)))))
+
+

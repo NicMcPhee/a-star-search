@@ -16,7 +16,7 @@
               (map #(conj [index] %) (range (inc index))))
             (range (count state)))))
 
-(def coords (get-all-coords [[][][][][]])) ;; Shhh, it's fine!
+;(def coords (get-all-coords [[][][][][]])) ;; Shhh, it's fine!
 
 
 (defn my-get [row col board]
@@ -89,4 +89,8 @@
 
 
 (defn children [state]
-  (apply concat (map #(generate-valid-states % (:board state)) coords)))
+  (apply concat (map #(generate-valid-states % (:board state)) (get-all-coords (:board state)))))
+
+
+(defn winning-board? [state]
+  (= 1 (reduce + (flatten (:board state)))))

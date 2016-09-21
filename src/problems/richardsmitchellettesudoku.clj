@@ -48,6 +48,22 @@
 
 (defn changeValue [board row col new-value] (changeValue-helper board (+ (* 3 (int (/ row 3))) (int (/ col 3))) (rem row 3) (rem col 3) new-value))
 
+; helper functions for heuristic
+(defn getBoxSansNum [board new-value])
+
+(defn eliminateRowsHelper [board row new-value])
+
+(defn eliminateRows [board box new-value])
+
+(defn eliminateColsHelper [board col new-value])
+
+(defn eliminateCols [board box new-value])
+
+(defn combinations [])
+
+; our heuristic
+(defn heuristic [board row col new-value] ())
+
 (defn children [state]
 (let [board (:board state)
       row (first (getToChange (:board state)))

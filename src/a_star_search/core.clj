@@ -23,6 +23,7 @@
                                    [[[3 0 0][0 0 0][0 0 2]]
                                     [[8 0 1][4 2 6][0 9 0]]
                                     [[0 0 2][0 0 0][6 0 0]]]])
+
         goal-state (rmsd/->State [[[[1 5 6][8 3 7][2 4 9]]
                                    [[3 8 4][2 5 9][6 1 7]]
                                    [[9 2 7][4 1 6][8 3 5]]]
@@ -35,8 +36,8 @@
         max-states 1000000
         costs nil
         came-from (alg/breadth-first-search rmsd/children max-states start-state goal-state)
-        ; [came-from costs] (alg/shortest-path rmsd/children (constantly 1)
-        ;                                      max-states start-state goal-state )
+         ;[came-from costs] (alg/shortest-path rmsd/children (constantly 1)
+             ;                                 max-states start-state goal-state )
         ; [came-from costs] (alg/shortest-path rmsd/children rmsd/prefer-horizontal-cost
         ;                                      max-states start-state goal-state)
         path (alg/extract-path came-from start-state goal-state)]

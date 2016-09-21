@@ -1,4 +1,4 @@
-(ns search.algorithms
+(ns search.algorithmsPeg
   (:require clojure.set
             [clojure.data.priority-map :as pm])
   (:gen-class))

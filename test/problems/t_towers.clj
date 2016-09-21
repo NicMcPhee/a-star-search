@@ -6,10 +6,10 @@
 
 
 (facts
-  (:peh1 (->State [] [1] [5])) => []
-  (:peh2 (->State [] [1] [5])) => [1]
-  (:peh3 (->State [] [1] [5])) => [5]
-  (:peh1 (->State [] [] [])) => [])
+  (:peg1 (->State [] [1] [5])) => []
+  (:peg2 (->State [] [1] [5])) => [1]
+  (:peg3 (->State [] [1] [5])) => [5]
+  (:peg1 (->State [] [] [])) => [])
 
 (facts
   (legal? (->State [] [] [])) => true

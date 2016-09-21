@@ -1,6 +1,6 @@
-(ns a-star-search.core
-  (:require [search.algorithms :as alg]
-            [problems.n-puzzle :as np])
+(ns a-star-search.pegCore
+  (:require [search.algorithmsPeg :as alg]
+            [problems.peg-puzzle :as np])
   (:gen-class))
 
 (defn print-results [result path costs goal-state]
@@ -14,13 +14,13 @@
 (defn -main
   "Search for a hard-coded N-puzzle target state."
   [& args]
-  (let [start-state (np/->State [[0 1 3] [4 2 5] [7 8 6]] [0 0]) ;START-STATE: addition of array= array.legnth-1
-        goal-state (np/->State [[0 1 2] [3 4 5] [6 7 8]] [0 0]) ; END-STATE: addition of array = 1
+  (let [start-state (np/->State [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1] 5) ;START-STATE: addition of array= array.legnth-1
+        goal-state (np/->State [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0] 5) ; END-STATE: addition of array = 1
         max-states 1000000
         costs nil
-        came-from (alg/breadth-first-search np/children max-states start-state goal-state)
-        ; [came-from costs] (alg/shortest-path np/children (constantly 1)
-        ;                                      max-states start-state goal-state )
+        ;came-from (alg/breadth-first-search np/children max-states start-state goal-state)
+         [came-from costs] (alg/shortest-path np/children (constantly 1)
+                                              max-states start-state goal-state )
         ; [came-from costs] (alg/shortest-path np/children np/prefer-horizontal-cost
         ;                                      max-states start-state goal-state)
         path (alg/extract-path came-from start-state goal-state)]

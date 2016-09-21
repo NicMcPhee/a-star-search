@@ -26,3 +26,7 @@
   (legal? (->State [[1 2 3 4 5] [1] []])) => false
   (legal? (->State [[1 2 3 4 5 5] [] [55]])) => false
   )
+
+(facts
+  (children (->State [[1 2 3] [] []])) => ((->State [[1 2 3] [] []]) (->State [[2 3] [1] []]) (->State [[2 3] [] [1]]))
+)

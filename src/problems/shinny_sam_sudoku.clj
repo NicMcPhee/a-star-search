@@ -62,7 +62,7 @@
 ;verify if it is legal and return a coll of true or false
 (defn grid-legal? [state]
   (for [x[0 1 2] y[0 1 2]]
-    (legal? (grid (:board start-state) x y))))
+    (legal? (grid (:board state) x y))))
 
 ;check if the whole board is legal
 (defn board-legal? [state]
@@ -73,24 +73,6 @@
     ))
 
 
-
-;------------------------test----------------------------
-(add (:board start-state) (:curr-position start-state) 3)
-
-(legal? (grid (add (:board start-state) (:curr-position start-state) 3) 1 1))
-
-(->State (add (:board start-state) (:curr-position start-state) 3) [3 4])
-
-(grid-legal? start-state)
-
-(grid-legal? (->State (add (:board start-state) (:curr-position start-state) 3) [3 4]))
-
-(board-legal? start-state)
-;------------------------test----------------------------
-
-
-
-
 ;children function
 (defn children [state]
   (let [x (first (:curr-position state))
@@ -99,20 +81,10 @@
           :let [new-state (add (:board state) (:curr-position state) num)]
           :when (board-legal? (->State new-state [x y]))
           ]
-      (if (not= 0 (get-in (:board start-state) [x y])) (->State (:board state) (updatePos state))
+      (if (not= 0 (get-in (:board state) [x y])) (->State (:board state) (updatePos state))
       (->State new-state (updatePos state))))))
 
 
-
-
-;------------------------test----------------------------
-(for [num [1]]
- (->State (add (:board  start-state)
-               (:curr-position  start-state) num) (updatePos start-state)))
-
-(board-legal? (->State (add (:board  start-state) (:curr-position  start-state) 3) [3 4]))
-(children start-state)
-;------------------------test----------------------------
 
 ;visual representation of a current sudoku board example's axis (currently operates in [y x])
 

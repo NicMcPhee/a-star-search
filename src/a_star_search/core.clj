@@ -16,35 +16,35 @@
 (defn -main
   "Search for a hard-coded sudoku target state."
   [& args]
-  (let [start-state (s/->State [  [0 0 0 2 6 0 7 0 1]
-                                  [6 8 0 0 7 0 0 9 0]
-                                  [1 9 0 0 0 4 5 0 0]
+  (let [start-state (s/->State [  [8 4 1 9 7 3 2 5 6]
+                                  [0 9 0 0 8 0 0 0 0]
+                                  [0 0 0 0 0 0 3 0 0]
 
-                                  [8 2 0 1 0 0 0 4 0]
-                                  [0 0 4 6 0 2 9 0 0]
-                                  [0 5 0 0 0 3 0 2 8]
+                                  [5 0 0 0 0 1 0 0 0]
+                                  [0 0 0 0 0 0 0 4 0]
+                                  [4 7 6 3 5 8 1 9 2]
 
-                                  [0 0 9 3 0 0 0 7 4]
-                                  [0 4 0 0 5 0 0 3 6]
-                                  [7 0 3 0 1 8 0 0 0]] [0, 0] )
-
-
-
-        goal-state (s/->State [   [4 3 5 2 6 9 7 8 1]
-                                  [6 8 2 5 7 1 4 9 3]
-                                  [1 9 7 8 3 4 5 6 2]
-
-                                  [8 2 6 1 9 5 3 4 7]
-                                  [3 7 4 6 8 2 9 1 5]
-                                  [9 5 1 7 4 3 6 2 8]
-
-                                  [5 1 9 3 2 6 8 7 4]
-                                  [2 4 8 9 5 7 1 3 6]
-                                  [7 6 3 4 1 8 2 5 9]] [9, 0] )
+                                  [0 0 0 0 4 0 0 0 0]
+                                  [3 0 2 0 0 5 6 0 0]
+                                  [1 0 0 0 0 0 0 0 0]] [0, 0] )
 
 
 
-        max-states 100000
+        goal-state (s/->State [   [8 4 1 9 7 3 2 5 6]
+                                  [6 9 3 5 8 2 4 1 7]
+                                  [7 2 5 6 1 4 3 8 9]
+
+                                  [5 3 9 4 2 1 7 6 8]
+                                  [2 1 8 7 6 9 5 4 3]
+                                  [4 7 6 3 5 8 1 9 2]
+
+                                  [9 5 7 2 4 6 8 3 1]
+                                  [3 8 2 1 9 5 6 7 4]
+                                  [1 6 4 8 3 7 9 2 5]] [9, 0] )
+
+
+
+        max-states 1000000
         costs nil
         came-from (alg/breadth-first-search s/children max-states start-state goal-state)
         ;[came-from costs] (alg/shortest-path s/children (constantly 1)

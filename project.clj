@@ -8,4 +8,5 @@
   :main ^:skip-aot a-star-search.core
   :target-path "target/%s"
   :profiles {:uberjar {:aot :all}
-             :dev {:dependencies [[midje "1.8.3"]]}})
+             :dev {:dependencies [[midje "1.8.3" :exclusions [org.clojure/clojure]]]
+	     		:plugins [[lein-midje "3.2.1"]]}})

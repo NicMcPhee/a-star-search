@@ -8,8 +8,9 @@
   (println "The path to the solution is:")
   (doseq [b (map :board path)]
     (println b))
+  (println "The path has" (count path) "steps.")
   (when costs
-    (println "The path has" (count path) "steps and its cost is" (costs goal-state))))
+    (println "Its cost is" (costs goal-state))))
 
 (defn -main
   "Search for a hard-coded N-puzzle target state."
@@ -18,12 +19,12 @@
         goal-state (np/->State [[0 1 2] [3 4 5] [6 7 8]] [0 0])
         max-states 1000000
         costs nil
-        ; came-from (alg/breadth-first-search np/children max-states start-state goal-state)
+        came-from (alg/breadth-first-search np/children max-states start-state goal-state)
         ; [came-from costs] (alg/shortest-path np/children (constantly 1)
-        ;                                      max-states start-state goal-state )
+        ;                                     max-states start-state goal-state )
         ; [came-from costs] (alg/shortest-path np/children np/prefer-horizontal-cost
         ;                                      max-states start-state goal-state)
-        came-from (alg/heuristic-search np/children np/num-wrong start-state goal-state :max-states 10000)
+        ; came-from (alg/heuristic-search np/children np/num-wrong start-state goal-state :max-states 10000)
         path (alg/extract-path came-from start-state goal-state)]
     (print-results came-from path costs goal-state)))
 

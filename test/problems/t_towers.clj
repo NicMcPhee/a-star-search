@@ -10,6 +10,9 @@
   ((:vec-of-pegs (->State [[] [1] [5]])) 2) => [5]
   ((:vec-of-pegs (->State [[] [] []])) 0) => [])
 
+;;(facts
+;;  (->State [[1 2 3] [] ["doot"]]) => "Fail to see state record!")
+
 (facts
   (legal? (->State [[] [] []])) => true
   (legal? (->State [[1] [] []])) => true
@@ -27,6 +30,18 @@
   (legal? (->State [[1 2 3 4 5 5] [] [55]])) => false
   )
 
+;; Tests for children-by-peg
 (facts
-  (children (->State [[1 2 3] [] []])) => ((->State [[1 2 3] [] []]) (->State [[2 3] [1] []]) (->State [[2 3] [] [1]]))
+  (children-by-peg 0 (->State [[1 2 3] [] []])) => (list (->State [[1 2] [3] []]) (->State [[1 2] [] [3]]))
+)
+
+;; Tests for generate-children
+(facts
+	(children (->State [[1 2 3] [] []])) => (list (->State [[1 2] [3] []])
+								(->State [[1 2] [] [3]]))
+
+	(children (->State [[1 2] [3] []])) => (list (->State [[1] [3 2] []])
+								(->State [[1] [3] [2]])
+								(->State [[1 2 3] [] []])
+								(->State [[1 2] [] [3]]))
 )

@@ -3,7 +3,7 @@
 (defrecord State [vec-of-pegs])
 
 (def start-state (->State [[4 3 2 1] [] []]))
-(def goal-state (->State [[] [4 3 2 1] []]))
+(def goal-state (->State [[] [] [4 3 2 1]]))
 
 
 (defn legal? [new-state]
@@ -16,29 +16,45 @@
         ]
     (and (reduce #(and %1 %2) stack-order) correct-disks)))
 
-(defn children-helper [state]
-  (flatten
-  (for [[current-peg current-disks] state]
-    (if (not (empty? current-disks))
-      (let [moving-disk (peek current-disks)]
-        (map #(if (not (= (first %) current-peg))
-                  (assoc state current-peg (pop current-disks) (first %) (conj (second %) moving-disk))
-                  )
-               state
-               )
-          )
-        ))
-    ))
+;;
+;; Helper function to generate children
+;;
+;; Generates a set of likely-valid children by moving the
+;; top disk of a given peg. Does not include a copy of the parent
+;; state in the list of children returned.
+;;
+(defn children-by-peg [peg-index state]
+(flatten
+(filter #(not (= % nil))
+(let [all-pegs (:vec-of-pegs state)
+	peg (all-pegs peg-index)]
+	
+(if (not (empty? peg))
+   (let [moving-disk (peek peg)]
+	(for [secondary-index (range 0 (count all-pegs))]
+		(if (not (= secondary-index peg-index))
+			(->State (assoc all-pegs
+				peg-index (pop peg)
+				secondary-index (conj (all-pegs secondary-index) moving-disk)))
+		)
+	)
+    )
+)))))
 
+;;
+;; Generates all the potentially valid children given a state
+;;
 (defn children [state]
-  (filter #(and (not (= % nil))
-                (legal? %))
-          (children-helper state)))
-
-(defn children [nothing])
+	(flatten
+	(for [peg-index (range 0 (count (:vec-of-pegs state)))]
+		(children-by-peg peg-index state)
+	)
+	)
+)
 
  (defn cool-print-runnings [state]
-;;   (println "The first peg is:" (:peg1 state))
-;;   (println "The second peg is:" (:peg2 state))
-;;   (println "The third peg is:" (:peg3 state))
-   (println))
+	(doseq [peg-num (range 0 (count (:vec-of-pegs state)))]
+		(println "Peg #" peg-num " -> " ((:vec-of-pegs state) peg-num))
+	)
+	(println)
+ )

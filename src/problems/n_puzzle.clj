@@ -28,8 +28,22 @@
         t-x (first (:blank-position t))]
     (inc (Math/abs (- s-x t-x)))))
 
+(defn state->vec [state]
+  (flatten (:board state)))
+
 (defn num-wrong [goal-state current-state]
   (count (filter identity
                  (map not=
-                      (flatten (:board goal-state))
-                      (flatten (:board current-state))))))
+                      (state->vec goal-state)
+                      (state->vec current-state)))))
+
+(defn zero-or-same? [[x y]]
+  (or (= x y)
+      (zero? x)
+      (zero? y)))
+
+(defn num-non-blank-wrong [goal-state current-state]
+  (count (remove zero-or-same?
+                 (map (fn [x y] [x y])
+                      (state->vec goal-state)
+                      (state->vec current-state)))))

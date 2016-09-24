@@ -49,3 +49,7 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
+
+# other
+.idea
+n-puzzle-as-search.iml

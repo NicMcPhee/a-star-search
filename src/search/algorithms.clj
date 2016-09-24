@@ -54,3 +54,17 @@
       (= current-state start-state) (reverse (conj path start-state))
       :else (recur (came-from current-state)
                    (conj path current-state)))))
+
+(defn a-star-search-algorithm [children-fn heuristic-fn max-states start-state goal-state]
+  (loop [frontier (pm/priority-map start-state 0)
+         came-from {:start nil}
+         cost-so-far{:start 0}
+         ]
+    (if (empty? frontier)
+      [came-from cost-so-far]
+      (let [current (first (peek frontier))
+            current-cost (cost-so-far current)
+            current-children (children-fn current)]
+        (recur (- max-states ()))))
+    )
+  )

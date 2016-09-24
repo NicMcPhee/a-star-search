@@ -64,7 +64,12 @@
       [came-from cost-so-far]
       (let [current (first (peek frontier))
             current-cost (cost-so-far current)
-            current-children (children-fn current)]
-        (recur (- max-states ()))))
+            current-children (children-fn current)
+            unadjusted-scored-children (map (fn[current-state next-state] [next-state (heuristic-fn current-state next-state)]) (children-fn current-state))]
+        (recur (- max-states wut))))
     )
+  )
+
+(defn heuristic [current-state next-state]
+  5
   )

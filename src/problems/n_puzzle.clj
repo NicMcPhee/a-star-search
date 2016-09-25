@@ -56,3 +56,4 @@
                  (map (fn [x y] [x y])
                       (state->vec goal-state)
                       (state->vec current-state)))))
+

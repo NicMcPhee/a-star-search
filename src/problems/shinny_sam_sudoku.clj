@@ -110,15 +110,20 @@
       (if (not= 0 (get-in (:board state) [x y])) (->State (:board state) (updatePos state))
       (->State new-state (updatePos state))))))
 
-;heuristic function
-(defn avg [goal-state current-state]
-  (Math/abs (- (int (/ (reduce + (flatten (:board current-state)))
-                    (count (filter #(> % 0)(flatten (:board current-state)))))) 5)))
+
+;heuristic function in progress
+(defn avg-difference [goal-state current-state]
+  (Math/abs (- (quot (reduce + (flatten (:board current-state)))
+                     (count (filter #(> % 0)(flatten (:board current-state)))))
+               (quot (reduce + (flatten (:board goal-state)))
+                     (count (filter #(> % 0)(flatten (:board goal-state))))))))
 
 
-;(avg end-state test-state)
+(defn avg-test [goal-state current-state] 0)
 
-;(avg end-state start-state)
+ (avg-test test-state test-state)
+
+(avg-difference end-state start-state)
 
 
 ;visual representation of a current sudoku board example's axis (currently operates in [y x])

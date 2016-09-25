@@ -52,17 +52,14 @@
         ;                                      max-states start-state goal-state )
         ;[came-from costs] (alg/shortest-path s/children s/prefer-horizontal-cost
         ;                                      max-states start-state goal-state)
-        came-from (alg/heuristic-search s/children s/avg start-state goal-state :max-states 10000)
+        came-from (alg/heuristic-search s/children s/avg-test start-state goal-state :max-states 10000)
         path (alg/extract-path came-from start-state goal-state)]
-    (print-results came-from path costs goal-state)
-    ;(for [s came-from]
-    ;  print (:board s))
-    ))
+    (print-results came-from path costs goal-state)))
 
 
 
 
 ; Run (with timing) with
-(time (-main))
+;(time (-main))
 ; or
 ; time lein run

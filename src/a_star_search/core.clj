@@ -9,8 +9,9 @@
   (println "The path to the solution is:")
   (doseq [b (map :board path)]
     (println b))
+  (println "The path has" (count path) "steps.")
   (when costs
-    (println "The path has" (count path) "steps and its cost is" (costs goal-state))))
+    (println "Its cost is" (costs goal-state))))
 
 
 (defn -main
@@ -51,6 +52,7 @@
         ;                                      max-states start-state goal-state )
         ;[came-from costs] (alg/shortest-path s/children s/prefer-horizontal-cost
         ;                                      max-states start-state goal-state)
+        ;came-from (alg/heuristic-search s/children s/num-non-blank-wrong start-state goal-state :max-states 10000)
         path (alg/extract-path came-from start-state goal-state)]
     (print-results came-from path costs goal-state)
     ;(for [s came-from]

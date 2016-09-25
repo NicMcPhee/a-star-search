@@ -8,4 +8,6 @@
   :main ^:skip-aot a-star-search.core
   :target-path "target/%s"
   :profiles {:uberjar {:aot :all}
-             :dev {:dependencies [[midje "1.8.3"]]}})
+             :dev {:dependencies [[midje "1.8.3"]]}}
+  :pluins [[lein-midje "3.1.3"]]
+  :jvm-opts ["-Xms1G" "-Xmx1G"])

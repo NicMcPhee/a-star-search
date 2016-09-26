@@ -49,7 +49,16 @@
 (defn changeValue [board row col new-value] (changeValue-helper board (+ (* 3 (int (/ row 3))) (int (/ col 3))) (rem row 3) (rem col 3) new-value))
 
 ; helper functions for heuristic
-(defn getBoxSansNum [board new-value])
+(defn getBoxSansNum [board new-value]
+  (for [incr (range 0 9)
+        :let [box incr]
+        :when (checkBox board box new-value)]
+        box
+    ))
+
+
+
+
 
 (defn eliminateRowsHelper [board row new-value])
 

@@ -47,3 +47,4 @@
 ; (time (-main))
 ; or
 ; time lein run
+(-main)

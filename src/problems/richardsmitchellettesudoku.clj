@@ -1,7 +1,7 @@
 (ns problems.richardsmitchellettesudoku)
 
 ;creates our state, which contains the component board, in order to access the board, you must call it (:board statename)
-(defrecord State [board])
+(defrecord State [board new-value])
 
 ;this returns a section of the sudoku board that the box is location in. For instance, box 0 will return a vector of boxes 0, 1 and 2
 ;box value 8 will return boxes 6,7 and 8 in a vector
@@ -89,7 +89,7 @@
                                     [[7 5 0][0 6 9][2 4 0]]]
                                    [[[3 0 0][0 0 0][0 0 2]]
                                     [[8 0 1][4 2 6][0 9 0]]
-                                    [[0 0 2][0 0 0][6 0 0]]]]))
+                                    [[0 0 2][0 0 0][6 0 0]]]] 0))
 ;calling tempGrid for a test
 (getBoxSansNum (:board (tempGrid)) 1)
 
@@ -99,8 +99,6 @@
        :when (checkRow board (+ (* (int (/ box 3)) 3) boxRow) 0 new-value)]
   boxRow))
 
-;test
-(eliminateRow (:board (tempGrid)) 6 1)
 
 (defn eliminateCol [board box new-value]
   (for [incr (range 0 3)
@@ -108,15 +106,11 @@
        :when (checkCol board 0 (+ (* (int (rem box 3)) 3) boxCol) new-value)]
   boxCol))
 
-;test
-(eliminateCol (:board (tempGrid)) 6 1)
-
 
 (defn combinations [board box new-value]
   (for [valid-rows (eliminateRow board box new-value) valid-cols (eliminateCol board box new-value)]
     [valid-rows valid-cols]))
-;test
-(combinations (:board (tempGrid)) 6 1)
+
 
 (defn canSolve [board box new-value]
   (= 1 (count
@@ -124,12 +118,21 @@
         :when (= 0 (getByBox board box (first valid-spots) (second valid-spots)))]
     valid-spots))))
 
-;test
-(canSolve (:board (tempGrid)) 2 6)
 
+
+(defn weighter [board new-value] (count (for [box (getBoxSansNum board new-value)
+                                              :when (canSolve board box new-value)] 1)))
+
+(weighter (:board (tempGrid)) 6)
 
 ; our heuristic
-(defn heuristic [board new-value] ())
+(defn heuristic-helper [board new-value initial-weight] (loop [weight (weighter board new-value)]
+                                      weight))
+(defn openSpots [board]
+  (count (filter zero? (flatten board))))
+
+(defn heuristic [state] (max 0 (- (openSpots (:board state)) (heuristic-helper (:board state) (:new-value state) 0))))
+;(defn heuristic [state] (rand-int 1000))
 
 (defn children [state]
 (let [board (:board state)
@@ -138,4 +141,4 @@
   (for [incr (range 1 10)
         :let [new-value incr]
         :when (legal? board row col new-value)]
-    (->State (changeValue board row col new-value)))))
+    (->State (changeValue board row col new-value) new-value))))

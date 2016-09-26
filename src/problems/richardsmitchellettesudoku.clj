@@ -80,22 +80,56 @@
         box
     ))
 
+; using a temporary board state for a test
+(defn tempGrid [] (->State [[[[0 0 6][0 0 0][2 0 0]]
+                                    [[0 8 0][2 5 9][6 0 7]]
+                                    [[9 0 0][0 0 0][0 0 5]]]
+                                   [[[0 9 8][5 2 0][0 7 1]]
+                                    [[0 0 0][0 0 0][0 0 0]]
+                                    [[7 5 0][0 6 9][2 4 0]]]
+                                   [[[3 0 0][0 0 0][0 0 2]]
+                                    [[8 0 1][4 2 6][0 9 0]]
+                                    [[0 0 2][0 0 0][6 0 0]]]]))
+;calling tempGrid for a test
+(getBoxSansNum (:board (tempGrid)) 1)
+
+(defn eliminateRow [board box new-value]
+  (for [incr (range 0 3)
+       :let [boxRow incr]
+       :when (checkRow board (+ (* (int (/ box 3)) 3) boxRow) 0 new-value)]
+  boxRow))
+
+;test
+(eliminateRow (:board (tempGrid)) 6 1)
+
+(defn eliminateCol [board box new-value]
+  (for [incr (range 0 3)
+       :let [boxCol incr]
+       :when (checkCol board 0 (+ (* (int (rem box 3)) 3) boxCol) new-value)]
+  boxCol))
+
+;test
+(eliminateCol (:board (tempGrid)) 6 1)
 
 
+(defn combinations [board box new-value]
+  (for [valid-rows (eliminateRow board box new-value) valid-cols (eliminateCol board box new-value)]
+    [valid-rows valid-cols]))
+;test
+(combinations (:board (tempGrid)) 6 1)
 
+(defn canSolve [board box new-value]
+  (= 1 (count
+     (for [valid-spots (combinations board box new-value)
+        :when (= 0 (getByBox board box (first valid-spots) (second valid-spots)))]
+    valid-spots))))
 
-(defn eliminateRowsHelper [board row new-value])
+;test
+(canSolve (:board (tempGrid)) 2 6)
 
-(defn eliminateRows [board box new-value])
-
-(defn eliminateColsHelper [board col new-value])
-
-(defn eliminateCols [board box new-value])
-
-(defn combinations [])
 
 ; our heuristic
-(defn heuristic [board row col new-value] ())
+(defn heuristic [board new-value] ())
 
 (defn children [state]
 (let [board (:board state)

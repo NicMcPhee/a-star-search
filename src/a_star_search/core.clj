@@ -41,18 +41,18 @@
 
                                   [9 5 7 2 4 6 8 3 1]
                                   [3 8 2 1 9 5 6 7 4]
-                                  [1 6 4 8 3 7 9 2 5]] [9, 0] )
+                                  [1 6 4 8 3 7 9 2 5]] [8, 8] )
 
 
 
         max-states 1000000
         costs nil
-        ;came-from (alg/breadth-first-search s/children max-states start-state goal-state)
+        came-from (alg/breadth-first-search s/children max-states start-state goal-state)
         ;[came-from costs] (alg/shortest-path s/children (constantly 1)
         ;                                      max-states start-state goal-state )
         ;[came-from costs] (alg/shortest-path s/children s/prefer-horizontal-cost
         ;                                      max-states start-state goal-state)
-        came-from (alg/heuristic-search s/children s/avg-test start-state goal-state :max-states 10000)
+        ;came-from (alg/heuristic-search s/children s/avg-difference start-state goal-state :max-states 1000000)
         path (alg/extract-path came-from start-state goal-state)]
     (print-results came-from path costs goal-state)))
 
@@ -60,6 +60,6 @@
 
 
 ; Run (with timing) with
-;(time (-main))
+(time (-main))
 ; or
 ; time lein run

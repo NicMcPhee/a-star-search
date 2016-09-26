@@ -29,7 +29,7 @@
 
                                   [0 0 9 3 0 0 0 7 4]
                                   [0 4 0 0 5 0 0 3 6]
-                                  [7 0 3 0 1 8 0 0 0]] [3, 4]))
+                                  [7 0 3 0 1 8 0 0 0]] [8, 8]))
 
 (def test-state (->State [        [0 0 0 2 6 0 0 0 1]
                                   [6 0 0 0 0 0 0 0 0]
@@ -72,12 +72,15 @@
 (defn updatePos [state]
   (let [x (first (:curr-position state))
         y (second (:curr-position state))]
-
-    (if (= y 8)
+    (if (= 0 (compare (:curr-position state) [8, 8]))
+      [8, 8]
+      (if (= y 8)
       [(+ x 1) (- y 8)]
-      [x (+ y 1)])))
+      [x (+ y 1)]))
+      )
+)
 
-
+(updatePos start-state)
 
 ;divide into 3*3 and return a coll
 (defn grid [board hpos vpos]
@@ -112,17 +115,30 @@
 
 
 ;heuristic function in progress
-(defn avg-difference [goal-state current-state]
-  (Math/abs (- (quot (reduce + (flatten (:board current-state)))
+(defn avg-diff [goal-state current-state]
+  (- (/ (reduce + (flatten (:board current-state)))
                      (count (filter #(> % 0)(flatten (:board current-state)))))
-               (quot (reduce + (flatten (:board goal-state)))
-                     (count (filter #(> % 0)(flatten (:board goal-state))))))))
+               (/ (reduce + (flatten (:board goal-state)))
+                     (count (filter #(> % 0)(flatten (:board goal-state)))))))
+
+(defn avg-difference [goal-state current-state]
+  (if (= 0 (compare (:curr-position current-state) [8, 8]))
+      0
+      (if (= (int (avg-diff goal-state current-state)) 0)
+        1
+        (Math/abs (int (avg-diff goal-state current-state)))
+        )
+    )
+  )
 
 
-(defn avg-test [goal-state current-state] 0)
 
- (avg-test test-state test-state)
 
+(defn avg-test [goal-state current-state] 1)
+
+(Math/abs (int (avg-diff start-state end-state)))
+
+(= 0 (int (avg-diff end-state start-state)))
 (avg-difference end-state start-state)
 
 

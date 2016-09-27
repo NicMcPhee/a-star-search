@@ -80,8 +80,6 @@
             new-cost-so-far (reduce #(assoc %1 %2 (children-costs %2)) cost-so-far children-to-add)
             new-frontier (reduce #(assoc %1 %2 (+ (new-cost-so-far %2) (heuristic-fn %2))) (pop frontier) children-to-add)
             new-came-from (reduce #(assoc %1 %2 current) came-from children-to-add)]
-        (prn (map #(get children-costs %) children))
-        (prn (map heuristic-fn children))
         (recur (- max-states (count children-to-add))
                new-frontier
                new-came-from

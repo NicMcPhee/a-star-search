@@ -36,7 +36,7 @@
         max-states 1000000
         costs nil
         [came-from costs] (alg/a-star-search rmsd/children (constantly 0.1) rmsd/heuristic max-states start-state goal-state)
-        ;came-from (alg/heuristic-search rmsd/children rmsd/heuristic start-state goal-state :max-states 10000)
+        came-from (alg/heuristic-search rmsd/children rmsd/heuristic start-state goal-state :max-states 10000)
         ;came-from (alg/breadth-first-search rmsd/children max-states start-state goal-state)
          ;[came-from costs] (alg/shortest-path rmsd/children (constantly 1)
           ;                                    max-states start-state goal-state )

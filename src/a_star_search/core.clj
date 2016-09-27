@@ -10,7 +10,7 @@
   (doseq [b path]
     (towers/cool-print-runnings b))
   (when costs
-    (println "The path has" (count path) "steps and its cost is" (costs goal-state))))
+    (println "Its cost is" (costs goal-state))))
 
 (defn -main
   "Search for a hard-coded N-puzzle target state."
@@ -24,6 +24,7 @@
                                              max-states start-state goal-state )
         ; [came-from costs] (alg/shortest-path np/children np/prefer-horizontal-cost
         ;                                      max-states start-state goal-state)
+        ;came-from (alg/heuristic-search np/children np/num-non-blank-wrong start-state goal-state :max-states 10000)
         path (alg/extract-path came-from start-state goal-state)]
     (print-results came-from path costs goal-state)))
 

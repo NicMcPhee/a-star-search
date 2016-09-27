@@ -2,7 +2,9 @@
 ; 1) the first ring, which is hooked in the very front of the loop, can be taken off or put back on the loop any time;
 ; 2) the only other ring that can be taken off from or put back on the loop is the ring next to the first ring.
 (ns problems.chinese-ring-puzzle)
-
+;added two more fileds to each state:
+; 1. num-rings-off contains the number of rings that are off for each state.
+; 2. last-ring-off contains the index number of the ring that is "off" for each state.
 (defrecord State [leadRing Rings num-rings-off last-ring-off])
 
 (defn children [state]
@@ -40,8 +42,7 @@
                   (conj children (->State leadRing2 Rings2 num-rings-off-2 last-ring-off-2))))
             children))))
 
-;(defn heuristic-function [state]
-;  (let [])
-;  )
+(defn heuristic-function [state]
+  (+ (:num-rings-off state) (:last-ring-off state)))
 
 

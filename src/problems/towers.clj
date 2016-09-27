@@ -3,6 +3,7 @@
 (defrecord State [vec-of-pegs])
 
 (def start-state (->State [[4 3 2 1] [] [] [] []]))
+(def state-state-peg-index 0)
 (def goal-state (->State [[] [] [] [] [4 3 2 1]]))
 
 ;;
@@ -21,6 +22,42 @@
         correct-disks (= (sort all-disks) (range 1 (+ 1 (count all-disks))))
         ]
     (and (reduce #(and %1 %2) stack-order) correct-disks)))
+
+;;;;;;; Helper Functions for Fitness ;;;;;;;
+
+;; Untestable!
+;(defn fitness-initial-peg [state]
+;;	(- (count ((:vec-of-pegs state) start-state-peg-index)))
+;;)
+
+(defn fitness-lonely-disk [state]
+	(- (count (filter #(= (count %) 1) (:vec-of-pegs state))))
+)
+
+(defn fitness-used-pegs [state]
+	(let [num-disks (reduce + (map #(count %) (:vec-of-pegs state)))
+		num-pegs-in-use (count (filter #(not (empty? %)) (:vec-of-pegs state)))]
+
+		(- (+ num-disks 1) num-pegs-in-use)
+	)
+)
+
+;;
+;; Determines the fitness of a state.
+;; Takes in a state, wich we assume to be valid.
+;; Returns an integer... High numbers are "better"
+;;
+;; - point for each disk on the initial peg
+;; - the cumulative difference in peg sizes over "one"...
+;; - point for each peg with only one disk on it
+;; - point for every "in use" peg beyond n+1 pegs
+;;
+(defn fitness [state]
+	(+
+	;;(fitness-initial-peg state)
+	(fitness-lonely-disk state)
+	)
+)
 
 ;;
 ;; Helper function to generate children

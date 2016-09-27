@@ -45,3 +45,9 @@
 								(->State [[1 2 3] [] []])
 								(->State [[1 2] [] [3]]))
 )
+
+;; Tests for fitness
+(facts
+  (fitness-lonely-disk (->State [[1 2] [] [3]])) => -1
+  (fitness-lonely-disk (->State [[1 2 3 4] [2] [] [] [5 6] [9]])) => -2
+)

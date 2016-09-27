@@ -178,4 +178,15 @@
         )
   )
 
+; Function    : num-wrong
+;
+; Description : A heuristic for determining how many values are wrong in the current working row.
+;               The program should pursue Sudoku boards with the least number of incorrectly
+;               placed values.
+(defn num-wrong [goal-state current-state pos]
+
+  ; Do we need an old position? Or can we use the current state?
+
+
+  )
 

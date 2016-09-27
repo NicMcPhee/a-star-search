@@ -54,3 +54,6 @@
       (= current-state start-state) (reverse (conj path start-state))
       :else (recur (came-from current-state)
                    (conj path current-state)))))
+
+;(defn heuristic-search [children-fn heuristic-fn start-state goal-state]
+;  )

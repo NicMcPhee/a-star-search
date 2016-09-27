@@ -3,7 +3,7 @@
 ; 2) the only other ring that can be taken off from or put back on the loop is the ring next to the first ring.
 (ns problems.chinese-ring-puzzle)
 
-(defrecord State [leadRing Rings])
+(defrecord State [leadRing Rings num-rings-off last-ring-off])
 
 (defn children [state]
   (let [len (count (:Rings state)),
@@ -23,19 +23,29 @@
 
     (let [children (if (= R1 "on")
         (let [Rings1 ["off" R2 R3 R4 R5 R6 R7 R8 R9]
-              leadRing1 (.indexOf Rings1 "on")]
-              [(->State leadRing1 Rings1)])
+              leadRing1 (.indexOf Rings1 "on")
+              num-rings-off-1 (count (filter #(= "off" %) Rings1))
+              last-ring-off-1 (.lastIndexOf Rings1 "off")]
+              [(->State leadRing1 Rings1 num-rings-off-1 last-ring-off-1)])
         (let [Rings1 ["on" R2 R3 R4 R5 R6 R7 R8 R9]
-              leadRing1 (.indexOf Rings1 "on")]
-              [(->State leadRing1 Rings1)]))]
+              leadRing1 (.indexOf Rings1 "on")
+              num-rings-off-1 (count (filter #(= "off" %) Rings1))
+              last-ring-off-1 (.lastIndexOf Rings1 "off")]
+              [(->State leadRing1 Rings1 num-rings-off-1 last-ring-off-1)]))]
 
 
-    (if (<= nextRing (- len 1))
+    (if (< nextRing len)
         (if (= (get Rings nextRing) "on")
-            (let [Rings2 (assoc Rings nextRing "off"), leadRing2 (.indexOf Rings2 "on")]
-                  (conj children (->State leadRing2 Rings2)))
-            (let [Rings2 (assoc Rings nextRing "on"), leadRing2 (.indexOf Rings2 "on")]
-                  (conj children (->State leadRing2 Rings2))))
+            (let [Rings2 (assoc Rings nextRing "off")
+                  leadRing2 (.indexOf Rings2 "on")
+                  num-rings-off-2 (count (filter #(= "off" %) Rings2))
+                  last-ring-off-2 (.lastIndexOf Rings2 "off")]
+                  (conj children (->State leadRing2 Rings2 num-rings-off-2 last-ring-off-2)))
+            (let [Rings2 (assoc Rings nextRing "on")
+                  leadRing2 (.indexOf Rings2 "on")
+                  num-rings-off-2 (count (filter #(= "off" %) Rings2))
+                  last-ring-off-2 (.lastIndexOf Rings2 "off")]
+                  (conj children (->State leadRing2 Rings2 num-rings-off-2 last-ring-off-2))))
             children))))
 
 

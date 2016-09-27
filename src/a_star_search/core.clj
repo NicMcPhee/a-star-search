@@ -14,13 +14,13 @@
 (defn -main
   "Search for a hard-coded N-puzzle target state."
   [& args]
-  (let [start-state (crp/->State 0 ["on" "on" "on" "on" "on" "on" "on" "on" "on"])
-        goal-state (crp/->State -1 ["off" "off" "off" "off" "off" "off" "off" "off" "off"])
+  (let [start-state (crp/->State 0 ["on" "on" "on" "on" "on" "on" "on" "on" "on"] 0 -1)
+        goal-state (crp/->State -1 ["off" "off" "off" "off" "off" "off" "off" "off" "off"] 9 8)
         max-states 10000
         costs nil
-        ;came-from (alg/breadth-first-search crp/children max-states start-state goal-state)
-        [came-from costs] (alg/shortest-path crp/children (constantly 1)
-                                              max-states start-state goal-state )
+        came-from (alg/breadth-first-search crp/children max-states start-state goal-state)
+        ;[came-from costs] (alg/shortest-path crp/children (constantly 1)
+        ;                                      max-states start-state goal-state )
         ; [came-from costs] (alg/shortest-path crp/children crp/prefer-horizontal-cost
         ;                                      max-states start-state goal-state)
         path (alg/extract-path came-from start-state goal-state)]
@@ -31,4 +31,14 @@
 ; or
 ; time lein run
 
-(-main)
+;(-main)
+
+;(count (get (group-by count ["on" "off" "on" "off"]) 3))
+
+;(- (- (count ["on" "off" "on" "off"]) 1) (.indexOf (reverse ["on" "off" "on" "off"]) "off"))
+
+;(count (filter #(= "off" %) ["on" "off" "on" "off"]))
+
+;(count (filter (fn [s] (= "off" s)) ["on" "off" "on" "off"]))
+
+;(.lastIndexOf [1 2 3 2 1] 1)

@@ -33,11 +33,57 @@
 ;;             14 [[5 9] [12 13]]))
 
 
+;;Diagonal increase left to right
+;;[(+ (+ vector-index row-number) (+ row-number 1)) (+ vector-index row-number)]
 
-(defn moves [board]
+;;Diagonal increase right to left
+;;[(+ (+ vector-index (+ row-number 1)) (+ row-number 2)) (+ vector-index (+ row-number 1))]
+
+;;Diagonal decrease left to right
+;;[(- (- vector-index row-number) (- row-number 1)) (- vector-index row-number)]
+
+;;Diagonal decrease right to left
+;;[(- (- vector-index (- row-number 1)) (- row-number 2)) (- vector-index (- row-number 1))]
+
+(defn num-rows [board]
+  (loop [index 1
+         total-index (count board)
+         current-index 0
+         number-of-rows 0]
+    (if (not= total-index current-index)
+      (recur (+ index 1) total-index (+ current-index index) (+ number-of-rows 1))
+      number-of-rows)))
+
+
+(defn generate-moves [board vector-index row-index row-number number-of-rows hashmap]
+  [
+    (if (> row-index 2) [(- vector-index 2) (- vector-index 1)])
+    (if (< row-index (- row-number 1)) [(+ vector-index 2) (+ vector-index 1)])
+    (if (> row-index 2) [(- (- vector-index row-number) (- row-number 1)) (- vector-index row-number)])
+    (if (< row-index (- row-number 1)) [(- (- vector-index (- row-number 1)) (- row-number 2)) (- vector-index (- row-number 1))])
+    (if (< row-number (- number-of-rows 1)) [(+ (+ vector-index (+ row-number 1)) (+ row-number 2)) (+ vector-index (+ row-number 1))])
+    (if (< row-number (- number-of-rows 1)) [(+ (+ vector-index row-number) (+ row-number 1)) (+ vector-index row-number)])
+  ])
+
+
+
+
+(defn make-moves [board]
   (loop [board board
-         i 0]
-    (if (not= i (count board))
+         vector-index 0
+         row-index 1
+         row-number 1
+         number-of-rows (num-rows board)
+         hashmap {}]
+    (if (not= vector-index (count board))
+      (if (not= row-index row-number)
+        (recur board (+ vector-index 1) (+ row-index 1) row-number number-of-rows (assoc hashmap vector-index (generate-moves board vector-index row-index row-number number-of-rows hashmap)))
+        (recur board (+ vector-index 1) 1 (+ row-number 1) number-of-rows (assoc hashmap vector-index (generate-moves board vector-index row-index row-number number-of-rows hashmap))))
+      hashmap)))
+
+(def moves
+ (make-moves [1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1]))
+
 
 
 
@@ -66,7 +112,7 @@
   (loop [board-state board-state
          index 0
          children []]
-    (if (not= index 15)
+    (if (not= index (count board-state))
       (if (= 0 (get board-state index))
         (recur board-state (inc index) (concat children (make-children board-state index)))
         (recur board-state (inc index) children))

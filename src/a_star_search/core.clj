@@ -15,16 +15,19 @@
 ;;     10 -- 11 -- 12 --- 13 --- 14
 
 
+;; (defn print-tree [board-state]
+;;   (println "                  " (get board-state 0))
+;;   (println "                 /   \\")
+;;   (println "              "(get board-state 1)"-----"(get board-state 2))
+;;   (println "             /   \\   /   \\")
+;;   (println "           "(get board-state 3)"----"(get board-state 4)"----"(get board-state 5))
+;;   (println "          /  \\   /   \\  /  \\")
+;;   (println "        "(get board-state 6)"---"(get board-state 7)"----"(get board-state 8)"---"(get board-state 9))
+;;   (println "       /  \\  /  \\   /  \\  /  \\")
+;;   (println "     "(get board-state 10)"---"(get board-state 11)"---"(get board-state 12)"---"(get board-state 13)"---"(get board-state 14)))
+
 (defn print-tree [board-state]
-  (println "                  " (get board-state 0))
-  (println "                 /   \\")
-  (println "              "(get board-state 1)"-----"(get board-state 2))
-  (println "             /   \\   /   \\")
-  (println "           "(get board-state 3)"----"(get board-state 4)"----"(get board-state 5))
-  (println "          /  \\   /   \\  /  \\")
-  (println "        "(get board-state 6)"---"(get board-state 7)"----"(get board-state 8)"---"(get board-state 9))
-  (println "       /  \\  /  \\   /  \\  /  \\")
-  (println "     "(get board-state 10)"---"(get board-state 11)"---"(get board-state 12)"---"(get board-state 13)"---"(get board-state 14)))
+  (println board-state))
 
 
 (defn print-results [result path costs goal-state]
@@ -56,10 +59,10 @@
 
 (def board-state [1 1 1 1 1 1 1 1 1 1 1 1 1 1 0])
 
-(def full-board [1 1 1 1 1 1 1 1 1 1 1 1 1 1 1])
+(def full-board [1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1])
 
 (defn rand-board [full-board]
-  (assoc full-board (rand-int 15) 0))
+  (assoc full-board (rand-int (count full-board)) 0))
 
 (defn is-true [board-state]
   (= (reduce + board-state) 1))
@@ -79,6 +82,10 @@
         ;[came-from costs final-state] (alg/shortest-path pg/children (constantly 1) max-states start-state goal-state)
         path (alg/extract-path came-from start-state final-state)]
     (print-results came-from path costs final-state)))
+
+;; (defn -main
+;;   [& args]
+;;   (println pg/moves))
 
 
 ; Run (with timing) with

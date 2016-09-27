@@ -31,7 +31,7 @@
 ; or
 ; time lein run
 
-;(-main)
+(-main)
 
 ;(count (get (group-by count ["on" "off" "on" "off"]) 3))
 

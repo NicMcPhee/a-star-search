@@ -9,25 +9,17 @@
   (let [len (count (:Rings state)),
         leadRing (:leadRing state),
         Rings (:Rings state),
-        nextRing (+ leadRing 1),
-        R1 (nth Rings 0),
-        R2 (nth Rings 1),
-        R3 (nth Rings 2),
-        R4 (nth Rings 3),
-        R5 (nth Rings 4),
-        R6 (nth Rings 5),
-        R7 (nth Rings 6),
-        R8 (nth Rings 7),
-        R9 (nth Rings 8)]
+        nextRing (+ leadRing 1)
+        R1 (nth Rings 0)]
 
 
     (let [children (if (= R1 "on")
-        (let [Rings1 ["off" R2 R3 R4 R5 R6 R7 R8 R9]
+        (let [Rings1 (assoc Rings 0 "off")
               leadRing1 (.indexOf Rings1 "on")
               num-rings-off-1 (count (filter #(= "off" %) Rings1))
               last-ring-off-1 (.lastIndexOf Rings1 "off")]
               [(->State leadRing1 Rings1 num-rings-off-1 last-ring-off-1)])
-        (let [Rings1 ["on" R2 R3 R4 R5 R6 R7 R8 R9]
+        (let [Rings1 (assoc Rings 0 "on")
               leadRing1 (.indexOf Rings1 "on")
               num-rings-off-1 (count (filter #(= "off" %) Rings1))
               last-ring-off-1 (.lastIndexOf Rings1 "off")]
@@ -48,5 +40,8 @@
                   (conj children (->State leadRing2 Rings2 num-rings-off-2 last-ring-off-2))))
             children))))
 
+;(defn heuristic-function [state]
+;  (let [])
+;  )
 
 

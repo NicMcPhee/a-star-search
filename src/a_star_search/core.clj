@@ -18,15 +18,17 @@
         goal-state (crp/->State -1 ["off" "off" "off" "off" "off" "off" "off" "off" "off"] 9 8)
         max-states 10000
         costs nil
-        ;breadth-first-search
+        ;breadth-first-search:
         ;came-from (alg/breadth-first-search crp/children max-states start-state goal-state)
-        ;shortest-path
+        ;shortest-path:
         ;[came-from costs] (alg/shortest-path crp/children (constantly 1)
         ;                                      max-states start-state goal-state )
         ; [came-from costs] (alg/shortest-path crp/children crp/prefer-horizontal-cost
         ;                                      max-states start-state goal-state)
-        ;heuristic-search
-        came-from (alg/heuristic-search crp/children crp/heuristic-function start-state goal-state :max-states 10000)
+        ;heuristic-search:
+        ;came-from (alg/heuristic-search crp/children crp/heuristic-function start-state goal-state :max-states 10000)
+        ;a-star-search:
+        came-from (alg/a-star-search crp/children (constantly 1) crp/heuristic-function start-state goal-state :max-states 10000)
         path (alg/extract-path came-from start-state goal-state)]
     (print-results came-from path costs goal-state)))
 

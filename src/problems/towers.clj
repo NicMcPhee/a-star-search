@@ -34,13 +34,13 @@
 	(- (count (filter #(= (count %) 1) (:vec-of-pegs state))))
 )
 
-(defn fitness-used-pegs [state]
-	(let [num-disks (reduce + (map #(count %) (:vec-of-pegs state)))
-		num-pegs-in-use (count (filter #(not (empty? %)) (:vec-of-pegs state)))]
-
-		(- (+ num-disks 1) num-pegs-in-use)
-	)
-)
+;;(defn fitness-used-pegs [state]
+;;	(let [num-disks (reduce + (map #(count %) (:vec-of-pegs state)))
+;;		num-pegs-in-use (count (filter #(not (empty? %)) (:vec-of-pegs state)))]
+;;
+;;		(- (+ num-disks 1) num-pegs-in-use)
+;;	)
+;;)
 
 ;;
 ;; Determines the fitness of a state.

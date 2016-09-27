@@ -63,6 +63,52 @@
             new-visited (clojure.set/union children visited)]
         (recur new-frontier new-came-from new-visited)))))
 
+(defn a-star-search [children-fn cost-fn heuristic-fn start-state goal-state & {:keys [max-states] :or {max-states 1000000}}]
+  (loop [frontier (pm/priority-map start-state 0)
+         came-from {}
+         cost-so-far {start-state 0}]
+
+    (if (or (empty? frontier)
+            (>= (count came-from) max-states)
+            (= (first (peek frontier)) goal-state))
+      [came-from cost-so-far]
+      (let [current (first (peek frontier))
+            current-cost (cost-so-far current)
+            children (set (children-fn current))
+            children-costs (reduce #(assoc %1 %2 (+ current-cost (cost-fn current %2))) {} children)
+            children-to-add (filter #(or (not (contains? cost-so-far %))
+                                         (< (children-costs %) (cost-so-far %))) children)
+            heuristics (map (partial heuristic-fn goal-state) children-to-add)
+            new-cost-so-far (reduce #(assoc %1 %2 (children-costs %2)) cost-so-far children-to-add)
+
+
+            ; shortest path implementation frontier code for testing
+
+            ; priority = new_cost
+            ; frontier.put(next, priority)
+            ; new-frontier (reduce #(assoc %1 %2 (children-costs %2)) (pop frontier) children-to-add)
+
+            ; heuristic implementation frontier code for testing
+
+            ; priority = heuristic(goal, next)
+            ; frontier.put(next, priority)
+             new-frontier (reduce #(assoc %1 %2 (heuristic-fn goal-state %2)) (pop frontier) children-to-add)
+
+
+            ; in progress a-star frontier code, just need to combine heuristic with Dijkstra's Algorithm
+
+            ; priority = new_cost + heuristic(goal, next)
+            ; frontier.put(next, priority)
+            ; new-frontier ( )
+
+
+            new-came-from (reduce #(assoc %1 %2 current) came-from children-to-add)]
+
+        (recur new-frontier new-came-from new-cost-so-far)))))
+
+
+
+
 (defn extract-path [came-from start-state goal-state]
   (loop [current-state goal-state
          path []]

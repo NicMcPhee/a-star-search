@@ -9,7 +9,7 @@
 ;; Determines whether or not a given state is valid
 ;; Checks that no disks are out of order
 ;; Checks that no disks are duplicated
-;; 
+;;
 ;; Returns a boolean
 ;;
 (defn legal? [new-state]
@@ -36,7 +36,7 @@
 (filter #(not (= % nil))
 (let [all-pegs (:vec-of-pegs state)
 	peg (all-pegs peg-index)]
-	
+
 (if (not (empty? peg))
    (let [moving-disk (peek peg)]
 	(for [secondary-index (range 0 (count all-pegs))]
@@ -53,7 +53,7 @@
 ;; Generates all the potentially valid children given a state
 ;;
 ;; Returns a list of states
-;; 
+;;
 (defn children [state]
 	(flatten
 	(for [peg-index (range 0 (count (:vec-of-pegs state)))]
@@ -62,8 +62,8 @@
 	)
 )
 
-;; 
-;; Given a state, prints it out in a more readable format. 
+;;
+;; Given a state, prints it out in a more readable format.
 ;;
 (defn cool-print-runnings [state]
 	(doseq [peg-num (range 0 (count (:vec-of-pegs state)))]

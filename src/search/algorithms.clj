@@ -1,6 +1,7 @@
 (ns search.algorithms
   (:require clojure.set
-            [clojure.data.priority-map :as pm])
+            [clojure.data.priority-map :as pm]
+            [problems.peg-game :as pg])
   (:gen-class))
 
 
@@ -41,6 +42,29 @@
             children-to-add (filter #(or (not (contains? cost-so-far %))
                                          (< (children-costs %) (cost-so-far %))) children)
             new-cost-so-far (reduce #(assoc %1 %2 (children-costs %2)) cost-so-far children-to-add)
+            new-frontier (reduce #(assoc %1 %2 (children-costs %2)) (pop frontier) children-to-add)
+            new-came-from (reduce #(assoc %1 %2 current) came-from children-to-add)]
+        (recur (- max-states (count children-to-add))
+               new-frontier
+               new-came-from
+               new-cost-so-far)))))
+
+(defn A* [children-fn cost-fn max-states start-state is-true]
+  (loop [max-states max-states
+         frontier (pm/priority-map start-state 0)
+         came-from {}
+         cost-so-far {start-state 0}]
+    (if (or (neg? max-states)
+            (empty? frontier)
+            (is-true (first (peek frontier))))
+      [came-from cost-so-far (first (peek frontier))]
+      (let [current (first (peek frontier))
+            current-cost (cost-so-far current)
+            children (set (children-fn current))
+            children-costs (reduce #(assoc %1 %2 (+ current-cost (cost-fn current %2))) {} children)
+            children-to-add (filter #(or (not (contains? cost-so-far %))
+                                         (< (children-costs %) (cost-so-far %))) children)
+            new-cost-so-far (reduce #(assoc %1 %2 (+ (children-costs %2) (pg/cost current %2))) cost-so-far children-to-add)
             new-frontier (reduce #(assoc %1 %2 (children-costs %2)) (pop frontier) children-to-add)
             new-came-from (reduce #(assoc %1 %2 current) came-from children-to-add)]
         (recur (- max-states (count children-to-add))

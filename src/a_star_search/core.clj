@@ -15,8 +15,8 @@
   "Search for a hard-coded Towers of Hanoi target state."
   [& args]
   ;; Need to change np/ -> State that will work with our code
-  (let [start-state (np/->State [[5 4 3 2 1] [] []])
-        goal-state (np/->State [[] [] [5 4 3 2 1]])
+  (let [start-state (np/->State [[6 5 4 3 2 1] [] [] [] [] []])
+        goal-state (np/->State [[] [] [] [] [] [6 5 4 3 2 1]])
         max-states 1000000
         costs 1
         ;; here too, at np/children, to work for with our code.

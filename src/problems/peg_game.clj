@@ -85,11 +85,11 @@
  (make-moves [1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1]))
 
 
-(defn cost [parent child]
-  (let [cost (get (frequencies (subvec child (quot (count child) 2) (count child))) 0)]
-    (if (= cost nil)
+(defn heuristic [parent child]
+  (let [heuristic (get (frequencies (subvec child (quot (count child) 2) (count child))) 0)]
+    (if (= heuristic nil)
       0
-      (- 0 cost))))
+      (- 0 heuristic))))
 
 
 

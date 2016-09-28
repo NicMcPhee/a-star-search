@@ -80,7 +80,15 @@
         costs nil
       ;[came-from final-state] (alg/breadth-first-search pg/children max-states start-state goal-state)
       ;[came-from costs final-state] (alg/shortest-path pg/children (constantly 1) max-states start-state goal-state)
-      [came-from costs final-state] (alg/A* pg/children (constantly 1) max-states start-state goal-state)
+
+      ;ignore this one it doesnt work.
+      ;[came-from costs final-state] (alg/heuristic-search pg/children pg/heuristic start-state goal-state :max-states 1000000)
+
+      ;I think this works like a heuristic search. It takes our heuristic in instead of a cost function. It seems to work pretty well.
+      [came-from costs final-state] (alg/shortest-path pg/children pg/heuristic max-states start-state goal-state)
+
+      ;we made what we think is A* but we want to talk to you. We will be submitting this for now.
+      ;[came-from costs final-state] (alg/A* pg/children (constantly 1) max-states start-state goal-state)
         path (alg/extract-path came-from start-state final-state)]
     (print-results came-from path costs final-state)))
 

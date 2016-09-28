@@ -86,7 +86,7 @@
 ;;
 ;; Another try at that a-star implementation
 ;;
-(defn a-star [children-fn heuristic-fn start-state goal-state]
+(defn a-star [children-fn heuristic-fn start-state goal-state cost-fn]
 	(loop [frontier (pm/priority-map start-state 0)
 		cost-so-far {start-state 0}
 		came-from {}]
@@ -103,25 +103,19 @@
 				current (first (peek frontier))
 				current-cost (cost-so-far current)
 				children (set (children-fn current))
-				visited-children (set (keys cost-so-far))
-				;; Generate set of unvisited children
-				unvisited-children (clojure.set/difference children visited-children)
 				;; Calculate heuristic value of each child
-				heuristics (map (partial heuristic-fn goal-state) children)
-				;; Calculate the "new-cost" of each child
-				new-costs (map (fn [_] (+ current-cost 1)) children)
+                                children-costs (reduce #(assoc %1 %2 (+ current-cost (cost-fn current %2))) {} children)
+				;; Generate set of unvisited children
+                                children-to-add (filter #(or (not (contains? cost-so-far %))
+                                         (< (children-costs %) (cost-so-far %))) children)
 				;; Find children whose new-costs are lower than before
-				low-cost-children (helper_1 cost-so-far visited-children new-costs)
-				;; combined list is children we care about
-				interesting-children (clojure.set/union (set unvisited-children) (set low-cost-children))
-				;; Add new-cost and heuristic for each child to get priority
-				priority (map #(+ %1 %2) new-costs heuristics)
 				;; Generate a new frontier
-				new-frontier (reduce #(assoc %1 %2 (heuristic-fn goal-state %2)) (pop frontier) interesting-children)
+                                new-cost-so-far (reduce #(assoc %1 %2 (children-costs %2)) cost-so-far children-to-add)
+				new-frontier (reduce #(assoc %1 %2 (+ (heuristic-fn goal-state %2) (children-costs %2))) (pop frontier) children-to-add)
 				;; Generate a new came-from!
-				new-came-from (reduce #(assoc %1 %2 current) came-from interesting-children)
+				new-came-from (reduce #(assoc %1 %2 current) came-from children-to-add)
 			     ]
-				(recur new-frontier cost-so-far new-came-from)
+				(recur new-frontier new-cost-so-far new-came-from)
 			)
 		)
 	)

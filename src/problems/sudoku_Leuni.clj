@@ -16,7 +16,17 @@
                            [0 6 0 0 7 0 5 8 0]
                            [7 0 0 0 1 0 3 9 0]]
 
-                           [8 7]))
+                           [2 1]))
+
+(def goal-state (->State [       [1 7 5 2 9 4 8 3 6]
+                                 [6 2 3 1 8 7 9 4 5]
+                                 [8 9 4 5 6 3 2 7 1]
+                                 [5 1 9 7 3 2 4 6 8]
+                                 [3 4 7 8 5 6 1 2 9]
+                                 [2 8 6 9 4 1 7 5 3]
+                                 [9 3 8 4 2 5 6 1 7]
+                                 [4 6 1 3 7 9 5 8 2]
+                                 [7 5 2 6 1 8 3 9 4]] [8 8]))
 
 
 
@@ -178,15 +188,45 @@
         )
   )
 
+
+(defn get-previous-position [state]
+  (let [cur-pos (:current-pos state)
+        cur-row (get cur-pos 0)
+        cur-col (get cur-pos 1)]
+
+    (if (and (= cur-row 0) (= cur-col 0)) cur-pos
+      (if (= cur-col 0) [(dec cur-row) 8]
+          [cur-row (dec cur-col)]))
+
+  )
+
+)
+
 ; Function    : num-wrong
 ;
 ; Description : A heuristic for determining how many values are wrong in the current working row.
 ;               The program should pursue Sudoku boards with the least number of incorrectly
 ;               placed values.
-(defn num-wrong [goal-state current-state pos]
+(defn num-wrong [goal-state current-state]
 
   ; Do we need an old position? Or can we use the current state?
 
+  (let [cur-pos (get-previous-position current-state)
+        cur-vec (get (:board current-state) (get cur-pos 0))
+        goal-vec (get (:board goal-state) (get cur-pos 0))
+        ]
+
+      (count
+        (filter identity
+                (map not= cur-vec goal-vec)))
+
+    )
 
   )
+
+
+
+
+(num-wrong goal-state start-state)
+
 

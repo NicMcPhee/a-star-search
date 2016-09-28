@@ -15,7 +15,7 @@
 (defn -main
   "Search for a hard-coded N-puzzle target state."
   [& args]
-  (let [start-state (tri/->State [[1] [1 1] [1 1 1] [1 1 1 1] [1 1 1 1 0] [1 1 1 1 1 1]])
+  (let [start-state (tri/->State [[1] [1 1] [1 1 1] [1 1 1 1] [1 1 1 1 0] [1 1 1 1 1 1] [1 1 1 1 1 1 1]])
         ;goal-state (tri/->State [[0] [0 0] [1 0 0] [0 0 0 0] [0 0 0 0 0]])
         max-states 1000000
         costs nil

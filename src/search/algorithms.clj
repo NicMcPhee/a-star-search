@@ -73,17 +73,27 @@
                    (conj path current-state)))))
 
 
+(defn helper_1 [cost-thus-far children new-costs]
+	;;(println new-costs)
+	(for [child children cost new-costs]
+		(if (< cost (cost-thus-far child))
+			child
+		)
+	)
+	;(map #(if(< %2 (%1 cost-thus-far)) %1) children new-costs)
+)
+
 ;;
 ;; Another try at that a-star implementation
 ;;
 (defn a-star [children-fn heuristic-fn start-state goal-state]
 	(loop [frontier (pm/priority-map start-state 0)
-		current (peek frontier)
-		cost-so-far {start-state 0}]
+		cost-so-far {start-state 0}
+		came-from {}]
 
 		;; Check if we're done!
 		(if (or (empty? frontier)
-			(= (first (peek froniter)) goal-state))
+			(= (first (peek frontier)) goal-state))
 			
 			;; return map of states we explored to find the goal
 			came-from
@@ -91,33 +101,29 @@
 			;; Otherwise, keep on looking!
 			(let [
 				current (first (peek frontier))
+				current-cost (cost-so-far current)
 				children (set (children-fn current))
-				unvisited-children (clojure.set/difference children (set (keys cost-so-far)))
-				heuristics (map (partial	
+				visited-children (set (keys cost-so-far))
+				;; Generate set of unvisited children
+				unvisited-children (clojure.set/difference children visited-children)
+				;; Calculate heuristic value of each child
+				heuristics (map (partial heuristic-fn goal-state) children)
+				;; Calculate the "new-cost" of each child
+				new-costs (map (fn [_] (+ current-cost 1)) children)
+				;; Find children whose new-costs are lower than before
+				low-cost-children (helper_1 cost-so-far visited-children new-costs)
+				;; combined list is children we care about
+				interesting-children (clojure.set/union (set unvisited-children) (set low-cost-children))
+				;; Add new-cost and heuristic for each child to get priority
+				priority (map #(+ %1 %2) new-costs heuristics)
+				;; Generate a new frontier
+				new-frontier (reduce #(assoc %1 %2 (heuristic-fn goal-state %2)) (pop frontier) interesting-children)
+				;; Generate a new came-from!
+				new-came-from (reduce #(assoc %1 %2 current) came-from interesting-children)
 			     ]
+				(recur new-frontier cost-so-far new-came-from)
 			)
 		)
 	)
 )
 
-;;
-;; Our a-star implementation...
-;;
-;;(defn a-star-search [children-fn heuristic-fn start-state goal-state & {:keys [max-states cost-fn] :or {max-states 1000000 cost-fn (fn [x y] 1)}}]
-;;  (loop [frontier (pm/priority-map start-state 0)
-;;         came-from {}
-;;	 cost_so_far {:start 0}]
-;;    (if (or (empty? frontier)
-;;            (>= (count came-from) max-states)
-;;            (= (first (peek frontier)) goal-state))
-;;      came-from
-;;      (let [current (first (peek frontier))
-;;            children (set (children-fn current))
-;;            unvisited-children (clojure.set/difference children (set (keys cost_so_far)))
-;;            heuristics (map (partial heuristic-fn goal-state) unvisited-children)
-;;            new-frontier (reduce #(assoc %1 %2 (heuristic-fn goal-state %2)) (pop frontier) unvisited-children)
-;;            new-came-from (reduce #(assoc %1 %2 current) came-from unvisited-children)
-;;            new-visited (clojure.set/union children (set (keys cost_so_far)))
-;;	    next-state (peek new-frontier)
-;;	    new_cost (+ cost_so_far[current] cost-fn(current, next-state))]
-;;        (recur new-frontier new-came-from new-visited)))))

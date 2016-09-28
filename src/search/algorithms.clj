@@ -23,6 +23,16 @@
                new-visited
                new-came-from)))))
 
+
+(defn extract-path [came-from start-state goal-state]
+  (loop [current-state goal-state
+         path []]
+    (cond
+      (nil? current-state) nil
+      (= current-state start-state) (reverse (conj path start-state))
+      :else (recur (came-from current-state)
+                   (conj path current-state)))))
+
 (defn shortest-path [children-fn cost-fn max-states start-state goal-state]
   (loop [max-states max-states
          frontier (pm/priority-map start-state 0)
@@ -39,21 +49,14 @@
             children-to-add (filter #(or (not (contains? cost-so-far %))
                                          (< (children-costs %) (cost-so-far %))) children)
             new-cost-so-far (reduce #(assoc %1 %2 (children-costs %2)) cost-so-far children-to-add)
+
             new-frontier (reduce #(assoc %1 %2 (children-costs %2)) (pop frontier) children-to-add)
+
             new-came-from (reduce #(assoc %1 %2 current) came-from children-to-add)]
         (recur (- max-states (count children-to-add))
                new-frontier
                new-came-from
                new-cost-so-far)))))
-
-(defn extract-path [came-from start-state goal-state]
-  (loop [current-state goal-state
-         path []]
-    (cond
-      (nil? current-state) nil
-      (= current-state start-state) (reverse (conj path start-state))
-      :else (recur (came-from current-state)
-                   (conj path current-state)))))
 
 (defn heuristic-search [children-fn heuristic-fn start-state goal-state & {:keys [max-states] :or {max-states 1000000}}]
   (loop [frontier (pm/priority-map start-state 0)
@@ -66,7 +69,7 @@
       (let [current (first (peek frontier))
             children (set (children-fn current))
             unvisited-children (clojure.set/difference children visited)
-            ;heuristics (map (partial heuristic-fn goal-state) unvisited-children)
+            heuristics (map (partial heuristic-fn goal-state) unvisited-children)
             new-frontier (reduce #(assoc %1 %2 (heuristic-fn goal-state %2)) (pop frontier) unvisited-children)
             new-came-from (reduce #(assoc %1 %2 current) came-from unvisited-children)
             new-visited (clojure.set/union children visited)]
@@ -74,31 +77,41 @@
 
 
 (defn a-star-search [children-fn heuristic-fn cost-fn start-state goal-state & {:keys [max-states] :or {max-states 1000000}}]
-  (loop [frontier (pm/priority-map start-state 0)
+  (loop [max-states max-states
+         frontier (pm/priority-map start-state 0)
          came-from {}
-         cost-so-far {start-state 0}
-         visited #{}]
+         visited #{}
+         cost-so-far {start-state 0}]
 
     (if (or (empty? frontier)
             (>= (count came-from) max-states)
             (= (first (peek frontier)) goal-state))
+
+      ; Works when we use just came-from
+      ;[came-from cost-so-far]
       came-from
 
       (let [current (first (peek frontier))
-
+            current-cost (cost-so-far current)
             children (set (children-fn current))
-
             unvisited-children (clojure.set/difference children visited)
-
             heuristics (map (partial heuristic-fn goal-state) unvisited-children)
 
-            new-frontier (reduce #(assoc %1 %2 (heuristic-fn goal-state %2)) (pop frontier) unvisited-children)
+            children-costs (reduce #(assoc %1 %2 (+ current-cost (cost-fn current %2))) {} children)
+
+            children-to-add (filter #(or (not (contains? cost-so-far %))
+                                         (< (children-costs %) (cost-so-far %))) children)
+
+            new-cost-so-far (reduce #(assoc %1 %2 (children-costs %2)) cost-so-far children-to-add)
+
+            new-frontier (reduce #(assoc %1 %2 (+ (heuristic-fn goal-state %2) (cost-fn))) (pop frontier) unvisited-children)
 
             new-came-from (reduce #(assoc %1 %2 current) came-from unvisited-children)
 
-            new-visited (clojure.set/union children visited)
+            new-visited (clojure.set/union children visited)]
 
-            new-cost (+ (get cost-so-far current) (cost-fn current ))
-
-            ]
-        (recur new-frontier new-came-from new-cost-so-far new-visited)))))
+        (recur (- max-states (count children-to-add))
+               new-frontier
+               new-came-from
+               new-visited
+               new-cost-so-far)))))

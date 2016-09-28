@@ -40,7 +40,9 @@
         ;[came-from costs] (alg/shortest-path np/children (constantly 1) max-states start-state goal-state )
         ;[came-from costs] (alg/shortest-path np/children np/prefer-horizontal-cost max-states start-state goal-state)
 
-        came-from (alg/heuristic-search np/children np/num-wrong start-state goal-state :max-states 10000)
+        ;came-from (alg/heuristic-search np/children np/num-wrong start-state goal-state :max-states 10000)
+
+        came-from (alg/a-star-search np/children np/num-wrong (constantly 1) start-state goal-state :max-states 10000)
 
         path (alg/extract-path came-from start-state goal-state)]
 

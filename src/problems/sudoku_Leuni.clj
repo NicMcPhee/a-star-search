@@ -209,7 +209,7 @@
 ;               placed values.
 (defn num-wrong [goal-state current-state]
 
-  ; Do we need an old position? Or can we use the current state?
+
 
   (let [cur-pos (get-previous-position current-state)
         cur-vec (get (:board current-state) (get cur-pos 0))

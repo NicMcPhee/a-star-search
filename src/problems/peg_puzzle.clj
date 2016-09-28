@@ -172,9 +172,14 @@
         finalList (remove nil? listList)
         ]
 
-(map #(->State % n) finalList))))
+  (map #(->State % n) finalList))))
 
+(defn heuristic [state]
+  (count (children state)))
 
-(let [x (->State [0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] 5)]
+(let [x (->State [0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] 5)]
   (children x))
+
+(let [x (->State [0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] 5)]
+  (heuristic x))
 

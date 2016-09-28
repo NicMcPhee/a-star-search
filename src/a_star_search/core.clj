@@ -19,19 +19,16 @@
         ;goal-state (tri/->State [[0] [0 0] [1 0 0] [0 0 0 0] [0 0 0 0 0]])
         max-states 1000000
         costs nil
-        ;came-from (alg/breadth-first-search tri/children max-states start-state tri/winning-board?)
-        ;[came-from costs] (alg/shortest-path tri/children (constantly 1)
-        ;                                      max-states start-state tri/winning-board? )
-        ; [came-from costs] (alg/shortest-path tri/children tri/prefer-horizontal-cost
-        ;                                      max-states start-state goal-state)
-	; came-from (alg/heuristic-search np/children np/num-non-blank-wrong start-state goal-state :max-states 10000)        
-	[came-from costs] (alg/a-star-search
-                            tri/children
-                            (constantly 0)
-                            tri/heuristic
-                            max-states
-                            start-state
-                            tri/winning-board?)
+        ;; came-from (alg/breadth-first-search tri/children max-states start-state tri/winning-board?)
+        ;; [came-from costs] (alg/shortest-path tri/children (constantly 1) max-states start-state tri/winning-board? )
+        ;; came-from (alg/heuristic-search tri/children tri/heuristic start-state tri/winning-board? :max-states 10000)
+        [came-from costs] (alg/a-star-search
+                           tri/children
+                           (constantly 0)
+                           tri/number-of-pegs
+                           max-states
+                           start-state
+                           tri/winning-board?)
         path (alg/extract-path came-from start-state tri/winning-board?)]
     (print-results came-from path costs)))
 

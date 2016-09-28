@@ -174,12 +174,15 @@
 
   (map #(->State % n) finalList))))
 
+;this is kind of half of a heuristic because it's only in effect
+;while there are more than half the pegs left in the puzzle...
 (defn heuristic [state]
-  (count (children state)))
+  (let [b (:board state)
+        n (:n state)]
+    (if (> (sum b) (quot (reduce + (range n)) 2)) (quot (* n 20) (count (children state))) 0)))
 
-(let [x (->State [0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] 5)]
+(let [x (->State [0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1] 5)]
   (children x))
 
-(let [x (->State [0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] 5)]
+(let [x (->State [0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1] 5)]
   (heuristic x))
-

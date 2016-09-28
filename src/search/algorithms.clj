@@ -56,17 +56,25 @@
                    (conj path current-state)))))
 
 (defn a-star-search-algorithm [children-fn heuristic-fn max-states start-state goal-state]
-  (loop [frontier (pm/priority-map start-state 0)
+  (loop [max-states max-states
+         frontier (pm/priority-map start-state 0)
          came-from {:start nil}
-         cost-so-far{:start 0}
-         ]
-    (if (empty? frontier)
+         cost-so-far{:start 0}]
+    (if (or (empty? frontier)
+            (<= max-states 0)
+            (= (first (peek frontier)) goal-state))
       [came-from cost-so-far]
       (let [current (first (peek frontier))
             current-cost (cost-so-far current)
             current-children (children-fn current)
-            unadjusted-scored-children (map (fn[current-state next-state] [next-state (heuristic-fn current-state next-state)]) (children-fn current-state))]
-        (recur (- max-states wut))))
+            scored-children (map (fn[next-state] (heuristic-fn current next-state)) current-children)]
+        (recur (- max-states (count scored-children))
+               "next frontier / pick highest score child"
+               (reduce #(assoc %1 %2 ) frontier)
+               "updated came-from"
+               "updated cost-so-far")
+        )
+      )
     )
   )
 

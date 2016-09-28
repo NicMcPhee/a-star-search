@@ -95,8 +95,14 @@
 (defn winning-board? [state]
   (= 1 (reduce + (flatten (:board state)))))
 
-(defn heuristic [state]
-  (/ 1  (inc (count (children (:board state))))))
+
+(defn number-of-children [state]
+  (count (children (:board state))))
 
 (defn number-of-pegs [state]
      (reduce + (flatten (:board state))))
+
+(defn heuristic [state]
+  (/ 1 (*
+        (inc  (count  (children state)))
+        (- 15 (number-of-pegs state)))))

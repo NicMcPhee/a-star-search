@@ -101,7 +101,7 @@
 
             ; priority = new_cost + heuristic(goal, next)
             ; frontier.put(next, priority)
-            new-frontier (reduce #(assoc %1 %2 (+ (children-costs %2) (heuristic-fn goal-state %2))) (pop frontier) children-to-add)
+            new-frontier (reduce #(assoc %1 %2 (+ (* (heuristic-fn goal-state %2) 100) (children-costs %2))) (pop frontier) children-to-add)
 
 
             new-came-from (reduce #(assoc %1 %2 current) came-from children-to-add)]

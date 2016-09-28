@@ -52,13 +52,13 @@
          visited #{}]
     (if (or (empty? frontier)
             (>= (count came-from) max-states)
-            (= (first (peek frontier)) goal-state))
+            (goal-state (first (peek frontier))))
       came-from
       (let [current (first (peek frontier))
             children (set (children-fn current))
             unvisited-children (clojure.set/difference children visited)
-            heuristics (map (partial heuristic-fn goal-state) unvisited-children)
-            new-frontier (reduce #(assoc %1 %2 (heuristic-fn goal-state %2)) (pop frontier) unvisited-children)
+            heuristics (map heuristic-fn unvisited-children)
+            new-frontier (reduce #(assoc %1 %2 (heuristic-fn %2)) (pop frontier) unvisited-children)
             new-came-from (reduce #(assoc %1 %2 current) came-from unvisited-children)
             new-visited (clojure.set/union children visited)]
         (recur new-frontier new-came-from new-visited)))))

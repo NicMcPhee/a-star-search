@@ -21,8 +21,8 @@
          came-from (alg/breadth-first-search np/children max-states start-state goal-state)
          [came-from costs] (alg/shortest-path np/children (constantly 1)
                                           max-states start-state goal-state )
-;;          [came-from costs] (alg/shortest-path np/children np/prefer-horizontal-cost
-;;                                           max-states start-state goal-state)
+         [came-from costs] (alg/shortest-path np/children np/prefer-horizontal-cost
+                                           max-states start-state goal-state)
         ;;came-from (alg/heuristic-search np/children np/num-non-blank-wrong start-state goal-state :max-states 10000)
         path (alg/extract-path came-from start-state goal-state)]
     (print-results came-from path costs goal-state)))

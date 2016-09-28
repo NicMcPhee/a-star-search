@@ -8,8 +8,9 @@
   (println "The path to the solution is:")
   (doseq [b (map :board path)]
     (println b))
+  (println "The path has" (count path) "steps.")
   (when costs
-    (println "The path has" (count path) "steps and its cost is" (costs (last path)))))
+    (println "Its cost is" (costs (last path)))))
 
 (defn -main
   "Search for a hard-coded N-puzzle target state."

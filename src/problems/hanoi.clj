@@ -3,7 +3,7 @@
 
 ;;scardycat.clj was a practice file; this file is (hanoi.clj) our final submission
 
-(defrecord State [towers])
+(defrecord State [towers cost])
 
 (defn legal? [towers old-t new-t]
   (and (not (empty? (nth towers old-t)))
@@ -29,7 +29,8 @@
 ;;state is only one array of three arrays
 
 
-(defn prefer-horizontal-cost [s t]
-  (let [s-x (first (:blank-position s))
-        t-x (first (:blank-position t))]
-    (inc (Math/abs (- s-x t-x)))))
+
+;; (defn prefer-horizontal-cost [s t]
+;;   (let [s-x (first (:blank-position s))
+;;         t-x (first (:blank-position t))]
+;;     (inc (Math/abs (- s-x t-x)))))

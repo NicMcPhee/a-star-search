@@ -64,11 +64,12 @@
         (recur new-frontier new-came-from new-visited)))))
 
 (defn a-star-search [children-fn cost-fn heuristic-fn start-state goal-state & {:keys [max-states] :or {max-states 1000000}}]
-  (loop [frontier (pm/priority-map start-state 0)
+  (loop [max-states max-states
+        frontier (pm/priority-map start-state 0)
          came-from {}
          cost-so-far {start-state 0}]
-
-    (if (or (empty? frontier)
+    (if (or (neg? max-states)
+            (empty? frontier)
             (>= (count came-from) max-states)
             (= (first (peek frontier)) goal-state))
       [came-from cost-so-far]
@@ -86,25 +87,29 @@
 
             ; priority = new_cost
             ; frontier.put(next, priority)
-            ; new-frontier (reduce #(assoc %1 %2 (children-costs %2)) (pop frontier) children-to-add)
+            ;new-frontier (reduce #(assoc %1 %2 (children-costs %2)) (pop frontier) children-to-add)
+
 
             ; heuristic implementation frontier code for testing
 
             ; priority = heuristic(goal, next)
             ; frontier.put(next, priority)
-             new-frontier (reduce #(assoc %1 %2 (heuristic-fn goal-state %2)) (pop frontier) children-to-add)
+            ;new-frontier (reduce #(assoc %1 %2 (heuristic-fn goal-state %2)) (pop frontier) children-to-add)
 
 
             ; in progress a-star frontier code, just need to combine heuristic with Dijkstra's Algorithm
 
             ; priority = new_cost + heuristic(goal, next)
             ; frontier.put(next, priority)
-            ; new-frontier ( )
+            new-frontier (reduce #(assoc %1 %2 (+ (children-costs %2) (heuristic-fn goal-state %2))) (pop frontier) children-to-add)
 
 
             new-came-from (reduce #(assoc %1 %2 current) came-from children-to-add)]
 
-        (recur new-frontier new-came-from new-cost-so-far)))))
+        (recur (- max-states (count children-to-add))
+               new-frontier
+               new-came-from
+               new-cost-so-far)))))
 
 
 

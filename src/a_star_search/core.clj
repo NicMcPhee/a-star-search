@@ -23,7 +23,8 @@
         ;                                      max-states start-state tri/winning-board? )
         ; [came-from costs] (alg/shortest-path tri/children tri/prefer-horizontal-cost
         ;                                      max-states start-state goal-state)
-        [came-from costs] (alg/a-star-search
+	; came-from (alg/heuristic-search np/children np/num-non-blank-wrong start-state goal-state :max-states 10000)        
+	[came-from costs] (alg/a-star-search
                             tri/children
                             (constantly 0)
                             tri/heuristic
@@ -34,6 +35,6 @@
     (print-results came-from path costs)))
 
 ; Run (with timing) with
-; (-main)
+; (time (-main))
 ; or
 ; time lein run

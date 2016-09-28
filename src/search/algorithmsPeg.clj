@@ -74,7 +74,7 @@
             children (set (children-fn current))
             children-costs (reduce #(assoc %1 %2 (+ current-cost (cost-fn current %2))) {} children)
             children-to-add (filter #(or (not (contains? cost-so-far %))
-                                         (> (children-costs %) (cost-so-far %))) children)
+                                         (< (children-costs %) (cost-so-far %))) children)
             new-cost-so-far (reduce #(assoc %1 %2 (children-costs %2)) cost-so-far children-to-add)
             new-frontier (reduce #(assoc %1 %2(+ (children-costs %2) (heuristic-fn current))) (pop frontier) children-to-add)
             new-came-from (reduce #(assoc %1 %2 current) came-from children-to-add)]

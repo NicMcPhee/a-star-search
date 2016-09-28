@@ -71,7 +71,7 @@
          cost-so-far {start-state 0}]
     (if (or (neg? max-states)
             (empty? frontier)
-            (goal-state? (peek frontier)))
+            (goal-state? (first (peek frontier))))
       [came-from cost-so-far]
       (let [current (first (peek frontier))
             current-cost (cost-so-far current)

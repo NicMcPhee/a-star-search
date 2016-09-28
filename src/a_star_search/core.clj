@@ -25,7 +25,7 @@
         [came-from costs] (alg/a-star-search
                            tri/children
                            (constantly 0)
-                           tri/number-of-pegs
+                           tri/number-of-children
                            max-states
                            start-state
                            tri/winning-board?)

@@ -97,7 +97,7 @@
 
 
 (defn number-of-children [state]
-  (count (children (:board state))))
+  (count (children state)))
 
 (defn number-of-pegs [state]
      (reduce + (flatten (:board state))))

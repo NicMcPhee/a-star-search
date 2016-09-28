@@ -14,21 +14,18 @@
 (defn -main
   "Search for a hard-coded Towers of Hanoi target state."
   [& args]
-  ;; Need to change np/ -> State that will work with our code
   (let [start-state (np/->State [[5 4 3 2 1] [] []])
         goal-state (np/->State [[] [] [5 4 3 2 1]])
         max-states 1000000
         costs 1
-        ;; here too, at np/children, to work for with our code.
-        came-from (alg/breadth-first-search np/children max-states start-state goal-state)
-        [came-from costs] (alg/shortest-path np/children (constantly 1)
+          came-from (alg/breadth-first-search np/children max-states start-state goal-state)
+         [came-from costs] (alg/shortest-path np/children (constantly 1)
                                           max-states start-state goal-state )
-        ;;[came-from costs] (alg/shortest-path np/children np/prefer-horizontal-cost
-                                            ;; max-states start-state goal-state)
+;;          [came-from costs] (alg/shortest-path np/children np/prefer-horizontal-cost
+;;                                              max-states start-state goal-state)
         path (alg/extract-path came-from start-state goal-state)]
     (print-results came-from path costs goal-state)))
-(defn prefer-horizontal-cost [s t]
-    (inc 0))
+
 ; Run (with timing) with
 (time (-main))
 ; or

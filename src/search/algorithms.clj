@@ -46,6 +46,24 @@
                new-came-from
                new-cost-so-far)))))
 
+(defn heuristic-search [children-fn heuristic-fn start-state goal-state & {:keys [max-states] :or {max-states 1000000}}]
+  (loop [frontier (pm/priority-map start-state 0)
+         came-from {}
+         visited #{}]
+    (if (or (empty? frontier)
+            (>= (count came-from) max-states)
+            (= (first (peek frontier)) goal-state))
+      came-from
+      (let [current (first (peek frontier))
+            children (set (children-fn current))
+            unvisited-children (clojure.set/difference children visited)
+            heuristics (map (partial heuristic-fn goal-state) unvisited-children)
+            new-frontier (reduce #(assoc %1 %2 (heuristic-fn goal-state %2)) (pop frontier) unvisited-children)
+            new-came-from (reduce #(assoc %1 %2 current) came-from unvisited-children)
+            new-visited (clojure.set/union children visited)]
+        (recur new-frontier new-came-from new-visited)))))
+
+
 (defn extract-path [came-from start-state goal-state]
   (loop [current-state goal-state
          path []]

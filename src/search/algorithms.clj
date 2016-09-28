@@ -71,3 +71,53 @@
       (= current-state start-state) (reverse (conj path start-state))
       :else (recur (came-from current-state)
                    (conj path current-state)))))
+
+
+;;
+;; Another try at that a-star implementation
+;;
+(defn a-star [children-fn heuristic-fn start-state goal-state]
+	(loop [frontier (pm/priority-map start-state 0)
+		current (peek frontier)
+		cost-so-far {start-state 0}]
+
+		;; Check if we're done!
+		(if (or (empty? frontier)
+			(= (first (peek froniter)) goal-state))
+			
+			;; return map of states we explored to find the goal
+			came-from
+			
+			;; Otherwise, keep on looking!
+			(let [
+				current (first (peek frontier))
+				children (set (children-fn current))
+				unvisited-children (clojure.set/difference children (set (keys cost-so-far)))
+				heuristics (map (partial	
+			     ]
+			)
+		)
+	)
+)
+
+;;
+;; Our a-star implementation...
+;;
+;;(defn a-star-search [children-fn heuristic-fn start-state goal-state & {:keys [max-states cost-fn] :or {max-states 1000000 cost-fn (fn [x y] 1)}}]
+;;  (loop [frontier (pm/priority-map start-state 0)
+;;         came-from {}
+;;	 cost_so_far {:start 0}]
+;;    (if (or (empty? frontier)
+;;            (>= (count came-from) max-states)
+;;            (= (first (peek frontier)) goal-state))
+;;      came-from
+;;      (let [current (first (peek frontier))
+;;            children (set (children-fn current))
+;;            unvisited-children (clojure.set/difference children (set (keys cost_so_far)))
+;;            heuristics (map (partial heuristic-fn goal-state) unvisited-children)
+;;            new-frontier (reduce #(assoc %1 %2 (heuristic-fn goal-state %2)) (pop frontier) unvisited-children)
+;;            new-came-from (reduce #(assoc %1 %2 current) came-from unvisited-children)
+;;            new-visited (clojure.set/union children (set (keys cost_so_far)))
+;;	    next-state (peek new-frontier)
+;;	    new_cost (+ cost_so_far[current] cost-fn(current, next-state))]
+;;        (recur new-frontier new-came-from new-visited)))))

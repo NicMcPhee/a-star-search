@@ -32,22 +32,25 @@
 
 ;; Tests for children-by-peg
 (facts
-  (children-by-peg 0 (->State [[1 2 3] [] []])) => (list (->State [[1 2] [3] []]) (->State [[1 2] [] [3]]))
+  (children-by-peg 0 (->State [[3 2 1] [] []])) => (list (->State [[3 2] [1] []]) (->State [[3 2] [] [1]]))
 )
 
 ;; Tests for generate-children
 (facts
-	(children (->State [[1 2 3] [] []])) => (list (->State [[1 2] [3] []])
-								(->State [[1 2] [] [3]]))
+	(children (->State [[3 2 1] [] []])) => (list (->State [[3 2] [1] []])
+								(->State [[3 2] [] [1]]))
 
-	(children (->State [[1 2] [3] []])) => (list (->State [[1] [3 2] []])
-								(->State [[1] [3] [2]])
-								(->State [[1 2 3] [] []])
-								(->State [[1 2] [] [3]]))
+	(children (->State [[3 1] [2] []])) => (list (->State [[3] [2 1] []])
+								(->State [[3] [2] [1]])
+								(->State [[3 1] [] [2]]))
 )
 
 ;; Tests for fitness
 (facts
-  (fitness-lonely-disk (->State [[1 2] [] [3]])) => -1
-  (fitness-lonely-disk (->State [[1 2 3 4] [2] [] [] [5 6] [9]])) => -2
+  (fitness-lonely-disk (->State [[1 2] [] [3]])) => 1
+  (fitness-lonely-disk (->State [[1 2 3 4] [2] [] [] [5 6] [9]])) => 2
+
+  (fitness-diff (->State [[1 2 3 4] [] []]) (->State [[1 2 3 4] [] []])) => 0
+  (fitness-diff (->State [[1 2 3 4] [] []]) (->State [[1 2 3] [4] []])) => 2
+  (fitness-diff (->State [[1 2 3 4] [] []]) (->State [[1 2] [3] [4]])) => 4
 )

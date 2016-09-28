@@ -24,38 +24,34 @@
     (and (reduce #(and %1 %2) stack-order) correct-disks)))
 
 ;;;;;;; Helper Functions for Fitness ;;;;;;;
+(defn abs [n] (max n (- n)))
 
-;; Untestable!
-;(defn fitness-initial-peg [state]
-;;	(- (count ((:vec-of-pegs state) start-state-peg-index)))
-;;)
 
-(defn fitness-lonely-disk [state]
-	(- (count (filter #(= (count %) 1) (:vec-of-pegs state))))
+(defn fitness-diff [goal-state current-state]
+	(reduce + (map #(abs(- (count %2) (count %1))) (:vec-of-pegs goal-state) (:vec-of-pegs current-state)))
 )
 
-;;(defn fitness-used-pegs [state]
-;;	(let [num-disks (reduce + (map #(count %) (:vec-of-pegs state)))
-;;		num-pegs-in-use (count (filter #(not (empty? %)) (:vec-of-pegs state)))]
-;;
-;;		(- (+ num-disks 1) num-pegs-in-use)
-;;	)
-;;)
+(defn fitness-lonely-disk [state]
+	(count (filter #(= (count %) 1) (:vec-of-pegs state)))
+)
+
 
 ;;
 ;; Determines the fitness of a state.
 ;; Takes in a state, wich we assume to be valid.
-;; Returns an integer... High numbers are "better"
+;; Returns an integer... ~~High numbers are "better"~~
+;; According to Nic, higher numbers are worse...
 ;;
 ;; - point for each disk on the initial peg
 ;; - the cumulative difference in peg sizes over "one"...
 ;; - point for each peg with only one disk on it
 ;; - point for every "in use" peg beyond n+1 pegs
 ;;
-(defn fitness [state]
+(defn fitness [goal-state current-state]
 	(+
 	;;(fitness-initial-peg state)
-	(fitness-lonely-disk state)
+	(- 1 (fitness-lonely-disk current-state))
+	(fitness-diff goal-state current-state)
 	)
 )
 
@@ -92,9 +88,11 @@
 ;; Returns a list of states
 ;;
 (defn children [state]
+	(filter legal?
 	(flatten
 	(for [peg-index (range 0 (count (:vec-of-pegs state)))]
 		(children-by-peg peg-index state)
+	)
 	)
 	)
 )

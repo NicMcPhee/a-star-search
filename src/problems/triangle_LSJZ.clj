@@ -96,5 +96,4 @@
   (= 1 (reduce + (flatten (:board state)))))
 
 (defn heuristic [state]
-;;   (/ 1  (inc (count (children (:board state))))))
- (/ () ()))
+  (/ 1  (inc (count (children (:board state))))))

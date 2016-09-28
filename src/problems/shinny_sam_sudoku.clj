@@ -124,9 +124,9 @@
 (defn avg-difference [goal-state current-state]
   (if (= 0 (compare (:curr-position current-state) [8, 8]))
       0
-      (if (= (int (avg-diff goal-state current-state)) 0)
+      (if (= (int (* (avg-diff goal-state current-state) 7)) 0)
         1
-        (Math/abs (int (avg-diff goal-state current-state)))
+        (Math/abs (int (* (avg-diff goal-state current-state) 7)))
         )
     )
   )

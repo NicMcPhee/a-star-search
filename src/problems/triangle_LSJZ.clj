@@ -103,6 +103,5 @@
      (reduce + (flatten (:board state))))
 
 (defn heuristic [state]
-  (/ 1 (*
-        (inc  (count  (children state)))
-        (- 15 (number-of-pegs state)))))
+  (- (number-of-pegs state)
+     (number-of-children state)))

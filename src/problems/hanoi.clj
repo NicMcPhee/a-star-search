@@ -35,4 +35,7 @@
 ;;   ;;cost will be the number that was moved.
 ;;   )
 
-;;a* . . .
+;; ;;a* . . .
+;; (defn a-star [state-of-astar]
+;;   (+ (spicy [state-of-astar state-of-astar])
+;;      (cost [state-of-astar])))

@@ -55,9 +55,12 @@
       (> num-of-piles 3)))
 
 
-(defn num-non-blank-wrong [goal-state current-state]
+(defn keep-down-piling [goal-state current-state]
   (count (remove too-many-piles?
                  (map (fn [x y] [x y])
                       (state->vec goal-state)
                       (state->vec current-state)))))
+
+;;(defn keep-down-with-cost [goal-state current-state]
+
 

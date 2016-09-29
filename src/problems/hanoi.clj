@@ -15,32 +15,17 @@
         new-new (conj (nth towers new-t) disk)]
     (assoc (assoc towers old-t new-old) new-t new-new)))
 
-(def towersinside [[5 4 3 2 1] [] [] [] [] []])
-(def towers (->State towersinside))
-(println towersinside)
-(println (count (nth (:towers towers) 0)))
-
 (defn children [state]
-  (for [[old new] [[0, 1] [1, 0], [0, 2], [1, 2] [2, 1], [2, 0], ;4td tower->
-                   [0, 3], [1, 3], [2, 3], [3, 0], [3,1], [3,2], ;5th tower ->
-                   [0, 4], [1, 4], [2, 4], [3, 4], [4, 0], [4, 1], [4, 2], [4,3]]
+  (for [[old new] [[0, 1] [1, 0], [0, 2], [1, 2] [2, 1], [2, 0]]
         :when (legal? (:towers state)  old new)]
     (->State (swap (:towers state) old new))))
 
+;;Does slightly more than a dead salesman. Just lets prefer-horizontal-cost run as a BFS.
 (defn prefer-horizontal-cost [old new]
       (if (empty? (or old new)) 0 1))
 
-;; (defn state->vec [state]
-;;   (let [T1 (count (nth (:towers state) 0))
-;;         T2 (count (nth (:towers state) 1))
-;;         T3 (count (nth (:towers state) 2))
-;;         T4 (count (nth (:towers state) 3))
-;;         T5 (count (nth (:towers state) 4))]
-;;     (map / [T1 T2 T3 T4 T5] 15)))
-
-
-
-
-
-;; (defn num-non-blank-wrong [goal-state current-state]
-;;   (count
+;;
+(defn spicy [current-state goal-state]
+  (+ (/ (* 100 (reduce + (nth (:towers current-state) 2)))
+        (count (nth (:towers current-state) 2)))
+     (* 100 (count (nth (:towers current-state) 2)))))

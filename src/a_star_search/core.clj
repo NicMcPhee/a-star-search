@@ -77,7 +77,11 @@
   (let [start-state (rand-board full-board)
         goal-state is-true
         max-states 1000000
+
+      ;Breadth First
       ;[came-from final-state] (alg/breadth-first-search pg/children max-states start-state goal-state)
+
+      ;Shortest Path
       ;[came-from costs final-state] (alg/shortest-path pg/children (constantly 1) max-states start-state goal-state)
 
       ;Heuristic search
@@ -86,8 +90,6 @@
       ;A* search
       [came-from costs final-state] (alg/A* pg/children pg/heuristic (constantly 1) start-state goal-state :max-states 1000000)
 
-      ;we made what we think is A* but we want to talk to you. We will be submitting this for now.
-      ;[came-from costs final-state] (alg/A* pg/children (constantly 1) max-states start-state goal-state)
         path (alg/extract-path came-from start-state final-state)]
     (print-results came-from path costs final-state)))
 

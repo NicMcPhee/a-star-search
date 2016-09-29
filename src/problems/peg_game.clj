@@ -68,7 +68,9 @@
 
 
 
-(defn make-moves [board]
+(defn make-moves
+  "makes the moves that are possible for the board given to it"
+  [board]
   (loop [board board
          vector-index 0
          row-index 1
@@ -81,11 +83,19 @@
         (recur board (+ vector-index 1) 1 (+ row-number 1) number-of-rows (assoc hashmap vector-index (generate-moves board vector-index row-index row-number number-of-rows hashmap))))
       hashmap)))
 
+
+
+;;Need to put the same size or larger peg game as the one you are actually performing the search on.
+
 (def moves
  (make-moves [1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1]))
 
 
-(defn heuristic [parent child]
+;; Heuristic perfers empty spaces on the bottom of the board.
+
+(defn heuristic
+  "Heuristic perfers empty spaces on the bottom of the board."
+  [parent child]
   (let [heuristic (get (frequencies (subvec child (quot (count child) 2) (count child))) 0)]
     (if (= heuristic nil)
       0

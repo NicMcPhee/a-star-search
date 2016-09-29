@@ -82,27 +82,8 @@
             heuristics (map (partial heuristic-fn goal-state) children-to-add)
             new-cost-so-far (reduce #(assoc %1 %2 (children-costs %2)) cost-so-far children-to-add)
 
-
-            ; shortest path implementation frontier code for testing
-
-            ; priority = new_cost
-            ; frontier.put(next, priority)
-            ;new-frontier (reduce #(assoc %1 %2 (children-costs %2)) (pop frontier) children-to-add)
-
-
-            ; heuristic implementation frontier code for testing
-
-            ; priority = heuristic(goal, next)
-            ; frontier.put(next, priority)
-            ;new-frontier (reduce #(assoc %1 %2 (heuristic-fn goal-state %2)) (pop frontier) children-to-add)
-
-
-            ; in progress a-star frontier code, just need to combine heuristic with Dijkstra's Algorithm
-
-            ; priority = new_cost + heuristic(goal, next)
-            ; frontier.put(next, priority)
-            new-frontier (reduce #(assoc %1 %2 (+ (* (heuristic-fn goal-state %2) 100) (children-costs %2))) (pop frontier) children-to-add)
-
+            ;heuristic multiplier of 215 because everything at 215 and above returns the lowest number of states
+            new-frontier (reduce #(assoc %1 %2 (+ (* (heuristic-fn goal-state %2) 215) (children-costs %2))) (pop frontier) children-to-add)
 
             new-came-from (reduce #(assoc %1 %2 current) came-from children-to-add)]
 
@@ -110,9 +91,6 @@
                new-frontier
                new-came-from
                new-cost-so-far)))))
-
-
-
 
 (defn extract-path [came-from start-state goal-state]
   (loop [current-state goal-state

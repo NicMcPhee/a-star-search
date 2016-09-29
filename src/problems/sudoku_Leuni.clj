@@ -188,7 +188,9 @@
         )
   )
 
-
+; Function    : get-previous-position
+;
+; Description : Takes the current-pos from a state and returns the previous position
 (defn get-previous-position [state]
   (let [cur-pos (:current-pos state)
         cur-row (get cur-pos 0)
@@ -216,9 +218,9 @@
         goal-vec (get (:board goal-state) (get cur-pos 0))
         ]
 
-      (count
+      (* 10 (count
         (filter identity
-                (map not= cur-vec goal-vec)))
+                (map not= cur-vec goal-vec))))
 
     )
 

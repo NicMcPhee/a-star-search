@@ -40,8 +40,12 @@
         ;[came-from costs] (alg/shortest-path np/children (constantly 1) max-states start-state goal-state )
         ;[came-from costs] (alg/shortest-path np/children np/prefer-horizontal-cost max-states start-state goal-state)
 
+        ;Searches 146 states instead of shortest paths 517
         ;came-from (alg/heuristic-search np/children np/num-wrong start-state goal-state :max-states 10000)
 
+        ;Our a-star performs better with a constant of 0 for cost because of the nature of our heuristic
+        ;At a value of 2 it goes through as many states as shortest path. Values near 1 and below improve
+        ;the states searched down to our best case of 0.
         came-from (alg/a-star-search np/children np/num-wrong (constantly 1) start-state goal-state :max-states 10000)
 
         path (alg/extract-path came-from start-state goal-state)]

@@ -77,8 +77,7 @@
 
 
 (defn a-star-search [children-fn heuristic-fn cost-fn start-state goal-state & {:keys [max-states] :or {max-states 1000000}}]
-  (loop [max-states max-states
-         frontier (pm/priority-map start-state 0)
+  (loop [frontier (pm/priority-map start-state 0)
          came-from {}
          visited #{}
          cost-so-far {start-state 0}]
@@ -95,7 +94,7 @@
             current-cost (cost-so-far current)
             children (set (children-fn current))
             unvisited-children (clojure.set/difference children visited)
-            heuristics (map (partial heuristic-fn goal-state) unvisited-children)
+            ;heuristics (map (partial heuristic-fn goal-state) unvisited-children)
 
             children-costs (reduce #(assoc %1 %2 (+ current-cost (cost-fn current %2))) {} children)
 
@@ -104,14 +103,13 @@
 
             new-cost-so-far (reduce #(assoc %1 %2 (children-costs %2)) cost-so-far children-to-add)
 
-            new-frontier (reduce #(assoc %1 %2 (+ (heuristic-fn goal-state %2) (cost-fn))) (pop frontier) unvisited-children)
+            new-frontier (reduce #(assoc %1 %2 (+ (heuristic-fn goal-state %2) (children-costs %2))) (pop frontier) unvisited-children)
 
             new-came-from (reduce #(assoc %1 %2 current) came-from unvisited-children)
 
             new-visited (clojure.set/union children visited)]
 
-        (recur (- max-states (count children-to-add))
-               new-frontier
+        (recur new-frontier
                new-came-from
                new-visited
                new-cost-so-far)))))

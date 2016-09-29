@@ -25,8 +25,7 @@
         ; [came-from costs] (alg/shortest-path np/children np/prefer-horizontal-cost
         ;                                      max-states start-state goal-state)
         ;came-from (alg/heuristic-search towers/children  towers/fitness towers/start-state towers/goal-state :max-states 10000)
-	came-from (alg/a-star towers/children towers/fitness towers/start-state towers/goal-state (fn [x y] 1))
-	;came-from (alg/a-star "boop" "boop" "boop" "boop")
+	[came-from costs] (alg/a-star towers/children towers/fitness towers/start-state towers/goal-state (fn [x y] 1))
         path (alg/extract-path came-from start-state goal-state)]
     (print-results came-from path costs goal-state)))
 

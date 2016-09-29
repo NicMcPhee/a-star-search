@@ -73,16 +73,6 @@
                    (conj path current-state)))))
 
 
-(defn helper_1 [cost-thus-far children new-costs]
-	;;(println new-costs)
-	(for [child children cost new-costs]
-		(if (< cost (cost-thus-far child))
-			child
-		)
-	)
-	;(map #(if(< %2 (%1 cost-thus-far)) %1) children new-costs)
-)
-
 ;;
 ;; Another try at that a-star implementation
 ;;
@@ -94,23 +84,23 @@
 		;; Check if we're done!
 		(if (or (empty? frontier)
 			(= (first (peek frontier)) goal-state))
-			
+
 			;; return map of states we explored to find the goal
 			came-from
-			
+
 			;; Otherwise, keep on looking!
 			(let [
 				current (first (peek frontier))
 				current-cost (cost-so-far current)
 				children (set (children-fn current))
-				;; Calculate heuristic value of each child
-                                children-costs (reduce #(assoc %1 %2 (+ current-cost (cost-fn current %2))) {} children)
-				;; Generate set of unvisited children
+                                ;; calculate cost to move to each child
+				children-costs (reduce #(assoc %1 %2 (+ current-cost (cost-fn current %2))) {} children)
+				;; Generate set of interesting children
                                 children-to-add (filter #(or (not (contains? cost-so-far %))
                                          (< (children-costs %) (cost-so-far %))) children)
-				;; Find children whose new-costs are lower than before
-				;; Generate a new frontier
-                                new-cost-so-far (reduce #(assoc %1 %2 (children-costs %2)) cost-so-far children-to-add)
+                               	;; Add in cost values for children
+				new-cost-so-far (reduce #(assoc %1 %2 (children-costs %2)) cost-so-far children-to-add)
+				;; Generate a new frontier using cost and heuristic values of children
 				new-frontier (reduce #(assoc %1 %2 (+ (heuristic-fn goal-state %2) (children-costs %2))) (pop frontier) children-to-add)
 				;; Generate a new came-from!
 				new-came-from (reduce #(assoc %1 %2 current) came-from children-to-add)

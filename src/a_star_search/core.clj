@@ -5,8 +5,6 @@
             [clojure.tools.namespace.repl :refer [refresh]])
   (:gen-class))
 
-(def x "x") ;Pay no attention to the x behind the curtain. This varibale lets us use x without quotes.
-
 (defn printable-board [board pos]
   (assoc-in board pos "_"))
 
@@ -39,16 +37,16 @@
   (let [start-state (mz/->State mz/test-board [0 0])
         goal-state (mz/->State mz/test-board [15 15])
         max-states 1000000
-        ;costs mz/get-cost
-        ;came-from (alg/breadth-first-search mz/children max-states start-state goal-state)
-         [came-from costs] (alg/shortest-path mz/children mz/get-cost
-                                              max-states start-state goal-state )
-        ;[came-from costs] (alg/shortest-path np/children np/prefer-horizontal-cost
-        ;                                      max-states start-state goal-state)
+;;         costs (constantly 3)
+;;         came-from (alg/breadth-first-search mz/children max-states start-state goal-state)
+;;         [came-from costs] (alg/shortest-path mz/children mz/get-cost
+;;                                            max-states start-state goal-state)
+;;         came-from (alg/heuristic-search mz/children mz/heuristic start-state goal-state :max-states 1000000)
+        [came-from costs] (alg/a-star-search mz/children mz/heuristic mz/get-cost start-state goal-state :max-states 1000000)
         path (alg/extract-path came-from start-state goal-state)]
     (print-results came-from path costs goal-state)))
 
 ; Run (with timing) with
- (time (-main))
+(time (-main))
 ; or
 ; time lein run

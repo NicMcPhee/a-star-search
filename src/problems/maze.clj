@@ -2,7 +2,7 @@
 
 (defrecord State [board current-pos])
 
-(def x "x") ;Pay no attention to the x behind the curtain. This varibale lets us use x without quotes.
+(def . ".") ;Pay no attention to the x behind the curtain. This varibale lets us use x without quotes.
 
 (defn legal? [new-pos board]
   (let [board-rows (count board)
@@ -14,7 +14,16 @@
        (>= (second new-pos) 0)
        (< (first new-pos) board-rows)
        (< (second new-pos) board-cols)
-       (not (= (get-in board new-pos) "x")))))
+       (not (= (get-in board new-pos) ".")))))
+
+(defn heuristic [goal-state new-state]
+  (let [x1 (first (:current-pos goal-state))
+        y1 (second (:current-pos goal-state))
+        x2 (first (:current-pos new-state))
+        y2 (second (:current-pos new-state))
+        dx (- x1 x2)
+        dy (- y1 y2)]
+    (* dy dx)))
 
 (defn get-cost [curr-state new-state]
   (get-in (:board new-state) (:current-pos new-state)))
@@ -32,21 +41,21 @@
      ; (->State (assoc-in (:board state) [row col] "_") [new-row new-col]))))
 
 
-(def test-board [[0 0 0 0 0 x 0 0 0 x x x 0 x x 0]
-                 [0 0 0 0 0 x 0 0 0 x x x 0 x x 0]
-                 [x x x x 9001 x x x 0 x x x 0 0 0 0]
-                 [0 x x x 0 x 0 0 0 0 0 x 0 x 0 x]
-                 [0 0 0 x 0 x 0 x x x 0 0 0 x 0 x]
-                 [0 0 0 x 0 0 0 x x x x x x x x x]
-                 [0 0 0 0 x x 0 0 0 x x x 0 0 0 x]
-                 [0 x x 0 0 x x x 0 0 0 0 0 x 0 x]
-                 [0 x x x 0 x 0 0 0 x 0 x 0 x 0 x]
-                 [0 0 0 x 0 x 0 x 0 0 0 x 0 x 0 0]
-                 [0 x 0 x x x 0 x x x x x 0 x x 0]
-                 [0 0 0 0 0 0 0 x x x x x x x 0 0]
-                 [0 x x x 0 x x x 0 0 0 x 0 x 0 x]
-                 [0 x x x 0 x 0 0 0 x 0 0 0 x 0 x]
-                 [0 0 0 x 0 x 0 x 0 0 0 x 0 0 0 x]
-                 [0 0 0 x 0 0 0 x x x x x 0 x 0 42]])
+(def test-board [[0 0 0 0 0 . 0 0 0 . . . 0 . . 0]
+                 [0 0 0 0 0 . 0 0 0 . . . 0 . . 0]
+                 [. . . . 0 . . . 0 . . . 0 0 0 0]
+                 [0 . . . 0 . 0 0 0 0 0 . 0 . 0 .]
+                 [0 0 0 . 0 . 0 . . . 0 0 0 . 0 .]
+                 [0 0 0 . 0 0 0 . . . . . . . . .]
+                 [0 0 0 0 . . 0 0 0 . . . 0 0 0 .]
+                 [0 . . 0 0 . . . 0 0 0 0 0 . 0 .]
+                 [0 . . . 0 . 0 0 0 . 0 . 0 . 0 .]
+                 [0 0 0 . 0 . 0 . 0 0 0 . 0 . 0 0]
+                 [0 . 0 . . . 0 . . . . . 0 . . 4]
+                 [0 0 0 0 0 0 0 . . . . . . . 0 0]
+                 [0 . . . 0 . . . 0 0 0 . 0 . 0 .]
+                 [0 . . . 0 . 0 0 0 . 0 0 0 . 0 .]
+                 [0 0 0 . 0 . 0 . 0 0 0 . 0 1 0 .]
+                 [0 0 0 . 0 0 0 . . . . . 0 . 0 5]])
 
 (children (->State test-board [0 0]))

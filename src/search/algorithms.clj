@@ -55,16 +55,16 @@
       :else (recur (came-from current-state)
                    (conj path current-state)))))
 
-(defn a-star-search-algorithm [children-fn heuristic-fn max-states start-state goal-state]
+(defn a-star[children-fn heuristic-fn max-states start-state goal-state]
 
   (loop [max-states max-states ;;Generational loop
          frontier (pm/priority-map start-state 0)
-         came-from {:start nil}
-         cost-so-far{:start 0}]
+         came-from {start-state nil}
+         cost-so-far {start-state 0}]
     (if (or (empty? frontier)
             (<= max-states 0)
             (= (first (peek frontier)) goal-state))
-      [came-from cost-so-far]
+      came-from
       (let [current (first (peek frontier))
             current-cost (cost-so-far current)
             current-children (children-fn current)
@@ -74,38 +74,30 @@
                                 child-list (rest current-children)
                                 child (first current-children)
                                 new-frontier frontier]
-                           (if (nil? child)
-                             ;;If we've run out of children to mangle
-                             ;;So return the values we need.
-                             {:frontier new-frontier
-                              :came-from new-came-from
-                              :cost-so-far new-cost-so-far}
-                             ;;if we don't have that childs cost yet
-                             ;; or the childs current cost is lower than previously recorded
-                             (if (or (not (contains? new-cost-so-far child))
-                                     (< child-cost (get new-cost-so-far child)))
-                               ;;Recur in the case we need to do things.
-                               (recur
-                                 (conj new-cost-so-far [child child-cost])
-                                 (conj new-came-from   [child current])
-                                 (rest child-list)
-                                 (first child-list)
-                                 (assoc new-frontier child (+ child-cost (heuristic-fn current child))))
-                               ;;recur in the case we don't
-                               (recur new-cost-so-far new-came-from
-                                      (rest child-list)
-                                      (first child-list)
-                                      frontier))))]
+                               (if (nil? child)
+                                    ;;If we've run out of children to mangle
+                                    ;;So return the values we need.
+                                 {:frontier (dissoc new-frontier current)
+                                  :came-from new-came-from
+                                  :cost-so-far new-cost-so-far}
+                                    ;;if we don't have that childs cost yet
+                                    ;; or the childs current cost is lower than previously recorded
+                                 (if (or (not (contains? new-cost-so-far child))
+                                         (< child-cost (get new-cost-so-far child)))
+                                      ;;Recur in the case we need to do things.
+                                   (recur
+                                     (conj new-cost-so-far [child child-cost])
+                                     (conj new-came-from   [child current])
+                                     (rest child-list)
+                                     (first child-list)
+                                     (assoc new-frontier child (+ child-cost (heuristic-fn current child))))
+                                      ;;recur in the case we don't
+                                   (recur new-cost-so-far new-came-from
+                                          (rest child-list)
+                                          (first child-list)
+                                          frontier))))]
         ;;Generational Recur
         (recur (- max-states (count current-children))
                (:frontier new-vals-map)
                (:came-from new-vals-map)
-               (:cost-so-far new-vals-map))
-        )
-      )
-    )
-  )
-
-(defn heuristic [current-state next-state]
-  5
-  )
+               (:cost-so-far new-vals-map))))))

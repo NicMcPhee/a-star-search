@@ -26,15 +26,6 @@
                       0 0 0 4 1 9 0 0 5
                       0 0 0 0 8 0 0 7 9])
 (def bad-vertical-state [5 3 0 0 7 0 0 0 0
-                      6 0 0 1 9 5 0 0 0
-                      0 9 8 0 0 0 0 6 0
-                      8 0 0 0 6 0 0 0 3
-                      4 0 0 8 0 3 0 0 1
-                      7 0 0 0 2 0 0 0 6
-                      0 6 0 0 0 0 2 8 0
-                      0 0 0 4 1 9 0 0 5
-                      5 0 0 0 8 0 0 7 9])
-(def bad-horizontal-state [5 3 0 0 7 0 0 0 5
                          6 0 0 1 9 5 0 0 0
                          0 9 8 0 0 0 0 6 0
                          8 0 0 0 6 0 0 0 3
@@ -42,7 +33,16 @@
                          7 0 0 0 2 0 0 0 6
                          0 6 0 0 0 0 2 8 0
                          0 0 0 4 1 9 0 0 5
-                         0 0 0 0 8 0 0 7 9])
+                         5 0 0 0 8 0 0 7 9])
+(def bad-horizontal-state [5 3 0 0 7 0 0 0 5
+                           6 0 0 1 9 5 0 0 0
+                           0 9 8 0 0 0 0 6 0
+                           8 0 0 0 6 0 0 0 3
+                           4 0 0 8 0 3 0 0 1
+                           7 0 0 0 2 0 0 0 6
+                           0 6 0 0 0 0 2 8 0
+                           0 0 0 4 1 9 0 0 5
+                           0 0 0 0 8 0 0 7 9])
 
 (deftest test-chunking
   (testing "that chunks are handled correctly"
@@ -62,36 +62,9 @@
     (is (su/horizontal-valid? good-state))
     (is (not (su/horizontal-valid? bad-horizontal-state)))))
 
-(deftest test-children
-  (testing "that the correct children are made"
-    (is (= (su/children good-state)
-          '([5 3 1 0 7 0 0 0 0
-           6 0 0 1 9 5 0 0 0
-           0 9 8 0 0 0 0 6 0
-           8 0 0 0 6 0 0 0 3
-           4 0 0 8 0 3 0 0 1
-           7 0 0 0 2 0 0 0 6
-           0 6 0 0 0 0 2 8 0
-           0 0 0 4 1 9 0 0 5
-           0 0 0 0 8 0 0 7 9]
-           [5 3 2 0 7 0 0 0 0
-           6 0 0 1 9 5 0 0 0
-           0 9 8 0 0 0 0 6 0
-           8 0 0 0 6 0 0 0 3
-           4 0 0 8 0 3 0 0 1
-           7 0 0 0 2 0 0 0 6
-           0 6 0 0 0 0 2 8 0
-           0 0 0 4 1 9 0 0 5
-           0 0 0 0 8 0 0 7 9]
-           [5 3 4 0 7 0 0 0 0
-            6 0 0 1 9 5 0 0 0
-            0 9 8 0 0 0 0 6 0
-            8 0 0 0 6 0 0 0 3
-            4 0 0 8 0 3 0 0 1
-            7 0 0 0 2 0 0 0 6
-            0 6 0 0 0 0 2 8 0
-            0 0 0 4 1 9 0 0 5
-            0 0 0 0 8 0 0 7 9])))))
-
-
-
+(deftest test-heuristic
+  (testing "the null heuristic"
+    (is (= 5 (su/null-heuristic "Some object" "And another")))
+    (is (= 5 (su/null-heuristic nil nil))))
+  (testing "the actual heuristic"
+    (is (= (/ 5258 81) (su/heuristic "An ignored value" good-state)))))

@@ -81,11 +81,27 @@
   "makes children states"
   [state] (filter valid-state? (make-next-states state)))
 
-
-(defn print-state [state]
+(defn print-state
+  "pretty prints sudoku states in a sane way"
+  [state]
   (loop [lst (partition 9 state)]
     (if (empty? lst)
       (println "-=======-")
       (do (println (first lst))
-          (recur (rest lst))))
-    ))
+          (recur (rest lst))))))
+    
+;; heuristics
+; the multiplier is 22 (or 21, oddly), where increasing the value no longer
+;  improves performance.
+; the average of a complete board is 5.
+(defn heuristic
+ "An easy to implement, but slightly dubious heuristic for sudoku: how far is the
+ board average from 5, the average of a complete board. Multiplied by the magic
+ constant 22."
+  [_ next]
+  (* 22 (- 5 (/ (reduce + next) (count next)))))
+
+(defn null-heuristic
+  "Takes two arguments and almost certainly returns five."
+  [_ next]
+  5)

@@ -9,9 +9,12 @@
   (println "The path to the solution is:")
   (doseq [b (map :board path)]
     (println b))
+  ;print states at end so you see can see num of states without scrolling through printed solution
+  (println (str "We explored " (count result) " states."))
   (println "The path has" (count path) "steps.")
   (when costs
     (println "Its cost is" (costs goal-state))))
+
 
 
 (defn -main
@@ -19,15 +22,15 @@
   [& args]
   (let [start-state (s/->State [  [0 0 1 9 7 3 0 5 6]
                                   [0 9 0 0 8 0 0 0 0]
-                                  [0 0 0 0 0 0 3 0 0]
+                                  [7 0 0 0 0 0 3 0 0]
 
                                   [5 0 0 0 0 1 0 0 0]
-                                  [0 0 0 0 0 0 0 4 0]
-                                  [4 7 0 3 0 0 1 9 2]
+                                  [0 0 8 0 6 0 0 4 0]
+                                  [0 7 0 3 0 0 1 9 2]
 
-                                  [0 0 0 0 4 0 0 0 0]
+                                  [0 0 0 0 4 0 0 0 1]
                                   [3 0 2 0 0 5 6 0 0]
-                                  [1 0 0 0 0 0 0 0 0]] [0, 0] )
+                                  [1 0 0 8 0 0 0 2 0]] [0, 0] )
 
 
 

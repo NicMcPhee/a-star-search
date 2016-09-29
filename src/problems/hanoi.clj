@@ -1,8 +1,7 @@
 (ns problems.hanoi
   (require [clojure.set :as set]))
 
-;; (defrecord State [towers])
-(defrecord State [towers cost])
+(defrecord State [towers])
 
 (defn legal? [towers old-t new-t]
   (and (not (empty? (nth towers old-t)))
@@ -28,9 +27,12 @@
 ;;Tries to reward the state for being closer to the end-state.
 (defn spicy [current-state goal-state]
    (+ (/ (* 100 (reduce + (nth (:towers current-state) 2)))
-
         (* 100 (count (nth (:towers current-state) 2))))
      (count (nth (:towers current-state) 2))))
 
 ;;assigns each move a weight.
-;; (defn cost
+;; (defn cost [cost]
+;;   ;;cost will be the number that was moved.
+;;   )
+
+;;a* . . .

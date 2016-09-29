@@ -17,10 +17,8 @@
 (defn -main
   "Search for a hard-coded Towers of Hanoi target state."
   [& args]
-;;   (let [start-state (np/->State [[5 4 3 2 1] [] []])
-;;         goal-state (np/->State [[] [] [5 4 3 2 1]])
-  (let [start-state (np/->State [[[5 4 3 2 1] [] []] 0])
-        goal-state (np/->State [[[] [] [5 4 3 2 1]] 0])
+  (let [start-state (np/->State [[5 4 3 2 1] [] []])
+        goal-state (np/->State [[] [] [5 4 3 2 1]])
         max-states 1000000
         costs 1
 ;;          came-from (alg/breadth-first-search np/children max-states start-state goal-state)

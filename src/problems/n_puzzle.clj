@@ -23,6 +23,15 @@
     (->State (swap (:board state) [x y] [new-x new-y])
              [new-x new-y]))))
 
+
+;---------------------example-----------------------------------------
+(def state-a (->State [[0 1 2] [3 4 5] [6 7 8]] [0 0]))
+(children state-a)
+(def start (->State [[1 0 2] [4 3 5] [6 7 8]] [0 1]))
+;---------------------example-----------------------------------------
+
+
+
 (defn prefer-horizontal-cost [s t]
   (let [s-x (first (:blank-position s))
         t-x (first (:blank-position t))]
@@ -47,3 +56,4 @@
                  (map (fn [x y] [x y])
                       (state->vec goal-state)
                       (state->vec current-state)))))
+

@@ -7,8 +7,6 @@
 (defn legal? [new-pos board]
   (let [board-rows (count board)
         board-cols (count (first board))]
-  ;(println (and (>= (first new-pos) 0) (> (get-in board new-pos) 0)))
-  ;(println (> (get-in board new-pos) 0))
 
   (and (>= (first new-pos) 0)
        (>= (second new-pos) 0)
@@ -27,8 +25,6 @@
 
 (defn get-cost [curr-state new-state]
   (get-in (:board new-state) (:current-pos new-state)))
-
-;Bits and pieces for sanity's sake
 
 (defn children [state]
   (let [row (first (:current-pos state))

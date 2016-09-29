@@ -17,6 +17,8 @@
     (println "The path has" (count path) "steps and its cost is" (costs goal-state))))
 
 
+;;;;  These function may be implemented in a different way in the future. They are being kept here indefinitely... Or until we create a branch for them.
+
 ;; (defn make-final-board [positions board]
 ;;   (println positions)
 ;;   (make-final-board (rest positions) (printable-board board (first positions))))
@@ -30,6 +32,8 @@
 ;;         (println (make-final-board positions mz/test-board)))
 ;;   (when costs
 ;;     (println "The path has" (count path) "steps and its cost is" (costs goal-state))))
+
+
 
 (defn -main
   "Search for a hard-coded N-puzzle target state."

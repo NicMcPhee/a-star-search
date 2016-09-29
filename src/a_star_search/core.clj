@@ -3,6 +3,8 @@
             [problems.hanoi :as np])
   (:gen-class))
 
+
+;;This visual displays the steps that were taken to the fuction.
 (defn print-results [result path costs goal-state]
   (println (str "We explored " (count result) " states."))
   (println "The path to the solution is:")
@@ -11,11 +13,14 @@
   (when costs
     (println "The path has" (count path) "steps and its cost is" (costs goal-state))))
 
+
 (defn -main
   "Search for a hard-coded Towers of Hanoi target state."
   [& args]
-  (let [start-state (np/->State [[5 4 3 2 1] [] []])
-        goal-state (np/->State [[] [] [5 4 3 2 1]])
+;;   (let [start-state (np/->State [[5 4 3 2 1] [] []])
+;;         goal-state (np/->State [[] [] [5 4 3 2 1]])
+  (let [start-state (np/->State [[[5 4 3 2 1] [] []] 0])
+        goal-state (np/->State [[[] [] [5 4 3 2 1]] 0])
         max-states 1000000
         costs 1
 ;;          came-from (alg/breadth-first-search np/children max-states start-state goal-state)
@@ -30,6 +35,3 @@
 ; Run (with timing) with
 
 (time (-main))
-
-; or
-;(time (lein run))

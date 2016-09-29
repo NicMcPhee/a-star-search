@@ -1,7 +1,8 @@
 (ns problems.hanoi
   (require [clojure.set :as set]))
 
-(defrecord State [towers])
+;; (defrecord State [towers])
+(defrecord State [towers cost])
 
 (defn legal? [towers old-t new-t]
   (and (not (empty? (nth towers old-t)))
@@ -20,12 +21,16 @@
         :when (legal? (:towers state)  old new)]
     (->State (swap (:towers state) old new))))
 
-;;Does slightly more than a dead salesman. Just lets prefer-horizontal-cost run as a BFS.
+;;Causes the prefer-horizontal-cost to run as a Breadth-First-Search.
 (defn prefer-horizontal-cost [old new]
       (if (empty? (or old new)) 0 1))
 
-;;
+;;Tries to reward the state for being closer to the end-state.
 (defn spicy [current-state goal-state]
-  (+ (/ (* 100 (reduce + (nth (:towers current-state) 2)))
-        (count (nth (:towers current-state) 2)))
-     (* 100 (count (nth (:towers current-state) 2)))))
+   (+ (/ (* 100 (reduce + (nth (:towers current-state) 2)))
+
+        (* 100 (count (nth (:towers current-state) 2))))
+     (count (nth (:towers current-state) 2))))
+
+;;assigns each move a weight.
+;; (defn cost

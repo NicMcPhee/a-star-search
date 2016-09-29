@@ -41,7 +41,20 @@
 
 ;;prefer-horizontal-cost is not working; we couldn't figure out how to get it to work since
 ;;state is only one array of three arrays
+(defn state->vec [state]
+  (flatten (:board state)))
 
+(defn too-many-piles? [[x y]]
+  (let [num (count y)
+        num-of-piles (count (filter (fn [var] (> (count (drop-last y)) 2))))]
+      (> num-of-piles 3)))
+
+
+(defn num-non-blank-wrong [goal-state current-state]
+  (count (remove too-many-piles?
+                 (map (fn [x y] [x y])
+                      (state->vec goal-state)
+                      (state->vec current-state)))))
 
 ;; (defn prefer-horizontal-cost [s t]
 ;;   (let [s-x (first (:blank-position s))

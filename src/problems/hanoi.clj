@@ -50,9 +50,11 @@
   (flatten (:board state)))
 
 (defn too-many-piles? [[x y]]
-  (let [num (count y)
-        num-of-piles (count (filter (fn [var] (> (count (drop-last y)) 2))))]
-      (> num-of-piles 3)))
+  (let [num-of-piles-x (count (filter (fn [var] (> (count (drop-last x)) 2))))
+        num-of-piles-y (count (filter (fn [var] (> (count (drop-last y)) 2))))]
+      (or (> num-of-piles-x 3)
+          (> num-of-piles-y 3)
+          (= x y))))
 
 
 (defn keep-down-piling [goal-state current-state]
@@ -62,5 +64,3 @@
                       (state->vec current-state)))))
 
 ;;(defn keep-down-with-cost [goal-state current-state]
-
-

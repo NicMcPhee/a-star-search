@@ -16,6 +16,9 @@
        (< (second new-pos) board-cols)
        (not (= (get-in board new-pos) "x")))))
 
+(defn get-cost [curr-state new-state]
+  (get-in (:board new-state (:current-pos new-state))))
+
 ;Bits and pieces for sanity's sake
 
 (defn children [state]
@@ -29,10 +32,20 @@
      ; (->State (assoc-in (:board state) [row col] "_") [new-row new-col]))))
 
 
-(def test-board [[0 0 0 0 0 x 0 0]
-                 [x x x x 0 x x x]
-                 [0 x x x 0 x 0 0]
-                 [0 0 0 x 0 x 0 x]
-                 [0 x 0 x 0 0 0 x]])
+(def test-board [[0 0 0 0 0 x 0 0 0 x x x 0 x x 0]
+                 [x x x x 0 x x x 0 x x x 0 0 0 0]
+                 [0 x x x 0 x 0 0 0 0 0 x 0 x 0 x]
+                 [0 0 0 x 0 x 0 x x x 0 0 0 x 0 x]
+                 [0 0 0 x 0 0 0 x x x x x x x x x]
+                 [0 0 0 0 x x 0 0 0 x x x 0 x x x]
+                 [0 x x 0 0 x x x 0 0 0 0 0 x 0 x]
+                 [0 x x x 0 x 0 0 0 x 0 x 0 x 0 x]
+                 [0 0 0 x 0 x 0 x 0 0 0 x 0 x 0 0]
+                 [0 x 0 x x x 0 x x x x x 0 x x 0]
+                 [0 0 0 0 0 0 0 x x x x x x x 0 0]
+                 [0 x x x 0 x x x 0 0 0 x 0 x 0 x]
+                 [0 x x x 0 x 0 0 0 0 0 x 0 x 0 x]
+                 [0 0 0 x 0 x 0 x 0 0 0 x 0 0 0 x]
+                 [0 0 0 x 0 x 0 x x x x x 0 x 0 0]])
 
 (children (->State test-board [0 0]))

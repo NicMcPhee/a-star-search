@@ -12,11 +12,29 @@
                  [0 0 0 0 0 x 0 x]
                  [0 x 0 x 0 0 0 x]])
 
+(defn printable-board [board pos]
+  (assoc-in board pos "_"))
+
+;; (defn print-results [result path costs goal-state]
+;;   (println (str "We explored " (count result) " states."))
+;;   (println "The path, in [row col] format, to the solution is:")
+;;   (doseq [b (map printable-board path)]
+;;     (println b))
+;;   (when costs
+;;     (println "The path has" (count path) "steps and its cost is" (costs goal-state))))
+
+
+(defn make-final-board [positions board]
+  (println positions)
+  (make-final-board (rest positions) (printable-board board (first positions))))
+
+
+
 (defn print-results [result path costs goal-state]
   (println (str "We explored " (count result) " states."))
   (println "The path, in [row col] format, to the solution is:")
-  (doseq [b (map :current-pos path)]
-    (println b))
+  (let [positions (map :current-pos path)]
+        (println (make-final-board positions test-board)))
   (when costs
     (println "The path has" (count path) "steps and its cost is" (costs goal-state))))
 
@@ -28,14 +46,14 @@
         max-states 1000000
         costs (constantly 1)
         came-from (alg/breadth-first-search mz/children max-states start-state goal-state)
-        ; [came-from costs] (alg/shortest-path np/children (constantly 1)
+        ; [came-from costs] (alg/shortest-path mz/children (constantly 1)
         ;                                      max-states start-state goal-state )
-        ; [came-from costs] (alg/shortest-path np/children np/prefer-horizontal-cost
+        ;[came-from costs] (alg/shortest-path np/children np/prefer-horizontal-cost
         ;                                      max-states start-state goal-state)
         path (alg/extract-path came-from start-state goal-state)]
     (print-results came-from path costs goal-state)))
 
 ; Run (with timing) with
-; (time (-main))
+ (time (-main))
 ; or
 ; time lein run

@@ -86,7 +86,7 @@
 			(= (first (peek frontier)) goal-state))
 
 			;; return map of states we explored to find the goal
-			came-from
+			[came-from cost-so-far]
 
 			;; Otherwise, keep on looking!
 			(let [

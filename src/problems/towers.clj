@@ -2,8 +2,8 @@
 
 (defrecord State [vec-of-pegs])
 
-(def start-state (->State [[3 2 1] [] []]))
-(def goal-state (->State [[] [] [3 2 1]]))
+(def start-state (->State [[5 4 3 2 1] [] [] [] []]))
+(def goal-state (->State [[] [] [] [] [5 4 3 2 1]]))
 
 ;;
 ;; Determines whether or not a given state is valid

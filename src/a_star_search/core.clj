@@ -14,8 +14,8 @@
 (defn -main
   "Search for a hard-coded N-puzzle target state."
   [& args]
-  (let [start-state (crp/->State 0 ["on" "on" "on" "on" "on" "on" "on" "on" "on"] 9 -1)
-        goal-state (crp/->State -1 ["off" "off" "off" "off" "off" "off" "off" "off" "off"] 0 8)
+  (let [start-state (crp/->State 0 ["on" "on" "on" "on" "on" "on" "on" "on" "on"] 9)
+        goal-state (crp/->State -1 ["off" "off" "off" "off" "off" "off" "off" "off" "off"] 0)
         max-states 10000
         costs nil
         ;breadth-first-search:
@@ -26,9 +26,9 @@
         ;[came-from costs] (alg/shortest-path crp/children crp/prefer-horizontal-cost
         ;                                      max-states start-state goal-state)
         ;heuristic-search:
-        came-from (alg/heuristic-search crp/children crp/heuristic-function start-state goal-state :max-states 10000)
+        ;came-from (alg/heuristic-search crp/children crp/heuristic-function start-state goal-state :max-states 10000)
         ;a-star-search:
-        ;came-from (alg/a-star-search crp/children (constantly 1) max-states crp/heuristic-function start-state goal-state)
+        came-from (alg/a-star-search crp/children (constantly 1) max-states crp/heuristic-function start-state goal-state)
         path (alg/extract-path came-from start-state goal-state)]
     (print-results came-from path costs goal-state)))
 

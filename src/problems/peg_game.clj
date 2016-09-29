@@ -91,6 +91,14 @@
       0
       (- 0 heuristic))))
 
+;; (defn heuristic-A* [parent child cost]
+;;   (println parent)
+;;   (println child)
+;;   (let [heuristic (get (frequencies (subvec child (quot (count child) 2) (count child))) 0)]
+;;     (if (= heuristic nil)
+;;       (+ 0 cost)
+;;       (+ (- 0 heuristic) cost))))
+
 
 
 

@@ -22,6 +22,8 @@
         coll2 (range num)
         colls (list coll1 coll2)]
     (cartesian-x colls)))
+;; (def tower (->State [[6 5 4 3 2 1] [] [] [] [] []]))
+;; (possible-swaps tower)
 
 (defn swap [towers old-t new-t]
   (let [disk (peek (nth towers old-t))
@@ -50,8 +52,8 @@
   (flatten (:board state)))
 
 (defn too-many-piles? [[x y]]
-  (let [num-of-piles-x (count (filter (fn [var] (> (count (drop-last x)) 2))))
-        num-of-piles-y (count (filter (fn [var] (> (count (drop-last y)) 2))))]
+  (let [num-of-piles-x (count (filter (fn [var] (< (count (drop-last x)) 2))))
+        num-of-piles-y (count (filter (fn [var] (< (count (drop-last y)) 2))))]
       (or (> num-of-piles-x 3)
           (> num-of-piles-y 3)
           (= x y))))
@@ -62,5 +64,13 @@
                  (map (fn [x y] [x y])
                       (state->vec goal-state)
                       (state->vec current-state)))))
+
+(defn cost-fn [current-state next-state]
+  (let [count-towers (count (:towers next-state))
+         count1 (count (nth (:towers next-state) 0))
+        count2 (count (nth (:towers next-state) (- count-towers 1)))
+        non-end-disks (- count-towers count1 count2)]
+    (+ non-end-disks 0)))
+
 
 ;;(defn keep-down-with-cost [goal-state current-state]

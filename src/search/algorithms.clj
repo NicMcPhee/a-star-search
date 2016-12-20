@@ -71,3 +71,43 @@
       (= current-state start-state) (reverse (conj path start-state))
       :else (recur (came-from current-state)
                    (conj path current-state)))))
+
+
+;;
+;; Another try at that a-star implementation
+;;
+(defn a-star [children-fn heuristic-fn start-state goal-state cost-fn]
+	(loop [frontier (pm/priority-map start-state 0)
+		cost-so-far {start-state 0}
+		came-from {}]
+
+		;; Check if we're done!
+		(if (or (empty? frontier)
+			(= (first (peek frontier)) goal-state))
+
+			;; return map of states we explored to find the goal
+			[came-from cost-so-far]
+
+			;; Otherwise, keep on looking!
+			(let [
+				current (first (peek frontier))
+				current-cost (cost-so-far current)
+				children (set (children-fn current))
+                                ;; calculate cost to move to each child
+				children-costs (reduce #(assoc %1 %2 (+ current-cost (cost-fn current %2))) {} children)
+				;; Generate set of interesting children
+                                children-to-add (filter #(or (not (contains? cost-so-far %))
+                                         (< (children-costs %) (cost-so-far %))) children)
+                               	;; Add in cost values for children
+				new-cost-so-far (reduce #(assoc %1 %2 (children-costs %2)) cost-so-far children-to-add)
+				;; Generate a new frontier using cost and heuristic values of children
+				new-frontier (reduce #(assoc %1 %2 (+ (heuristic-fn goal-state %2) (children-costs %2))) (pop frontier) children-to-add)
+				;; Generate a new came-from!
+				new-came-from (reduce #(assoc %1 %2 current) came-from children-to-add)
+			     ]
+				(recur new-frontier new-cost-so-far new-came-from)
+			)
+		)
+	)
+)
+

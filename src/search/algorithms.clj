@@ -3,22 +3,6 @@
             [clojure.data.priority-map :as pm])
   (:gen-class))
 
-(defn make-tree [gen-children root-state]
-  (let [children (map (partial make-tree gen-children) (gen-children root-state))]
-    {:state root-state
-     :children children}))
-
-(defn sdf [tree]
-  (lazy-seq (cons (:state tree) (apply concat (map sdf (:children tree))))))
-
-(defn do-sbf [nodes]
-  (if-let [[next & the-rest] nodes]
-    (lazy-seq (cons (:state next) (do-sbf (concat the-rest (:children next)))))
-    []))
-
-(defn sbf [tree]
-  (do-sbf [tree]))
-
 (defn do-breadth-flatten
   [children-fn unexplored-states]
   (if (empty? unexplored-states)
@@ -26,13 +10,6 @@
     (if-let [[next & the-rest] unexplored-states]
       (lazy-seq (cons next (do-breadth-flatten children-fn (lazy-cat the-rest (children-fn next)))))
       [])))
-
-(defn do-breadth-flatten-reduce
-  [children-fn unexplored-states]
-  (reduce
-    (fn [rr s] (lazy-seq (cons s (lazy-cat rr (children-fn s)))))
-    []
-    unexplored-states))
 
 (defn breadth-flatten
   [children-fn start-state]

@@ -3,8 +3,8 @@
   :url "https://github.com/NicMcPhee/a-star-search"
   :license {:name "MIT License"
             :url "https://opensource.org/licenses/MIT"}
-  :dependencies [[org.clojure/clojure "1.8.0"]
-                 [org.clojure/data.priority-map "0.0.7"]]
+  :dependencies [[org.clojure/clojure "1.10.1"]
+                 [org.clojure/data.priority-map "0.0.10"]]
   :main ^:skip-aot a-star-search.core
   :target-path "target/%s"
   :profiles {:uberjar {:aot :all}
